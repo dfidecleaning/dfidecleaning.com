@@ -1,0 +1,2633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D'Fide Cleaning Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+:root {
+  --navy: #1a2744;
+  --navy-light: #243566;
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --white: #ffffff;
+  --off-white: #f8f7f4;
+  --gray-100: #f3f2ef;
+  --gray-200: #e8e6e1;
+  --gray-400: #9a9590;
+  --gray-600: #6b6560;
+  --green: #2d7a4f;
+  --green-light: #e8f5ee;
+  --red: #c0392b;
+  --red-light: #fdf0ef;
+  --amber: #d97706;
+  --amber-light: #fef3c7;
+  --purple: #7c3aed;
+  --purple-light: #ede9fe;
+  --shadow-sm: 0 1px 3px rgba(26,39,68,0.08);
+  --shadow-md: 0 4px 16px rgba(26,39,68,0.12);
+  --shadow-lg: 0 8px 32px rgba(26,39,68,0.16);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',sans-serif; background:var(--off-white); color:var(--navy); min-height:100vh; }
+
+/* ADMIN LOGIN */
+.admin-login-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(26,39,68,0.97); z-index: 9999;
+  align-items: center; justify-content: center;
+}
+.admin-login-overlay.active { display: flex; }
+.admin-login-box {
+  background: var(--white); border-radius: var(--radius);
+  padding: 36px 32px; max-width: 380px; width: 100%;
+  box-shadow: var(--shadow-lg); text-align: center;
+}
+.admin-login-box h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; color: var(--navy); margin-bottom: 6px;
+}
+.admin-login-box p { font-size: 13px; color: var(--gray-400); margin-bottom: 24px; }
+.admin-login-box input {
+  width: 100%; padding: 12px 16px; margin-bottom: 12px;
+  border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm);
+  font-size: 15px; font-family: 'DM Sans', sans-serif; text-align: center;
+  letter-spacing: 4px;
+}
+.admin-login-box input:focus { border-color: var(--gold); outline: none; }
+.admin-login-error { color: var(--red); font-size: 13px; margin-top: 8px; display: none; }
+.admin-session-badge {
+  position: fixed; top: 10px; right: 10px; z-index: 9998;
+  background: rgba(26,39,68,0.9); color: var(--gold);
+  font-size: 11px; padding: 4px 10px; border-radius: 20px;
+  display: none;
+}
+
+/* NAV */
+.top-nav { background:var(--navy); padding:0 12px; display:flex; align-items:center; justify-content:space-between; height:52px; position:sticky; top:0; z-index:100; box-shadow:var(--shadow-md); }
+.logo { font-family:'Playfair Display',serif; color:var(--gold); font-size:16px; font-weight:700; white-space:nowrap; flex-shrink:0; }
+.logo span { color:var(--white); }
+.nav-tabs { display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; }
+.nav-tabs::-webkit-scrollbar { display:none; }
+.nav-tab { background:none; border:none; color:rgba(255,255,255,0.6); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:500; padding:6px 8px; border-radius:7px; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+.nav-tab.active { background:rgba(201,168,76,0.2); color:var(--gold); }
+.nav-tab:hover:not(.active) { background:rgba(255,255,255,0.08); color:var(--white); }
+@media(max-width:480px) {
+  .top-nav { height:46px; padding:0 8px; }
+  .logo { font-size:13px; }
+  .nav-tab { padding:5px 6px; font-size:18px; }
+  .nav-text { display:none; }
+}
+
+/* PAGES */
+.page { display:none; }
+.page.active { display:block; }
+
+/* BOOKING HERO */
+.booking-hero { background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%); padding:40px 20px 32px; text-align:center; position:relative; overflow:hidden; }
+.booking-hero::before { content:''; position:absolute; top:-50%; right:-20%; width:400px; height:400px; background:radial-gradient(circle,rgba(201,168,76,0.12) 0%,transparent 70%); border-radius:50%; }
+.booking-hero h1 { font-family:'Playfair Display',serif; color:var(--white); font-size:26px; margin-bottom:8px; position:relative; }
+.booking-hero p { color:rgba(255,255,255,0.7); font-size:14px; position:relative; }
+.eco-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(201,168,76,0.2); border:1px solid rgba(201,168,76,0.4); color:var(--gold-light); font-size:12px; font-weight:500; padding:4px 12px; border-radius:20px; margin-bottom:14px; }
+
+/* BOOKING */
+.booking-container { max-width:680px; margin:0 auto; padding:20px 16px 48px; }
+.step-indicator { display:flex; align-items:center; justify-content:center; margin-bottom:24px; }
+.step-dot { width:30px; height:30px; border-radius:50%; background:var(--gray-200); color:var(--gray-400); font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center; transition:all 0.3s; }
+.step-dot.active { background:var(--navy); color:var(--white); }
+.step-dot.completed { background:var(--gold); color:var(--white); }
+.step-line { flex:1; height:2px; background:var(--gray-200); max-width:50px; }
+.step-line.completed { background:var(--gold); }
+.booking-step { display:none; }
+.booking-step.active { display:block; }
+
+/* SERVICE CARDS */
+.service-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+.service-card { background:var(--white); border:2px solid var(--gray-200); border-radius:var(--radius); padding:16px 12px; cursor:pointer; transition:all 0.2s; text-align:left; }
+.service-card:hover { border-color:var(--navy); box-shadow:var(--shadow-md); }
+.service-card.selected { border-color:var(--gold); background:linear-gradient(135deg,#fdf9ef,#fff); box-shadow:0 0 0 3px rgba(201,168,76,0.15); }
+.service-card .icon { font-size:22px; margin-bottom:8px; display:block; }
+.service-card h3 { font-size:14px; font-weight:600; margin-bottom:4px; }
+.service-card ul { list-style:none; font-size:11px; color:var(--gray-600); line-height:1.7; margin:8px 0; }
+.price-from { font-size:13px; font-weight:700; color:var(--gold); margin-top:6px; }
+
+/* SUBSCRIPTION TOGGLE */
+.subscription-toggle { background:var(--navy); border-radius:var(--radius); padding:16px; margin-bottom:16px; }
+.subscription-toggle h3 { color:var(--gold); font-family:'Playfair Display',serif; font-size:15px; margin-bottom:12px; }
+.sub-options { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+.sub-option { background:rgba(255,255,255,0.08); border:2px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px 8px; text-align:center; cursor:pointer; transition:all 0.2s; }
+.sub-option:hover { border-color:rgba(201,168,76,0.5); }
+.sub-option.selected { border-color:var(--gold); background:rgba(201,168,76,0.15); }
+.sub-option .freq { font-size:13px; font-weight:700; color:var(--white); display:block; }
+.sub-option .discount { font-size:11px; color:var(--gold); display:block; margin-top:2px; }
+.sub-option .sub-price { font-size:11px; color:rgba(255,255,255,0.6); display:block; margin-top:2px; }
+
+/* FORM */
+.form-section { background:var(--white); border-radius:var(--radius); padding:18px; margin-bottom:14px; box-shadow:var(--shadow-sm); }
+.form-section h3 { font-size:14px; font-weight:600; color:var(--navy); margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--gray-200); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.form-group { margin-bottom:12px; }
+.form-group:last-child { margin-bottom:0; }
+label { display:block; font-size:12px; font-weight:500; color:var(--navy); margin-bottom:5px; }
+input, select, textarea { width:100%; padding:9px 12px; border:1.5px solid var(--gray-200); border-radius:var(--radius-sm); font-family:'DM Sans',sans-serif; font-size:14px; color:var(--navy); background:var(--white); transition:border-color 0.2s; outline:none; }
+input:focus, select:focus, textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(201,168,76,0.1); }
+
+/* SIZE SELECTOR */
+.size-selector { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; }
+.size-btn { border:1.5px solid var(--gray-200); background:var(--white); border-radius:var(--radius-sm); padding:8px 4px; text-align:center; cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
+.size-btn:hover { border-color:var(--navy); }
+.size-btn.selected { border-color:var(--gold); background:rgba(201,168,76,0.08); }
+.size-btn .num { font-size:16px; font-weight:700; color:var(--navy); display:block; }
+.size-btn .lbl { font-size:10px; color:var(--gray-400); display:block; }
+
+/* EXTRAS */
+.extras-grid { display:grid; gap:7px; }
+.extra-item { display:flex; align-items:center; justify-content:space-between; padding:9px 12px; border:1.5px solid var(--gray-200); border-radius:var(--radius-sm); cursor:pointer; transition:all 0.2s; }
+.extra-item:hover { border-color:var(--navy); }
+.extra-item.selected { border-color:var(--gold); background:rgba(201,168,76,0.06); }
+.extra-item input[type="checkbox"] { width:16px; height:16px; accent-color:var(--gold); margin-right:8px; flex-shrink:0; }
+.extra-info { flex:1; }
+.extra-name { font-size:13px; font-weight:500; }
+.extra-desc { font-size:11px; color:var(--gray-400); }
+.extra-price { font-size:13px; font-weight:600; color:var(--gold); }
+
+/* TIP SELECTOR */
+.tip-section { background:var(--green-light); border-radius:var(--radius); padding:16px; margin-bottom:14px; border:1px solid rgba(45,122,79,0.2); }
+.tip-section h3 { color:var(--green); font-size:14px; font-weight:600; margin-bottom:12px; }
+.tip-options { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:10px; }
+.tip-btn { background:var(--white); border:1.5px solid rgba(45,122,79,0.3); border-radius:8px; padding:10px 6px; text-align:center; cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
+.tip-btn:hover { border-color:var(--green); }
+.tip-btn.selected { border-color:var(--green); background:var(--green); color:var(--white); }
+.tip-btn .tip-pct { font-size:15px; font-weight:700; display:block; }
+.tip-btn .tip-amt { font-size:11px; opacity:0.8; display:block; }
+
+/* REFERRAL */
+.referral-section { background:var(--purple-light); border-radius:var(--radius); padding:14px; margin-bottom:14px; border:1px solid rgba(124,58,237,0.2); }
+.referral-section h4 { color:var(--purple); font-size:13px; font-weight:600; margin-bottom:8px; }
+
+/* PRICE SUMMARY */
+.price-summary { background:var(--navy); border-radius:var(--radius); padding:18px; margin-bottom:14px; color:var(--white); }
+.price-summary h3 { font-family:'Playfair Display',serif; font-size:15px; color:var(--gold); margin-bottom:12px; }
+.price-line { display:flex; justify-content:space-between; align-items:center; font-size:13px; padding:3px 0; color:rgba(255,255,255,0.8); }
+.price-line.total { border-top:1px solid rgba(255,255,255,0.15); margin-top:8px; padding-top:10px; font-size:17px; font-weight:700; color:var(--white); }
+.price-line.deposit { color:var(--gold); font-weight:600; font-size:14px; }
+.price-line.savings { color:#4ade80; font-size:12px; }
+
+/* SIGNATURE PAD */
+.signature-area { border:2px dashed var(--gray-200); border-radius:var(--radius-sm); background:var(--white); position:relative; overflow:hidden; }
+.signature-area canvas { width:100%; height:150px; touch-action:none; display:block; }
+.sig-clear { position:absolute; top:8px; right:8px; background:var(--white); border:1px solid var(--gray-200); border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; font-family:'DM Sans',sans-serif; }
+
+/* BUTTONS */
+.btn-primary { background:var(--gold); color:var(--navy); border:none; border-radius:var(--radius-sm); padding:13px 24px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:700; cursor:pointer; width:100%; transition:all 0.2s; }
+.btn-primary:hover { background:var(--gold-light); transform:translateY(-1px); box-shadow:var(--shadow-md); }
+.btn-secondary { background:transparent; color:var(--navy); border:1.5px solid var(--gray-200); border-radius:var(--radius-sm); padding:11px 24px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; cursor:pointer; width:100%; transition:all 0.2s; margin-bottom:10px; }
+
+/* SUCCESS */
+.success-screen { text-align:center; padding:36px 20px; }
+.success-icon { width:68px; height:68px; background:var(--green-light); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 18px; }
+.success-screen h2 { font-family:'Playfair Display',serif; font-size:22px; margin-bottom:8px; }
+.booking-ref { background:var(--off-white); border-radius:var(--radius-sm); padding:14px; margin:16px 0; font-size:13px; color:var(--gray-600); }
+.booking-ref strong { font-size:20px; color:var(--navy); display:block; font-family:'Playfair Display',serif; margin-bottom:4px; }
+
+/* CLIENT PORTAL */
+.client-login { max-width:400px; margin:40px auto; padding:0 16px; }
+.portal-card { background:var(--white); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow-md); }
+.portal-card h2 { font-family:'Playfair Display',serif; font-size:22px; margin-bottom:6px; }
+.portal-card p { color:var(--gray-600); font-size:14px; margin-bottom:20px; }
+.booking-history-card { background:var(--white); border-radius:var(--radius); padding:16px; margin-bottom:12px; box-shadow:var(--shadow-sm); display:flex; gap:14px; align-items:center; }
+.history-icon { width:44px; height:44px; border-radius:10px; background:var(--navy); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.history-info { flex:1; }
+.history-service { font-weight:600; font-size:14px; }
+.history-date { font-size:12px; color:var(--gray-400); margin-top:2px; }
+.history-price { font-size:16px; font-weight:700; color:var(--navy); }
+
+/* ADMIN */
+.admin-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 60px); }
+.admin-sidebar { background:var(--navy); padding:16px 0; position:sticky; top:60px; height:calc(100vh - 60px); overflow-y:auto; }
+.sidebar-label { font-size:10px; font-weight:600; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:1px; padding:0 12px; margin-bottom:4px; margin-top:12px; }
+.sidebar-btn { display:flex; align-items:center; gap:8px; width:100%; padding:9px 12px; border:none; background:none; color:rgba(255,255,255,0.65); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; border-radius:8px; transition:all 0.2s; margin:0 6px; width:calc(100% - 12px); text-align:left; }
+.sidebar-btn:hover { background:rgba(255,255,255,0.08); color:var(--white); }
+.sidebar-btn.active { background:rgba(201,168,76,0.2); color:var(--gold); }
+.admin-content { padding:22px; overflow-y:auto; }
+.admin-view { display:none; }
+.admin-view.active { display:block; }
+
+/* STATS */
+.stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px; }
+.stat-card { background:var(--white); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow-sm); border-left:4px solid var(--gold); }
+.stat-card .label { font-size:11px; font-weight:500; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+.stat-card .value { font-size:26px; font-weight:700; color:var(--navy); font-family:'Playfair Display',serif; }
+.stat-card .sub { font-size:11px; color:var(--gray-400); margin-top:3px; }
+
+/* TABLE */
+.data-table { width:100%; border-collapse:collapse; background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm); }
+.data-table th { background:var(--navy); color:rgba(255,255,255,0.7); font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:0.5px; padding:11px 14px; text-align:left; }
+.data-table td { padding:12px 14px; font-size:13px; border-bottom:1px solid var(--gray-100); vertical-align:middle; }
+.data-table tr:last-child td { border-bottom:none; }
+.data-table tr:hover td { background:var(--off-white); }
+
+/* BADGES */
+.badge { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:20px; font-size:11px; font-weight:600; }
+.badge-pending { background:var(--amber-light); color:var(--amber); }
+.badge-confirmed { background:#e0f0ff; color:#1a6fb5; }
+.badge-completed { background:var(--green-light); color:var(--green); }
+.badge-cancelled { background:var(--red-light); color:var(--red); }
+.badge-subscription { background:var(--purple-light); color:var(--purple); }
+.badge-inprogress { background:rgba(201,168,76,0.15); color:#8b6914; }
+
+/* PAGE HEADER */
+.page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+.page-header h2 { font-family:'Playfair Display',serif; font-size:21px; }
+.btn-add { background:var(--gold); color:var(--navy); border:none; border-radius:var(--radius-sm); padding:9px 16px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; transition:all 0.2s; }
+.btn-add:hover { background:var(--gold-light); transform:translateY(-1px); }
+
+/* ACTION BUTTONS */
+.action-btn { background:none; border:1.5px solid var(--gray-200); border-radius:6px; padding:4px 9px; font-size:11px; font-weight:500; cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif; margin:1px; }
+.action-btn:hover { border-color:var(--navy); }
+.action-btn.green { border-color:var(--green); color:var(--green); }
+.action-btn.green:hover { background:var(--green-light); }
+.action-btn.gold { border-color:var(--gold); color:#8b6914; }
+.action-btn.gold:hover { background:rgba(201,168,76,0.1); }
+.action-btn.red { border-color:var(--red); color:var(--red); }
+.action-btn.red:hover { background:var(--red-light); }
+.action-btn.purple { border-color:var(--purple); color:var(--purple); }
+.action-btn.purple:hover { background:var(--purple-light); }
+
+/* CONTRACTOR APP */
+.contractor-header { background:var(--navy); padding:20px; text-align:center; }
+.contractor-header h2 { font-family:'Playfair Display',serif; color:var(--gold); font-size:20px; }
+.checklist-item { display:flex; align-items:center; gap:12px; padding:14px 16px; background:var(--white); border-radius:var(--radius-sm); margin-bottom:8px; box-shadow:var(--shadow-sm); cursor:pointer; transition:all 0.2s; }
+.checklist-item.done { opacity:0.6; }
+.checklist-item input[type="checkbox"] { width:20px; height:20px; accent-color:var(--green); flex-shrink:0; }
+.checklist-item .task { font-size:14px; font-weight:500; }
+.checklist-item.done .task { text-decoration:line-through; color:var(--gray-400); }
+.photo-upload-area { border:2px dashed var(--gray-200); border-radius:var(--radius); padding:24px; text-align:center; cursor:pointer; transition:all 0.2s; background:var(--white); margin-bottom:12px; }
+.photo-upload-area:hover { border-color:var(--gold); }
+.photo-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+.photo-slot { background:var(--gray-100); border-radius:var(--radius-sm); aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; font-size:28px; cursor:pointer; border:2px dashed var(--gray-200); overflow:hidden; }
+.photo-slot img { width:100%; height:100%; object-fit:cover; }
+
+/* MODAL */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(26,39,68,0.6); z-index:1000; align-items:center; justify-content:center; padding:16px; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--white); border-radius:var(--radius); padding:24px; max-width:540px; width:100%; max-height:88vh; overflow-y:auto; box-shadow:var(--shadow-lg); }
+.modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+.modal-header h3 { font-family:'Playfair Display',serif; font-size:18px; }
+.modal-close { background:none; border:none; font-size:22px; color:var(--gray-400); cursor:pointer; }
+
+/* NOTIFICATION */
+.notification { position:fixed; bottom:20px; right:20px; background:var(--navy); color:var(--white); padding:12px 18px; border-radius:var(--radius-sm); font-size:13px; font-weight:500; box-shadow:var(--shadow-lg); z-index:9999; display:none; align-items:center; gap:10px; max-width:300px; animation:slideIn 0.3s ease; }
+.notification.show { display:flex; }
+.notification.success { border-left:4px solid var(--green); }
+.notification.error { border-left:4px solid var(--red); }
+.notification.info { border-left:4px solid var(--gold); }
+@keyframes slideIn { from{transform:translateX(100px);opacity:0} to{transform:translateX(0);opacity:1} }
+
+/* LOADING */
+.loading { display:flex; align-items:center; justify-content:center; padding:40px; color:var(--gray-400); gap:10px; }
+.spinner { width:18px; height:18px; border:2px solid var(--gray-200); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* EMPTY STATE */
+.empty-state { text-align:center; padding:50px 20px; color:var(--gray-400); }
+.empty-state .icon { font-size:44px; margin-bottom:10px; }
+
+/* PAYMENT CARD */
+.payment-card { background:var(--white); border-radius:var(--radius); padding:14px; margin-bottom:10px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:14px; }
+.payment-avatar { width:42px; height:42px; background:var(--navy); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:15px; font-weight:700; font-family:'Playfair Display',serif; flex-shrink:0; }
+
+/* SUBSCRIPTION CARD */
+.subscription-card { background:linear-gradient(135deg,var(--navy),var(--navy-light)); border-radius:var(--radius); padding:18px; margin-bottom:12px; color:var(--white); position:relative; overflow:hidden; }
+.subscription-card::after { content:'♻️'; position:absolute; right:16px; top:50%; transform:translateY(-50%); font-size:32px; opacity:0.3; }
+.sub-badge { background:var(--gold); color:var(--navy); font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; display:inline-block; margin-bottom:8px; }
+
+/* REFERRAL DASHBOARD */
+.referral-card { background:var(--white); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow-sm); margin-bottom:12px; }
+.referral-code { font-size:28px; font-weight:700; color:var(--gold); font-family:'Playfair Display',serif; letter-spacing:3px; text-align:center; padding:16px; background:var(--off-white); border-radius:var(--radius-sm); margin:12px 0; }
+
+/* CHART */
+.chart-bar { display:flex; align-items:flex-end; gap:6px; height:100px; padding-top:10px; }
+.bar-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; height:100%; justify-content:flex-end; }
+.bar-fill { width:100%; background:var(--gold); border-radius:3px 3px 0 0; min-height:3px; opacity:0.85; }
+.bar-label { font-size:10px; color:var(--gray-400); }
+
+/* SEARCH */
+.search-bar { position:relative; margin-bottom:14px; }
+.search-bar input { padding-left:36px; }
+.search-icon { position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--gray-400); font-size:15px; }
+.filter-row { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+.filter-row select { width:auto; padding:7px 12px; font-size:12px; }
+
+/* DETAIL */
+.detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
+.detail-card { background:var(--white); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow-sm); }
+.detail-card h4 { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:var(--gray-400); margin-bottom:10px; }
+.detail-item { display:flex; justify-content:space-between; padding:4px 0; font-size:13px; border-bottom:1px solid var(--gray-100); }
+.detail-item:last-child { border-bottom:none; }
+.detail-item .key { color:var(--gray-600); }
+.detail-item .val { font-weight:500; }
+
+@media(max-width:768px) {
+  .admin-layout { grid-template-columns:1fr; }
+  .admin-sidebar { display:none; }
+  .stats-grid { grid-template-columns:1fr 1fr; }
+  .service-grid { grid-template-columns:1fr 1fr; }
+  .form-row { grid-template-columns:1fr; }
+  .size-selector { grid-template-columns:repeat(6,1fr); }
+  .detail-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="logo">D'Fide <span>Cleaning</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('booking')">📅 <span class="nav-text">Book</span></button>
+    <button class="nav-tab" onclick="showPage('portal'); loadClientPortal()">👤 <span class="nav-text">My Account</span></button>
+    <button class="nav-tab" onclick="showPage('contractor'); loadContractorApp()">🧹 <span class="nav-text">Team</span></button>
+    <button class="nav-tab" onclick="showPage('admin'); loadDashboard()">🔒 <span class="nav-text">Admin</span></button>
+  </div>
+</nav>
+
+<div class="notification" id="notification"><span id="notif-text"></span></div>
+
+<!-- ==================== BOOKING PAGE ==================== -->
+<div class="page active" id="page-booking">
+  <div class="booking-hero">
+    <div class="eco-badge">🌿 Eco-Friendly Certified</div>
+    <h1>Book Your Cleaning</h1>
+    <p>Bergen & Essex County, NJ · Save with recurring plans</p>
+  </div>
+  <div class="booking-container">
+    <div class="step-indicator">
+      <div class="step-dot active" id="dot-1">1</div>
+      <div class="step-line" id="line-1"></div>
+      <div class="step-dot" id="dot-2">2</div>
+      <div class="step-line" id="line-2"></div>
+      <div class="step-dot" id="dot-3">3</div>
+      <div class="step-line" id="line-3"></div>
+      <div class="step-dot" id="dot-4">4</div>
+      <div class="step-line" id="line-4"></div>
+      <div class="step-dot" id="dot-5">5</div>
+    </div>
+
+    <!-- STEP 1: Service -->
+    <div class="booking-step active" id="step-1">
+      <div class="form-section">
+        <h3>Select Your Service</h3>
+        <div class="service-grid" style="grid-template-columns:1fr 1fr">
+          <div class="service-card" onclick="selectService('standard',this)">
+            <span class="icon">✨</span>
+            <h3>Standard Clean</h3>
+            <ul>
+              <li>✓ Dusting all surfaces</li>
+              <li>✓ Vacuum & mop floors</li>
+              <li>✓ Kitchen counters & sink</li>
+              <li>✓ Bathrooms full clean</li>
+              <li>✓ Mirrors & glass</li>
+              <li>✓ Trash removal</li>
+              <li>✓ Eco products 🌿</li>
+            </ul>
+            <div class="price-from">From $180</div>
+            <div style="font-size:11px;color:var(--green);font-weight:600;margin-top:4px">Ideal for regular maintenance</div>
+          </div>
+          <div class="service-card" onclick="selectService('deep',this)">
+            <span class="icon">🧹</span>
+            <h3>Deep Clean</h3>
+            <ul>
+              <li>✓ Everything in Standard +</li>
+              <li>✓ Baseboards & door frames</li>
+              <li>✓ Window sills & tracks</li>
+              <li>✓ Behind & under furniture</li>
+              <li>✓ Grout scrubbing</li>
+              <li>✓ Light switches & outlets</li>
+              <li>✓ Eco products 🌿</li>
+            </ul>
+            <div class="price-from">From $260</div>
+            <div style="font-size:11px;color:var(--gold);font-weight:600;margin-top:4px">Recommended for first-time clients</div>
+          </div>
+          <!-- Move In/Out and Airbnb — coming soon -->
+        </div>
+      </div>
+
+      <div class="form-section" id="size-section" style="display:none">
+        <h3>Home Size</h3>
+        <div style="margin-bottom:14px">
+          <label>Bedrooms</label>
+          <div class="size-selector" id="bedroom-selector">
+            <button class="size-btn selected" onclick="selectBed(1,this)"><span class="num">1</span><span class="lbl">BR</span></button>
+            <button class="size-btn" onclick="selectBed(2,this)"><span class="num">2</span><span class="lbl">BR</span></button>
+            <button class="size-btn" onclick="selectBed(3,this)"><span class="num">3</span><span class="lbl">BR</span></button>
+            <button class="size-btn" onclick="selectBed(4,this)"><span class="num">4</span><span class="lbl">BR</span></button>
+            <button class="size-btn" onclick="selectBed(5,this)"><span class="num">5</span><span class="lbl">BR</span></button>
+            <button class="size-btn" onclick="selectBed(6,this)"><span class="num">6+</span><span class="lbl">BR</span></button>
+          </div>
+        </div>
+        <div>
+          <label>Bathrooms</label>
+          <div class="size-selector" id="bath-selector">
+            <button class="size-btn selected" onclick="selectBath(1,this)"><span class="num">1</span><span class="lbl">BA</span></button>
+            <button class="size-btn" onclick="selectBath(2,this)"><span class="num">2</span><span class="lbl">BA</span></button>
+            <button class="size-btn" onclick="selectBath(3,this)"><span class="num">3</span><span class="lbl">BA</span></button>
+            <button class="size-btn" onclick="selectBath(4,this)"><span class="num">4</span><span class="lbl">BA</span></button>
+            <button class="size-btn" onclick="selectBath(5,this)"><span class="num">5</span><span class="lbl">BA</span></button>
+            <button class="size-btn" onclick="selectBath(6,this)"><span class="num">6+</span><span class="lbl">BA</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBSCRIPTION -->
+      <div class="subscription-toggle" id="sub-section" style="display:none">
+        <h3>💰 Save with a Recurring Plan</h3>
+        <div class="sub-options">
+          <div class="sub-option" onclick="selectSubscription('once',this)">
+            <span class="freq">One-Time</span>
+            <span class="discount">No discount</span>
+            <span class="sub-price">Full price</span>
+          </div>
+          <div class="sub-option selected" onclick="selectSubscription('biweekly',this)">
+            <span class="freq">Bi-Weekly</span>
+            <span class="discount">Save 10%</span>
+            <span class="sub-price">Best value</span>
+          </div>
+          <div class="sub-option" onclick="selectSubscription('monthly',this)">
+            <span class="freq">Monthly</span>
+            <span class="discount">Save 5%</span>
+            <span class="sub-price">Flexible</span>
+          </div>
+        </div>
+        <p style="color:rgba(255,255,255,0.5);font-size:11px;margin-top:10px">Cancel anytime · Auto-scheduled · No commitment</p>
+      </div>
+
+      <button class="btn-primary" onclick="goToStep(2)" id="step1-next" style="display:none">Continue → Select Extras</button>
+    </div>
+
+    <!-- STEP 2: Extras + Tips -->
+    <div class="booking-step" id="step-2">
+      <div class="form-section">
+        <h3>➕ Enhance Your Cleaning <span style="font-size:12px;font-weight:400;color:var(--gray-400)">(Optional)</span></h3>
+        <div style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:12px;margin-bottom:14px;font-size:13px;color:var(--navy)">
+          💡 <strong>Tip:</strong> Tap each category below to see available add-ons. Most clients add 2–3 extras for a deeper clean. Price updates automatically.
+        </div>
+        <div id="extras-list"></div>
+      </div>
+
+      <!-- TIP -->
+      <div class="tip-section">
+        <h3>🙏 Add a Tip for Your Cleaner</h3>
+        <div class="tip-options">
+          <div class="tip-btn" onclick="selectTip(0,this)"><span class="tip-pct">No tip</span><span class="tip-amt">$0</span></div>
+          <div class="tip-btn" onclick="selectTip(10,this)"><span class="tip-pct">10%</span><span class="tip-amt" id="tip-10">$0</span></div>
+          <div class="tip-btn selected" onclick="selectTip(15,this)"><span class="tip-pct">15%</span><span class="tip-amt" id="tip-15">$0</span></div>
+          <div class="tip-btn" onclick="selectTip(20,this)"><span class="tip-pct">20%</span><span class="tip-amt" id="tip-20">$0</span></div>
+        </div>
+        <div class="form-group" style="margin:0">
+          <label>Custom tip amount</label>
+          <input type="number" placeholder="$0.00" oninput="setCustomTip(this.value)" style="max-width:120px">
+        </div>
+      </div>
+
+      <!-- REFERRAL CODE -->
+      <div class="referral-section">
+        <h4>🎁 Have a referral code? Save $20!</h4>
+        <input type="text" id="referral-input" placeholder="Enter code (e.g. DFIDE-ABC123)" style="font-size:13px">
+        <button onclick="applyReferral()" style="margin-top:8px;background:var(--purple);color:white;border:none;border-radius:6px;padding:7px 16px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">Apply Code</button>
+        <div id="referral-result" style="font-size:12px;margin-top:6px;color:var(--purple)"></div>
+      </div>
+
+      <div class="price-summary">
+        <h3>Price Summary</h3>
+        <div class="price-line"><span>Base Price</span><span id="sum-base">$0</span></div>
+        <div class="price-line"><span>Extras</span><span id="sum-extras">$0</span></div>
+        <div class="price-line"><span>Tip</span><span id="sum-tip">$0</span></div>
+        <div class="price-line savings" id="sum-savings-row" style="display:none"><span>🎁 Recurring discount</span><span id="sum-savings">-$0</span></div>
+        <div class="price-line savings" id="sum-referral-row" style="display:none"><span>🎁 Referral discount</span><span>-$20</span></div>
+        <div class="price-line total"><span>Total</span><span id="sum-total">$0</span></div>
+        <div class="price-line deposit"><span>💳 Deposit Due Now (50%)</span><span id="sum-deposit">$0</span></div>
+        <div class="price-line" style="font-size:11px;color:rgba(255,255,255,0.5)"><span>Balance due day of service</span><span id="sum-balance">$0</span></div>
+      </div>
+
+      <button class="btn-secondary" onclick="goToStep(1)">← Back</button>
+      <button class="btn-primary" onclick="goToStep(3)">Continue → Schedule</button>
+    </div>
+
+    <!-- STEP 3: Details -->
+    <div class="booking-step" id="step-3">
+      <div class="form-section">
+        <h3>Schedule</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Preferred Date *</label>
+            <input type="date" id="b-date" min="">
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <select id="b-time">
+              <option value="08:00">8:00 AM</option>
+              <option value="09:00" selected>9:00 AM</option>
+              <option value="10:00">10:00 AM</option>
+              <option value="11:00">11:00 AM</option>
+              <option value="12:00">12:00 PM</option>
+              <option value="13:00">1:00 PM</option>
+              <option value="14:00">2:00 PM</option>
+              <option value="15:00">3:00 PM</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Your Information</h3>
+        <div class="form-row">
+          <div class="form-group"><label>First Name *</label><input type="text" id="b-fname" placeholder="Jane"></div>
+          <div class="form-group"><label>Last Name *</label><input type="text" id="b-lname" placeholder="Smith"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Email *</label><input type="email" id="b-email" placeholder="jane@email.com"></div>
+          <div class="form-group"><label>Phone</label><input type="tel" id="b-phone" placeholder="(201) 555-0000"></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Service Address</h3>
+        <div class="form-group"><label>Street Address *</label><input type="text" id="b-address" placeholder="123 Main Street"></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>City *</label>
+            <select id="b-city">
+              <option value="">Select city...</option>
+              <option>Montclair</option><option>Ridgewood</option><option>Glen Ridge</option>
+              <option>South Orange</option><option>Maplewood</option><option>Westfield</option>
+              <option>Summit</option><option>Millburn</option><option>Short Hills</option>
+              <option>Livingston</option><option>West Orange</option><option>Bloomfield</option>
+              <option>Other NJ</option>
+            </select>
+          </div>
+          <div class="form-group"><label>ZIP</label><input type="text" id="b-zip" placeholder="07042"></div>
+        </div>
+        <div class="form-group"><label>Special Instructions</label><textarea id="b-notes" rows="3" placeholder="Gate code, pets, areas to focus on..."></textarea></div>
+        <div id="first-time-check" style="display:none;margin-top:10px;background:var(--green-light);border-radius:8px;padding:12px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--green)">
+            <input type="checkbox" id="is-first-time" checked onchange="booking.isFirstTime=this.checked;calculatePrice()" style="width:18px;height:18px;accent-color:var(--green)">
+            <span>✅ This is my first professional cleaning — apply 20% Deep Clean discount</span>
+          </label>
+        </div>
+      </div>
+
+      <button class="btn-secondary" onclick="goToStep(2)">← Back</button>
+      <button class="btn-primary" onclick="goToStep(4)">Continue → Service Agreement</button>
+    </div>
+
+    <!-- STEP 4: Digital Signature -->
+    <div class="booking-step" id="step-4">
+      <div class="form-section">
+        <h3>📋 Service Agreement</h3>
+        <div style="background:var(--off-white);border-radius:8px;padding:14px;font-size:12px;color:var(--gray-600);line-height:1.7;margin-bottom:16px;max-height:180px;overflow-y:auto">
+          <strong style="color:var(--navy)">D'Fide Cleaning Services LLC — Service Agreement</strong><br><br>
+          By signing below, you agree to the following terms:<br><br>
+          <strong>1. Payment:</strong> A 50% deposit is required at booking. The remaining balance is due on the day of service. Accepted methods: credit/debit card, Zelle, cash.<br><br>
+          <strong>2. Cancellation Policy:</strong> Cancellations made less than 24 hours before the scheduled service are subject to a $50 cancellation fee. The deposit is non-refundable for no-shows.<br><br>
+          <strong>3. Access:</strong> Client must ensure access to the property at the scheduled time. If our team cannot enter, the full deposit is forfeited.<br><br>
+          <strong>4. Eco Products:</strong> D'Fide uses certified eco-friendly cleaning products. Please notify us of any allergies or sensitivities.<br><br>
+          <strong>5. Satisfaction:</strong> If you are not satisfied, contact us within 24 hours and we will return to address any concerns at no charge.<br><br>
+          <strong>6. Liability:</strong> D'Fide Cleaning Services LLC carries general liability insurance. Any damage claims must be reported within 24 hours of service completion.<br><br>
+          <strong>7. Recurring Services:</strong> Recurring plans auto-schedule based on your selected frequency. Cancel anytime with 48 hours notice.
+        </div>
+        <label style="margin-bottom:10px">Sign Below to Accept Agreement *</label>
+        <div class="signature-area">
+          <canvas id="signature-canvas"></canvas>
+          <button class="sig-clear" onclick="clearSignature()">Clear</button>
+        </div>
+        <p style="font-size:11px;color:var(--gray-400);margin-top:6px">Draw your signature above with your mouse or finger</p>
+      </div>
+
+      <button class="btn-secondary" onclick="goToStep(3)">← Back</button>
+      <button class="btn-primary" onclick="goToStep(5)">Continue → Review & Pay</button>
+    </div>
+
+    <!-- STEP 5: Review & Pay -->
+    <div class="booking-step" id="step-5">
+      <div class="form-section" id="review-summary">
+        <h3>Booking Review</h3>
+        <div id="review-content"></div>
+      </div>
+
+      <div class="price-summary">
+        <h3>Payment Summary</h3>
+        <div class="price-line"><span>Service Total</span><span id="pay-total">$0</span></div>
+        <div class="price-line deposit"><span>💳 Deposit Due Now (50%)</span><span id="pay-deposit">$0</span></div>
+        <div class="price-line" style="font-size:11px;color:rgba(255,255,255,0.5)"><span>Balance due day of service</span><span id="pay-balance">$0</span></div>
+      </div>
+
+      <div class="form-section">
+        <h3>🔒 Secure Payment</h3>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px">Your 50% deposit secures your booking. Pay balance on day of service.</p>
+        <div id="stripe-element" style="background:var(--white);border:1.5px solid var(--gray-200);border-radius:8px;padding:14px;min-height:48px"></div>
+        <div id="stripe-errors" style="color:var(--red);font-size:12px;margin-top:8px"></div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:var(--gray-400)">
+          🔒 Secured by Stripe · Apple Pay & Google Pay accepted
+        </div>
+      </div>
+
+      <button class="btn-secondary" onclick="goToStep(4)">← Back</button>
+      <button class="btn-primary" onclick="submitBooking()" id="pay-btn">✓ Confirm & Pay Deposit</button>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="booking-step" id="step-success">
+      <div class="success-screen">
+        <div class="success-icon">✅</div>
+        <h2>Booking Confirmed!</h2>
+        <p style="color:var(--gray-600);font-size:14px">Confirmation sent to your email. We'll see you soon!</p>
+        <div class="booking-ref">
+          <strong id="success-ref">DFD-20240412-0001</strong>
+          Your booking reference number
+        </div>
+        <!-- UPSELL POST-BOOKING -->
+        <div style="background:var(--amber-light);border-radius:var(--radius);padding:16px;margin:16px 0;border-left:4px solid var(--amber)">
+          <h4 style="color:var(--amber);font-size:14px;margin-bottom:8px">💡 Enhance Your Clean</h4>
+          <p style="font-size:13px;color:var(--navy);margin-bottom:10px">Add these extras to your booking:</p>
+          <div style="display:grid;gap:6px">
+            <div style="display:flex;justify-content:space-between;align-items:center;background:white;padding:8px 12px;border-radius:6px">
+              <span style="font-size:13px">🧊 Fridge Interior Clean</span>
+              <button onclick="addUpsell('Fridge Interior',75)" style="background:var(--gold);border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:600;cursor:pointer">+$75</button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:white;padding:8px 12px;border-radius:6px">
+              <span style="font-size:13px">🔥 Oven Deep Clean</span>
+              <button onclick="addUpsell('Oven Interior',60)" style="background:var(--gold);border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:600;cursor:pointer">+$60</button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:white;padding:8px 12px;border-radius:6px">
+              <span style="font-size:13px">🪟 Interior Windows</span>
+              <button onclick="addUpsell('Interior Windows',85)" style="background:var(--gold);border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:600;cursor:pointer">+$85</button>
+            </div>
+          </div>
+        </div>
+        <!-- REFERRAL CODE -->
+        <div style="background:var(--purple-light);border-radius:var(--radius);padding:14px;margin:12px 0">
+          <h4 style="color:var(--purple);font-size:13px;margin-bottom:6px">🎁 Share & Earn $20</h4>
+          <p style="font-size:12px;color:var(--gray-600);margin-bottom:8px">Give friends $20 off their first clean. You earn $20 credit too!</p>
+          <div id="my-referral-code" class="referral-code" style="font-size:18px;padding:10px;cursor:pointer" onclick="copyReferralCode()">Loading...</div>
+          <p style="font-size:11px;color:var(--gray-400)">Tap to copy</p>
+        </div>
+        <button class="btn-primary" onclick="resetBooking()" style="max-width:240px;margin:0 auto">Book Another Service</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CLIENT PORTAL ==================== -->
+<div class="page" id="page-portal">
+  <div class="booking-hero">
+    <div class="eco-badge">👤 Client Account</div>
+    <h1>My D'Fide Account</h1>
+    <p>View bookings, manage subscriptions & referrals</p>
+  </div>
+
+  <div id="portal-login-section">
+    <div class="client-login">
+      <div class="portal-card">
+        <h2>Welcome Back</h2>
+        <p>Enter your email to access your account</p>
+        <div class="form-group"><label>Email Address</label><input type="email" id="portal-email" placeholder="jane@email.com"></div>
+        <br>
+        <button class="btn-primary" onclick="loadClientAccount()">Access My Account</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="portal-content" style="display:none;max-width:680px;margin:0 auto;padding:20px 16px">
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">
+      <div class="stat-card" style="border-color:var(--navy)">
+        <div class="label">Total Bookings</div>
+        <div class="value" id="portal-total-bookings">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Total Spent</div>
+        <div class="value" id="portal-total-spent">$0</div>
+      </div>
+      <div class="stat-card" style="border-color:var(--purple)">
+        <div class="label">Referral Credits</div>
+        <div class="value" id="portal-credits">$0</div>
+      </div>
+    </div>
+
+    <!-- Referral Section -->
+    <div class="referral-card">
+      <h3 style="font-family:'Playfair Display',serif;font-size:16px;margin-bottom:8px">🎁 Your Referral Code</h3>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:8px">Share with friends — they get $20 off, you earn $20 credit!</p>
+      <div class="referral-code" id="portal-referral-code" onclick="copyPortalCode()" style="cursor:pointer">Loading...</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="shareReferral('whatsapp')" style="background:#25D366;color:white;border:none;border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer">📱 Share on WhatsApp</button>
+        <button onclick="shareReferral('copy')" style="background:var(--navy);color:white;border:none;border-radius:6px;padding:8px 14px;font-size:12px;cursor:pointer">📋 Copy Link</button>
+      </div>
+    </div>
+
+    <!-- Booking History -->
+    <div style="background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm)">
+      <h3 style="font-family:'Playfair Display',serif;font-size:16px;margin-bottom:14px">Booking History</h3>
+      <div id="portal-bookings">
+        <div class="loading"><div class="spinner"></div> Loading...</div>
+      </div>
+    </div>
+
+    <!-- Subscription Status -->
+    <div id="portal-subscription" style="margin-top:14px"></div>
+  </div>
+</div>
+
+<!-- ==================== CONTRACTOR APP ==================== -->
+<div class="page" id="page-contractor">
+  <div class="contractor-header">
+    <h2>D'Fide Contractor App</h2>
+    <p style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:4px">Your jobs for today</p>
+  </div>
+
+  <div style="max-width:600px;margin:0 auto;padding:16px">
+    <div id="contractor-jobs">
+      <div class="loading"><div class="spinner"></div> Loading your jobs...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ADMIN PANEL ==================== -->
+<div class="page" id="page-admin">
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div style="padding:0 12px 14px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:12px">
+        <div style="font-family:'Playfair Display',serif;color:var(--gold);font-size:15px;font-weight:700">D'Fide Admin</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px">Management Portal v2</div>
+      </div>
+      <div class="sidebar-label">Operations</div>
+      <button class="sidebar-btn active" onclick="showView('dashboard',this)"><span>📊</span> Dashboard</button>
+      <button class="sidebar-btn" onclick="showView('bookings',this);loadBookings()"><span>📅</span> Bookings</button>
+      <button class="sidebar-btn" onclick="showView('subscriptions',this);loadSubscriptions()"><span>♻️</span> Subscriptions</button>
+      <button class="sidebar-btn" onclick="showView('clients',this);loadClients()"><span>👥</span> Clients</button>
+      <button class="sidebar-btn" onclick="showView('workers',this);loadWorkers()"><span>🧹</span> Team</button>
+      <button class="sidebar-btn" onclick="showView('payments',this);loadPayments()"><span>💰</span> Payments</button>
+      <button class="sidebar-btn" onclick="showView('referrals',this);loadReferrals()"><span>🎁</span> Referrals</button>
+      <div class="sidebar-label">Finance</div>
+      <button class="sidebar-btn" onclick="showView('expenses',this);loadExpenses()"><span>📋</span> Expenses</button>
+      <button class="sidebar-btn" onclick="showView('reports',this);loadReports()"><span>📈</span> Reports</button>
+      <div class="sidebar-label">Automation</div>
+      <button class="sidebar-btn" onclick="showView('automation',this)"><span>⚡</span> Auto-Emails</button>
+      <div class="sidebar-label">Settings</div>
+      <button class="sidebar-btn" onclick="showView('services',this);loadServices()"><span>💲</span> Services & Prices</button>
+      <button class="sidebar-btn" onclick="showView('schedule',this);loadSchedule()"><span>📅</span> Schedule</button>
+      <div class="sidebar-label">Account</div>
+      <button class="sidebar-btn" onclick="adminLogout()" style="color:rgba(255,120,120,0.9)"><span>🔓</span> Sign Out</button>
+    </aside>
+
+    <main class="admin-content">
+
+      <!-- DASHBOARD -->
+      <div class="admin-view active" id="view-dashboard">
+        <div class="page-header">
+          <h2>Dashboard</h2>
+          <span style="font-size:12px;color:var(--gray-400)" id="today-date"></span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="label">Total Revenue</div><div class="value" id="stat-revenue">$0</div><div class="sub">All time</div></div>
+          <div class="stat-card" style="border-color:var(--green)"><div class="label">This Month</div><div class="value" id="stat-month">$0</div><div class="sub">Revenue</div></div>
+          <div class="stat-card" style="border-color:#1a6fb5"><div class="label">Active Subs</div><div class="value" id="stat-subs">0</div><div class="sub">Recurring clients</div></div>
+          <div class="stat-card" style="border-color:var(--amber)"><div class="label">Pending Jobs</div><div class="value" id="stat-pending">0</div><div class="sub">Upcoming</div></div>
+        </div>
+        <div style="background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);margin-bottom:18px">
+          <h3 style="font-family:'Playfair Display',serif;font-size:15px;margin-bottom:14px">Upcoming Jobs</h3>
+          <div id="upcoming-jobs"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+        </div>
+        <div style="background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm)">
+          <h3 style="font-family:'Playfair Display',serif;font-size:15px;margin-bottom:14px">Worker Payments Due</h3>
+          <div id="payments-due"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+        </div>
+      </div>
+
+      <!-- BOOKINGS -->
+      <div class="admin-view" id="view-bookings">
+        <div class="page-header"><h2>Bookings</h2><button class="btn-add" onclick="showPage('booking')">+ New Booking</button></div>
+        <div class="filter-row">
+          <select onchange="filterBookings(this.value)">
+            <option value="">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+        <div id="bookings-table-container"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+      </div>
+
+      <!-- SUBSCRIPTIONS -->
+      <div class="admin-view" id="view-subscriptions">
+        <div class="page-header"><h2>Recurring Subscriptions</h2></div>
+        <div id="subscriptions-container"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+      </div>
+
+      <!-- CLIENTS -->
+      <div class="admin-view" id="view-clients">
+        <div class="page-header"><h2>Clients</h2><button class="btn-add" onclick="openNewClientModal()">+ New Client</button></div>
+        <div class="search-bar"><span class="search-icon">🔍</span><input type="text" placeholder="Search clients..." oninput="searchClients(this.value)"></div>
+        <div id="clients-table-container"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+      </div>
+
+      <!-- WORKERS -->
+      <div class="admin-view" id="view-workers">
+        <div class="page-header"><h2>Team / Workers</h2><button class="btn-add" onclick="openNewWorkerModal()">+ Add Worker</button></div>
+        <div id="workers-container"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+      </div>
+
+      <!-- PAYMENTS -->
+      <div class="admin-view" id="view-payments">
+        <div class="page-header"><h2>Worker Payments</h2></div>
+        <div id="payments-container"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+      </div>
+
+      <!-- REFERRALS -->
+      <div class="admin-view" id="view-referrals">
+        <div class="page-header"><h2>Referral Program</h2></div>
+        <div id="referrals-container"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+      </div>
+
+      <!-- EXPENSES -->
+      <div class="admin-view" id="view-expenses">
+        <div class="page-header"><h2>Expenses</h2><button class="btn-add" onclick="openModal('modal-new-expense')">+ Add Expense</button></div>
+        <div id="expenses-table-container"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="admin-view" id="view-reports">
+        <div class="page-header"><h2>Financial Reports</h2></div>
+        <div id="reports-container"><div class="loading"><div class="spinner"></div> Generating...</div></div>
+      </div>
+
+      <!-- AUTOMATION -->
+      <div class="admin-view" id="view-automation">
+        <div class="page-header"><h2>Email Automation</h2></div>
+        <div style="display:grid;gap:14px">
+          <div style="background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div><h4 style="font-size:14px;font-weight:600">✅ Booking Confirmation</h4><p style="font-size:12px;color:var(--gray-400)">Sent immediately after booking</p></div>
+              <span class="badge badge-completed">Active</span>
+            </div>
+          </div>
+          <div style="background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div><h4 style="font-size:14px;font-weight:600">⏰ 24hr Reminder</h4><p style="font-size:12px;color:var(--gray-400)">Day before service</p></div>
+              <span class="badge badge-completed">Active</span>
+            </div>
+            <button class="action-btn green" onclick="sendBatchReminders()">Send Today's Reminders</button>
+          </div>
+          <div style="background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div><h4 style="font-size:14px;font-weight:600">⭐ Review Request</h4><p style="font-size:12px;color:var(--gray-400)">After job completion</p></div>
+              <span class="badge badge-completed">Active</span>
+            </div>
+          </div>
+          <div style="background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div><h4 style="font-size:14px;font-weight:600">💡 Upsell Email</h4><p style="font-size:12px;color:var(--gray-400)">Post-service extras offer</p></div>
+              <span class="badge badge-completed">Active</span>
+            </div>
+          </div>
+          <div style="background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <div><h4 style="font-size:14px;font-weight:600">🔄 Re-booking Reminder</h4><p style="font-size:12px;color:var(--gray-400)">30 days after last service (non-subscribers)</p></div>
+              <span class="badge badge-completed">Active</span>
+            </div>
+            <button class="action-btn gold" onclick="sendReengagement()">Send Re-engagement Batch</button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- SERVICES & PRICES -->
+      <div class="admin-view" id="view-services">
+        <div class="page-header">
+          <h2>Services & Prices</h2>
+          <button class="btn-add" onclick="openModal('modal-new-service')">+ Add Service</button>
+        </div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:16px">Edit prices and descriptions. Changes apply to new bookings.</p>
+        <div id="services-container"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+      </div>
+
+      <!-- SCHEDULE -->
+      <div class="admin-view" id="view-schedule">
+        <div class="page-header"><h2>Schedule & Availability</h2></div>
+        <div class="form-section">
+          <h3>Working Hours</h3>
+          <div style="display:grid;gap:0">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gray-100)">
+              <span style="font-weight:500;width:110px">Monday</span>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--green)"> Open</label>
+              <div style="display:flex;gap:6px;align-items:center"><input type="time" value="08:00" style="width:95px;font-size:12px;padding:4px 8px"><span style="font-size:12px;color:var(--gray-400)">to</span><input type="time" value="17:00" style="width:95px;font-size:12px;padding:4px 8px"></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gray-100)">
+              <span style="font-weight:500;width:110px">Tuesday</span>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--green)"> Open</label>
+              <div style="display:flex;gap:6px;align-items:center"><input type="time" value="08:00" style="width:95px;font-size:12px;padding:4px 8px"><span style="font-size:12px;color:var(--gray-400)">to</span><input type="time" value="17:00" style="width:95px;font-size:12px;padding:4px 8px"></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gray-100)">
+              <span style="font-weight:500;width:110px">Wednesday</span>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--green)"> Open</label>
+              <div style="display:flex;gap:6px;align-items:center"><input type="time" value="08:00" style="width:95px;font-size:12px;padding:4px 8px"><span style="font-size:12px;color:var(--gray-400)">to</span><input type="time" value="17:00" style="width:95px;font-size:12px;padding:4px 8px"></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gray-100)">
+              <span style="font-weight:500;width:110px">Thursday</span>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--green)"> Open</label>
+              <div style="display:flex;gap:6px;align-items:center"><input type="time" value="08:00" style="width:95px;font-size:12px;padding:4px 8px"><span style="font-size:12px;color:var(--gray-400)">to</span><input type="time" value="17:00" style="width:95px;font-size:12px;padding:4px 8px"></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gray-100)">
+              <span style="font-weight:500;width:110px">Friday</span>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--green)"> Open</label>
+              <div style="display:flex;gap:6px;align-items:center"><input type="time" value="08:00" style="width:95px;font-size:12px;padding:4px 8px"><span style="font-size:12px;color:var(--gray-400)">to</span><input type="time" value="17:00" style="width:95px;font-size:12px;padding:4px 8px"></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gray-100)">
+              <span style="font-weight:500;width:110px">Saturday</span>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--green)"> Open</label>
+              <div style="display:flex;gap:6px;align-items:center"><input type="time" value="09:00" style="width:95px;font-size:12px;padding:4px 8px"><span style="font-size:12px;color:var(--gray-400)">to</span><input type="time" value="15:00" style="width:95px;font-size:12px;padding:4px 8px"></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
+              <span style="font-weight:500;width:110px">Sunday</span>
+              <label style="display:flex;align-items:center;gap:6px;font-size:13px"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--green)"> Open</label>
+              <div style="display:flex;gap:6px;align-items:center"><input type="time" value="09:00" style="width:95px;font-size:12px;padding:4px 8px;opacity:0.5" disabled><span style="font-size:12px;color:var(--gray-400)">to</span><input type="time" value="15:00" style="width:95px;font-size:12px;padding:4px 8px;opacity:0.5" disabled></div>
+            </div>
+          </div>
+          <br>
+          <button class="btn-primary" onclick="showNotif('Schedule saved ✓','success')">Save Schedule</button>
+        </div>
+        <div class="form-section">
+          <h3>Block Dates (Holidays / Days Off)</h3>
+          <div class="form-row">
+            <div class="form-group"><label>Date</label><input type="date" id="block-date"></div>
+            <div class="form-group"><label>Reason</label><input type="text" id="block-reason" placeholder="Holiday, personal day..."></div>
+          </div>
+          <button class="btn-primary" onclick="addBlockedDate()">Block This Date</button>
+          <div id="blocked-dates-list" style="margin-top:14px"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ==================== MODALS ==================== -->
+<!-- NEW SERVICE MODAL -->
+<div class="modal-overlay" id="modal-new-service">
+  <div class="modal">
+    <div class="modal-header"><h3 id="service-modal-title">Add Service</h3><button class="modal-close" onclick="closeModal('modal-new-service')">×</button></div>
+    <input type="hidden" id="svc-id">
+    <div class="form-group"><label>Service Name *</label><input type="text" id="svc-name" placeholder="Deep Clean 3BR"></div>
+    <div class="form-group"><label>Category</label>
+      <select id="svc-category">
+        <option value="standard">Standard Clean</option>
+        <option value="deep">Deep Clean</option>
+        <option value="moveinout">Move In/Out</option>
+        <option value="airbnb">Airbnb</option>
+        <option value="addon">Add-on / Extra</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Price ($) *</label><input type="number" id="svc-price" step="0.01" placeholder="0.00"></div>
+      <div class="form-group"><label>Duration (min)</label><input type="number" id="svc-duration" placeholder="180"></div>
+    </div>
+    <div class="form-group"><label>Description</label><textarea id="svc-description" rows="3" placeholder="What's included..."></textarea></div>
+    <div class="form-group">
+      <label><input type="checkbox" id="svc-active" checked style="width:auto;margin-right:6px"> Active (visible to clients)</label>
+    </div>
+    <br>
+    <button class="btn-primary" onclick="saveService()">Save Service</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-booking-detail">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header"><h3 id="modal-booking-title">Booking Detail</h3><button class="modal-close" onclick="closeModal('modal-booking-detail')">×</button></div>
+    <div id="modal-booking-content"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-new-worker">
+  <div class="modal">
+    <div class="modal-header"><h3>Add Worker</h3><button class="modal-close" onclick="closeModal('modal-new-worker')">×</button></div>
+    <div class="form-row">
+      <div class="form-group"><label>First Name *</label><input type="text" id="w-fname"></div>
+      <div class="form-group"><label>Last Name *</label><input type="text" id="w-lname"></div>
+    </div>
+    <div class="form-group"><label>Phone *</label><input type="tel" id="w-phone"></div>
+    <div class="form-group"><label>Email</label><input type="email" id="w-email"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Worker Type</label><select id="w-type"><option value="1099">1099 Contractor</option><option value="w2">W-2 Employee</option></select></div>
+      <div class="form-group"><label>Rate (%)</label><input type="number" id="w-rate" value="40"></div>
+    </div>
+    <div class="form-group"><label><input type="checkbox" id="w-transport" style="width:auto;margin-right:6px"> Has own transportation</label></div>
+    <br><button class="btn-primary" id="w-save-btn" onclick="saveWorker()">Save Worker</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-new-expense">
+  <div class="modal">
+    <div class="modal-header"><h3>Add Expense</h3><button class="modal-close" onclick="closeModal('modal-new-expense')">×</button></div>
+    <div class="form-row">
+      <div class="form-group"><label>Date *</label><input type="date" id="exp-date"></div>
+      <div class="form-group"><label>Amount *</label><input type="number" id="exp-amount" step="0.01"></div>
+    </div>
+    <div class="form-group"><label>Category *</label>
+      <select id="exp-category">
+        <option>Cleaning Supplies</option><option>Equipment</option><option>Transportation/Gas</option>
+        <option>Insurance</option><option>Marketing</option><option>Software/Tools</option>
+        <option>Worker Payment</option><option>Other</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Description *</label><input type="text" id="exp-desc"></div>
+    <br><button class="btn-primary" onclick="saveExpense()">Save Expense</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-new-client">
+  <div class="modal">
+    <div class="modal-header"><h3>Add Client</h3><button class="modal-close" onclick="closeModal('modal-new-client')">×</button></div>
+    <div class="form-row">
+      <div class="form-group"><label>First Name *</label><input type="text" id="c-fname"></div>
+      <div class="form-group"><label>Last Name *</label><input type="text" id="c-lname"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Email *</label><input type="email" id="c-email"></div>
+      <div class="form-group"><label>Phone</label><input type="tel" id="c-phone"></div>
+    </div>
+    <div class="form-group"><label>Address</label><input type="text" id="c-address"></div>
+    <div class="form-row">
+      <div class="form-group"><label>City</label><input type="text" id="c-city"></div>
+      <div class="form-group"><label>ZIP</label><input type="text" id="c-zip"></div>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="c-notes" rows="2"></textarea></div>
+    <br><button class="btn-primary" id="c-save-btn" onclick="saveClient()">Save Client</button>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN OVERLAY -->
+<div class="admin-login-overlay" id="admin-login-overlay">
+  <div class="admin-login-box">
+    <div style="font-size:36px;margin-bottom:12px">🔒</div>
+    <h2>Admin Access</h2>
+    <p>D'Fide Cleaning Services<br>Sign in with your admin credentials</p>
+    <input type="email" id="admin-pin-input" placeholder="info@dfidecleaning.com"
+      onkeydown="if(event.key==='Enter')document.getElementById('admin-password-input').focus()"
+      style="letter-spacing:normal;margin-bottom:10px">
+    <input type="password" id="admin-password-input" placeholder="Password"
+      onkeydown="if(event.key==='Enter')checkAdminPin()"
+      style="letter-spacing:normal">
+    <button class="btn-primary" id="admin-login-btn" onclick="checkAdminPin()" style="margin-top:8px">
+      Sign In
+    </button>
+    <div id="admin-login-error" class="admin-login-error"></div>
+    <button onclick="showPage2('booking')" style="background:none;border:none;color:var(--gray-400);font-size:12px;cursor:pointer;margin-top:16px;font-family:'DM Sans',sans-serif">
+      ← Back to Booking Portal
+    </button>
+  </div>
+</div>
+
+<div class="admin-session-badge" id="admin-session-badge">
+  🔓 Admin Session Active
+</div>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const SUPABASE_URL = 'https://zihlgzcrbxcecyfvsoue.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_sNy2GMIZKNcxUytc48PC1w_oHHtJE04';
+const RESEND_KEY = '';
+const STRIPE_PK = 'pk_live_51TLTgLFhnbfbbulQkXX5THQOACmOiUZDYkWBsEVe5wpH68w4tgm3hd5T7xaIsgCSlm99kkWLOxRKqOgorBfFZEik00fzvgWKK0';
+const BUSINESS_EMAIL = 'info@dfidecleaning.com';
+const BUSINESS_PHONE = '(551) 403-8397';
+const GOOGLE_REVIEW_URL = 'https://g.page/r/CcFplXLBHf5TEBI/review';
+const BUSINESS_URL = 'https://dfidecleaning.com/portal.html';
+
+// ============================================================
+// PRICING
+// ============================================================
+const PRICES = {
+  standard:{1:180,2:250,3:300,4:335,5:405,6:405},
+  deep:{1:250,2:330,3:390,4:470,5:540,6:540},
+  moveinout:{1:360,2:400,3:510,4:610,5:700,6:700},
+  airbnb:{1:175,2:250,3:295,4:350,5:430,6:430}
+};
+const BATH_SURCHARGE = {1:0,2:0,3:45,4:90,5:135,6:180};
+const SUB_DISCOUNTS = {once:0, biweekly:0.10, monthly:0.05};
+// Extras organized in 5 categories (exact Jobber prices)
+const EXTRAS_CATEGORIES = [
+  {
+    id:'bathrooms', icon:'🚿', name:'Bathroom Extras',
+    desc:'Additional bathrooms and deep bathroom cleaning',
+    items:[
+      {name:'Extra Bathroom',price:65,desc:'Full bathroom — toilet, sink, tub, mirrors'},
+      {name:'Master Bathroom (Deep)',price:85,desc:'Deep clean with full sanitization'},
+    ]
+  },
+  {
+    id:'interiors', icon:'🧼', name:'Appliance & Cabinet Interiors',
+    desc:'Deep cleaning inside your appliances and cabinets',
+    items:[
+      {name:'Fridge Interior',price:75,desc:'Shelves, drawers, walls — eco-safe'},
+      {name:'Oven Interior',price:70,desc:'Racks, walls, door glass — eco-safe'},
+      {name:'Microwave Interior',price:40,desc:'Removes grease, splatter and odors'},
+      {name:'Inside Dishwasher',price:50,desc:'Removes buildup, residue and odors'},
+      {name:'Inside Washer & Dryer',price:60,desc:'Interior deep clean of both appliances'},
+      {name:'Interior Cabinets',price:90,desc:'Kitchen or bathroom cabinets'},
+    ]
+  },
+  {
+    id:'windows', icon:'🪟', name:'Windows, Fans & Surfaces',
+    desc:'Glass, ceiling fans and detailed surface work',
+    items:[
+      {name:'Interior Windows (each)',price:30,desc:'Streak-free eco glass cleaning'},
+      {name:'Ceiling Fan',price:50,desc:'Full blade and housing cleaning'},
+      {name:'Blinds / Shades (per room)',price:50,desc:'Dusting and detailed cleaning'},
+      {name:'Sliding Door / Track',price:45,desc:'Glass and track deep cleaning'},
+    ]
+  },
+  {
+    id:'deep_detail', icon:'🧹', name:'Deep Detail Work',
+    desc:'Heavy-duty cleaning for tough areas',
+    items:[
+      {name:'Pet Hair Removal (per room)',price:90,desc:'Carpets, floors, furniture'},
+      {name:'Heavy Cleaning',price:270,desc:'Intensive for very dirty/neglected areas'},
+      {name:'Deep Stair Cleaning',price:90,desc:'Treads, risers, railings'},
+      {name:'High Cobwebs & Corners',price:60,desc:'Ceilings, high corners, hard-to-reach areas'},
+      {name:'Wall / Baseboard Spot Cleaning',price:100,desc:'Marks, scuffs, dirt from walls & baseboards'},
+      {name:'Heavy Tidy-Up / Organization',price:110,desc:'Items sorted, surfaces cleared & reset'},
+    ]
+  },
+  {
+    id:'spaces', icon:'🏠', name:'Extra Spaces & Rooms',
+    desc:'Additional rooms and areas beyond standard scope',
+    items:[
+      {name:'Home Gym',price:120,desc:'Equipment, floors, mirrors'},
+      {name:'Garage Small',price:90,desc:'Floors, corners, surfaces'},
+      {name:'Garage Medium (2-car)',price:120,desc:'Floors, corners, accessible surfaces'},
+      {name:'Garage Large (3-car)',price:160,desc:'Floors, corners, accessible surfaces'},
+      {name:'Finished Basement Small',price:160,desc:'Floors, surfaces, baseboards, stairs'},
+      {name:'Finished Basement Medium',price:210,desc:'Multiple areas, floors, stairs'},
+      {name:'Finished Basement Large',price:330,desc:'Full large basement cleaning'},
+      {name:'Balcony / Patio',price:65,desc:'Sweep, wipe surfaces and furniture'},
+      {name:'Home Office',price:85,desc:'Desk, shelves, electronics dusting'},
+    ]
+  },
+  {
+    id:'convenience', icon:'⚡', name:'Convenience Services',
+    desc:'Laundry, linens and same-day scheduling',
+    items:[
+      {name:'Same-Day Rush',price:140,desc:'Urgent same-day cleaning service'},
+      {name:'Linen Change',price:60,desc:'All beds — client provides linens'},
+      {name:'Laundry & Folding (per load)',price:75,desc:'Wash, dry, fold — eco detergent'},
+      {name:'Dish Washing',price:45,desc:'Hand wash and dry all dishes in sink'},
+      {name:'Trash Removal',price:30,desc:'All bins emptied and bags replaced'},
+      {name:'Restocking & Amenity Setup',price:55,desc:'Hotel-quality finish + supplies restock'},
+    ]
+  }
+];
+
+// Flat array for price calculations
+const EXTRAS = EXTRAS_CATEGORIES.flatMap(cat => cat.items);
+
+// ============================================================
+// STATE
+// ============================================================
+let booking = {
+  service:null, beds:1, baths:1, extras:[], subscription:'biweekly',
+  tip:0, tipPct:15, referralCode:'', referralDiscount:0,
+  basePrice:0, extrasPrice:0, total:0, deposit:0, balance:0,
+  savings:0, signatureData:''
+};
+let currentStep = 1;
+let sigCanvas, sigCtx, isDrawing = false;
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+// ============================================================
+// SUPABASE AUTH — Secure Admin Login
+// ============================================================
+const ADMIN_UID = 'd373834f-22cd-497b-aadb-438399baf5ea';
+let currentUser = null;
+
+async function signInAdmin(email, password) {
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error_description || data.error);
+  return data;
+}
+
+async function getSession() {
+  const token = sessionStorage.getItem('dfide_access_token');
+  const expires = sessionStorage.getItem('dfide_token_expires');
+  if (!token || !expires) return null;
+  if (Date.now() > parseInt(expires)) {
+    sessionStorage.removeItem('dfide_access_token');
+    sessionStorage.removeItem('dfide_token_expires');
+    sessionStorage.removeItem('dfide_user_id');
+    return null;
+  }
+  return { token, userId: sessionStorage.getItem('dfide_user_id') };
+}
+
+function isAdminAuthenticated() {
+  const token = sessionStorage.getItem('dfide_access_token');
+  const expires = sessionStorage.getItem('dfide_token_expires');
+  const userId = sessionStorage.getItem('dfide_user_id');
+  if (!token || !expires || !userId) return false;
+  if (Date.now() > parseInt(expires)) {
+    sessionStorage.clear();
+    return false;
+  }
+  // Validate it's the admin UID
+  return userId === ADMIN_UID;
+}
+
+function setAdminSession(data) {
+  const expires = Date.now() + (data.expires_in * 1000);
+  sessionStorage.setItem('dfide_access_token', data.access_token);
+  sessionStorage.setItem('dfide_token_expires', expires.toString());
+  sessionStorage.setItem('dfide_user_id', data.user.id);
+  document.getElementById('admin-session-badge').style.display = 'block';
+  document.getElementById('admin-session-badge').textContent = '🔓 Admin: ' + data.user.email;
+}
+
+function adminLogout() {
+  sessionStorage.clear();
+  currentUser = null;
+  document.getElementById('admin-session-badge').style.display = 'none';
+  showPage2('booking');
+  showNotif('Logged out ✓', 'info');
+}
+
+async function checkAdminPin() {
+  const email = document.getElementById('admin-pin-input').value;
+  const password = document.getElementById('admin-password-input').value;
+  const btn = document.getElementById('admin-login-btn');
+  const errEl = document.getElementById('admin-login-error');
+
+  if (!email || !password) {
+    errEl.textContent = '❌ Enter your email and password.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.textContent = 'Verifying...';
+  btn.disabled = true;
+  errEl.style.display = 'none';
+
+  try {
+    const data = await signInAdmin(email, password);
+
+    // Validate admin UID
+    if (data.user.id !== ADMIN_UID) {
+      throw new Error('Access denied — not an admin account.');
+    }
+
+    setAdminSession(data);
+    document.getElementById('admin-login-overlay').classList.remove('active');
+    document.getElementById('admin-pin-input').value = '';
+    document.getElementById('admin-password-input').value = '';
+    showPage2('admin');
+    loadDashboard();
+  } catch(err) {
+    errEl.textContent = '❌ ' + (err.message || 'Invalid credentials');
+    errEl.style.display = 'block';
+  } finally {
+    btn.textContent = 'Sign In';
+    btn.disabled = false;
+  }
+}
+
+function showPage2(page) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+}
+
+function showPage(page) {
+  if (page === 'admin') {
+    if (!isAdminAuthenticated()) {
+      document.getElementById('admin-login-overlay').classList.add('active');
+      setTimeout(() => document.getElementById('admin-pin-input').focus(), 100);
+      return;
+    }
+    showPage2('admin');
+    loadDashboard();
+    return;
+  }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function showView(view, btn) {
+  document.querySelectorAll('.admin-view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.sidebar-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ============================================================
+// BOOKING
+// ============================================================
+function selectService(type, el) {
+  document.querySelectorAll('.service-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  booking.service = type;
+  document.getElementById('size-section').style.display = 'block';
+  document.getElementById('sub-section').style.display = 'block';
+  document.getElementById('step1-next').style.display = 'block';
+  calculatePrice();
+}
+
+function selectBed(n,el) {
+  document.querySelectorAll('#bedroom-selector .size-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected'); booking.beds=n; calculatePrice();
+}
+
+function selectBath(n,el) {
+  document.querySelectorAll('#bath-selector .size-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected'); booking.baths=n; calculatePrice();
+}
+
+function selectSubscription(type, el) {
+  document.querySelectorAll('.sub-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected'); booking.subscription=type; calculatePrice();
+}
+
+function calculatePrice() {
+  // First-time deep clean discount 20%
+  const deepDiscount = (booking.service === 'deep' && booking.isFirstTime) ? 0.20 : 0;
+  if(!booking.service) return;
+  const base = PRICES[booking.service][Math.min(booking.beds,6)];
+  const bathExtra = BATH_SURCHARGE[Math.min(booking.baths,6)];
+  booking.basePrice = Math.round((base + bathExtra) * (1 - deepDiscount));
+  booking.extrasPrice = booking.extras.reduce((s,e)=>s+e.price,0);
+  const subtotal = booking.basePrice + booking.extrasPrice;
+  booking.savings = Math.round(subtotal * SUB_DISCOUNTS[booking.subscription]);
+  booking.referralDiscount = booking.referralCode ? 20 : 0;
+  booking.tip = Math.round(subtotal * booking.tipPct / 100);
+  booking.total = subtotal - booking.savings - booking.referralDiscount + booking.tip;
+  booking.deposit = Math.ceil(booking.total * 0.5);
+  booking.balance = booking.total - booking.deposit;
+  updatePriceSummary();
+  updateTipAmounts(subtotal);
+}
+
+function updateTipAmounts(base) {
+  const el10 = document.getElementById('tip-10');
+  const el15 = document.getElementById('tip-15');
+  const el20 = document.getElementById('tip-20');
+  if(el10) el10.textContent = '$'+Math.round(base*0.10);
+  if(el15) el15.textContent = '$'+Math.round(base*0.15);
+  if(el20) el20.textContent = '$'+Math.round(base*0.20);
+}
+
+function selectTip(pct, el) {
+  document.querySelectorAll('.tip-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  booking.tipPct = pct; calculatePrice();
+}
+
+function setCustomTip(val) {
+  document.querySelectorAll('.tip-btn').forEach(b=>b.classList.remove('selected'));
+  booking.tipPct = 0;
+  booking.tip = parseFloat(val)||0;
+  const subtotal = booking.basePrice + booking.extrasPrice;
+  booking.total = subtotal - booking.savings - booking.referralDiscount + booking.tip;
+  booking.deposit = Math.ceil(booking.total * 0.5);
+  booking.balance = booking.total - booking.deposit;
+  updatePriceSummary();
+}
+
+async function applyReferral() {
+  const code = document.getElementById('referral-input').value.trim().toUpperCase();
+  if(!code) return;
+  // Validate referral code in database
+  try {
+    const res = await supabase('clients','GET',null,`referral_code=eq.${code}&limit=1`);
+    if(res && res.length > 0) {
+      booking.referralCode = code;
+      document.getElementById('referral-result').textContent = '✅ Code applied! $20 discount added';
+      document.getElementById('sum-referral-row').style.display = 'flex';
+      calculatePrice();
+    } else {
+      document.getElementById('referral-result').textContent = '❌ Invalid code. Please check and try again.';
+      document.getElementById('referral-result').style.color = 'var(--red)';
+    }
+  } catch(e) {
+    document.getElementById('referral-result').textContent = '✅ Code saved! Discount applied.';
+    booking.referralCode = code;
+    calculatePrice();
+  }
+}
+
+function updatePriceSummary() {
+  const fmt = n => '$'+n.toLocaleString();
+  const ids = {
+    'sum-base':booking.basePrice,'sum-extras':booking.extrasPrice,
+    'sum-tip':booking.tip,'sum-total':booking.total,
+    'sum-deposit':booking.deposit,'sum-balance':booking.balance,
+    'pay-total':booking.total,'pay-deposit':booking.deposit,'pay-balance':booking.balance
+  };
+  Object.entries(ids).forEach(([id,val])=>{
+    const el = document.getElementById(id);
+    if(el) el.textContent = fmt(val);
+  });
+  const savRow = document.getElementById('sum-savings-row');
+  const savEl = document.getElementById('sum-savings');
+  if(savRow) savRow.style.display = booking.savings > 0 ? 'flex' : 'none';
+  if(savEl) savEl.textContent = '-$'+booking.savings;
+}
+
+function buildExtrasList() {
+  const c = document.getElementById('extras-list');
+  c.innerHTML = EXTRAS_CATEGORIES.map((cat,idx) => `
+    <div style="margin-bottom:14px">
+      <div onclick="toggleCategoryExpand('cat-${cat.id}')" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--navy);border-radius:var(--radius-sm);cursor:pointer;user-select:none">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:20px">${cat.icon}</span>
+          <div>
+            <div style="font-weight:600;color:var(--white);font-size:14px">${cat.name}</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55)">${cat.desc}</div>
+          </div>
+        </div>
+        <span id="arr-${cat.id}" style="color:var(--gold);font-size:18px;transition:transform 0.2s">${idx===0?'▴':'▾'}</span>
+      </div>
+      <div id="cat-${cat.id}" style="display:${idx===0?'block':'none'};border:1.5px solid var(--gray-200);border-top:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);overflow:hidden">
+        ${cat.items.map(e => {
+          const globalIdx = EXTRAS.findIndex(ex => ex.name === e.name);
+          return `<div class="extra-item" onclick="toggleExtra(${globalIdx},this)">
+            <input type="checkbox" onclick="event.stopPropagation();toggleExtra(${globalIdx},this.closest('.extra-item'))">
+            <div class="extra-info"><div class="extra-name">${e.name}</div><div class="extra-desc">${e.desc}</div></div>
+            <div class="extra-price">+$${e.price}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleCategoryExpand(id) {
+  const el = document.getElementById(id);
+  const catId = id.replace('cat-','');
+  const arr = document.getElementById('arr-'+catId);
+  const isOpen = el.style.display !== 'none';
+  el.style.display = isOpen ? 'none' : 'block';
+  if(arr) arr.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+function toggleExtra(idx, el) {
+  const cb = el.querySelector('input[type="checkbox"]');
+  const extra = EXTRAS[idx];
+  if(!extra) return;
+  const exists = booking.extras.findIndex(e=>e.name===extra.name);
+  if(exists>-1){booking.extras.splice(exists,1);el.classList.remove('selected');cb.checked=false;}
+  else{booking.extras.push(extra);el.classList.add('selected');cb.checked=true;}
+  calculatePrice();
+}
+
+function goToStep(step) {
+  if(step===2){if(!booking.service){showNotif('Please select a service','error');return;}buildExtrasList();calculatePrice();}
+  if(step===3){const t=new Date();t.setDate(t.getDate()+1);document.getElementById('b-date').min=t.toISOString().split('T')[0];}
+  if(step===4){
+    const req=['b-fname','b-lname','b-email','b-date','b-address','b-city'];
+    if(req.some(id=>!document.getElementById(id).value)){showNotif('Please fill all required fields','error');return;}
+    initSignaturePad();
+  }
+  if(step===5){
+    if(!booking.signatureData){showNotif('Please sign the service agreement','error');return;}
+    buildReview(); updatePriceSummary();
+    setTimeout(initStripe, 300);
+  }
+  document.querySelectorAll('.booking-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step-'+step).classList.add('active');
+  for(let i=1;i<=5;i++){
+    const dot=document.getElementById('dot-'+i);
+    if(i<step){dot.className='step-dot completed';dot.textContent='✓';}
+    else if(i===step){dot.className='step-dot active';dot.textContent=i;}
+    else{dot.className='step-dot';dot.textContent=i;}
+  }
+  for(let i=1;i<=4;i++){const l=document.getElementById('line-'+i);if(l)l.className='step-line'+(i<step?' completed':'');}
+  currentStep=step;
+  window.scrollTo(0,0);
+}
+
+// ============================================================
+// SIGNATURE PAD
+// ============================================================
+function initSignaturePad() {
+  setTimeout(() => {
+    sigCanvas = document.getElementById('signature-canvas');
+    if(!sigCanvas) return;
+    const container = sigCanvas.parentElement;
+    sigCanvas.width = container.offsetWidth;
+    sigCanvas.height = 150;
+    sigCtx = sigCanvas.getContext('2d');
+    sigCtx.strokeStyle = '#1a2744';
+    sigCtx.lineWidth = 2;
+    sigCtx.lineCap = 'round';
+    sigCanvas.addEventListener('mousedown', startDraw);
+    sigCanvas.addEventListener('mousemove', draw);
+    sigCanvas.addEventListener('mouseup', endDraw);
+    sigCanvas.addEventListener('touchstart', e=>{e.preventDefault();startDraw(e.touches[0]);},{passive:false});
+    sigCanvas.addEventListener('touchmove', e=>{e.preventDefault();draw(e.touches[0]);},{passive:false});
+    sigCanvas.addEventListener('touchend', endDraw);
+  }, 100);
+}
+
+function getPos(e) {
+  const r = sigCanvas.getBoundingClientRect();
+  return {x:(e.clientX-r.left)*(sigCanvas.width/r.width), y:(e.clientY-r.top)*(sigCanvas.height/r.height)};
+}
+
+function startDraw(e) { isDrawing=true; const p=getPos(e); sigCtx.beginPath(); sigCtx.moveTo(p.x,p.y); }
+function draw(e) { if(!isDrawing) return; const p=getPos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); booking.signatureData=sigCanvas.toDataURL(); }
+function endDraw() { isDrawing=false; }
+function clearSignature() { if(sigCtx) sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height); booking.signatureData=''; }
+
+function buildReview() {
+  const svcNames={standard:'Standard Clean',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb Turnover'};
+  const subLabels={once:'One-time',biweekly:'Bi-weekly (save 10%)',monthly:'Monthly (save 5%)'};
+  const date=new Date(document.getElementById('b-date').value+'T00:00');
+  const extras = booking.extras.length ? booking.extras.map(e=>e.name).join(', ') : 'None';
+  document.getElementById('review-content').innerHTML=`
+    <div style="display:grid;gap:6px;font-size:13px">
+      <div class="detail-item"><span class="key">Service</span><span class="val">${svcNames[booking.service]}</span></div>
+      <div class="detail-item"><span class="key">Plan</span><span class="val">${subLabels[booking.subscription]}</span></div>
+      <div class="detail-item"><span class="key">Size</span><span class="val">${booking.beds}BR / ${booking.baths}BA</span></div>
+      <div class="detail-item"><span class="key">Date</span><span class="val">${date.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}</span></div>
+      <div class="detail-item"><span class="key">Time</span><span class="val">${document.getElementById('b-time').value}</span></div>
+      <div class="detail-item"><span class="key">Address</span><span class="val">${document.getElementById('b-address').value}, ${document.getElementById('b-city').value}</span></div>
+      <div class="detail-item"><span class="key">Client</span><span class="val">${document.getElementById('b-fname').value} ${document.getElementById('b-lname').value}</span></div>
+      <div class="detail-item"><span class="key">Extras</span><span class="val">${extras}</span></div>
+      ${booking.tip>0?`<div class="detail-item"><span class="key">Tip</span><span class="val" style="color:var(--green)">$${booking.tip}</span></div>`:''}
+    </div>
+  `;
+}
+
+// ============================================================
+// STRIPE INITIALIZATION
+// ============================================================
+let stripe, stripeElements, stripeCard;
+
+function initStripe() {
+  if(!STRIPE_PK || stripeCard) return;
+  try {
+    stripe = Stripe(STRIPE_PK);
+    stripeElements = stripe.elements();
+    stripeCard = stripeElements.create('card', {
+      style: {
+        base: {
+          fontSize: '14px',
+          fontFamily: '"DM Sans", sans-serif',
+          color: '#1a2744',
+          '::placeholder': { color: '#9a9590' }
+        },
+        invalid: { color: '#c0392b' }
+      }
+    });
+    stripeCard.mount('#stripe-element');
+    stripeCard.on('change', e => {
+      const el = document.getElementById('stripe-errors');
+      el.textContent = e.error ? e.error.message : '';
+    });
+  } catch(e) { console.warn('Stripe init failed:', e); }
+}
+
+async function submitBooking() {
+  const btn = document.getElementById('pay-btn');
+  btn.textContent = 'Processing...'; btn.disabled = true;
+  const clientData = {
+    first_name:document.getElementById('b-fname').value,
+    last_name:document.getElementById('b-lname').value,
+    email:document.getElementById('b-email').value,
+    phone:document.getElementById('b-phone').value,
+    address:document.getElementById('b-address').value,
+    city:document.getElementById('b-city').value,
+    zip:document.getElementById('b-zip').value,
+  };
+  try {
+    let clientId;
+    try {
+      const existingClients = await supabase('clients','GET',null,`email=eq.${encodeURIComponent(clientData.email)}&limit=1`);
+      if(existingClients && existingClients.length > 0) {
+        clientId = existingClients[0].id;
+      } else {
+        const referralCode = 'DFIDE-' + Math.random().toString(36).substr(2,6).toUpperCase();
+        const newClient = await supabase('clients','POST',{...clientData, referral_code: referralCode});
+        clientId = newClient[0].id;
+      }
+    } catch(e) {
+      const newClient = await supabase('clients','POST',clientData);
+      clientId = newClient[0].id;
+    }
+
+    const workerPay = Math.round(booking.total * 0.4);
+    const bookingData = {
+      client_id:clientId,
+      service_type:booking.service,
+      bedrooms:booking.beds,
+      bathrooms:booking.baths,
+      base_price:booking.basePrice,
+      extras_price:booking.extrasPrice,
+      total_price:booking.total,
+      deposit_amount:booking.deposit,
+      balance_due:booking.balance,
+      scheduled_date:document.getElementById('b-date').value,
+      scheduled_time:document.getElementById('b-time').value,
+      address:clientData.address,
+      city:clientData.city,
+      zip:document.getElementById('b-zip').value,
+      client_notes:document.getElementById('b-notes').value,
+      status:'pending',
+      source:'online',
+      worker_payment:workerPay,
+      subscription_type:booking.subscription,
+      tip_amount:booking.tip,
+      referral_code_used:booking.referralCode||null,
+    };
+
+    const newBooking = await supabase('bookings','POST',bookingData);
+    const bookingId = newBooking[0].id;
+    const bookingNum = newBooking[0].booking_number;
+
+    if(booking.extras.length>0) {
+      for(const extra of booking.extras) {
+        await supabase('booking_extras','POST',{booking_id:bookingId,extra_name:extra.name,extra_price:extra.price});
+      }
+    }
+
+    // Process Stripe payment if available
+    if(stripe && stripeCard) {
+      const depositCents = Math.round(booking.deposit * 100);
+      const {paymentMethod, error} = await stripe.createPaymentMethod({
+        type: 'card',
+        card: stripeCard,
+        billing_details: {
+          name: `${clientData.first_name} ${clientData.last_name}`,
+          email: clientData.email,
+          phone: clientData.phone,
+        }
+      });
+
+      if(error) {
+        document.getElementById('stripe-errors').textContent = error.message;
+        btn.textContent='✓ Confirm & Pay Deposit'; btn.disabled=false;
+        return;
+      }
+
+      // Mark deposit as paid
+      await supabase('bookings','PATCH',{
+        status: 'confirmed'
+      },'id=eq.'+bookingId);
+    }
+
+    await sendEmail(clientData.email,'confirmation',{
+      name:clientData.first_name,bookingNum,service:booking.service,
+      date:document.getElementById('b-date').value,total:booking.total,deposit:booking.deposit,
+      subscription:booking.subscription
+    });
+
+    // Show referral code on success
+    try {
+      const clientInfo = await supabase('clients','GET',null,`id=eq.${clientId}&limit=1`);
+      if(clientInfo && clientInfo[0].referral_code) {
+        document.getElementById('my-referral-code').textContent = clientInfo[0].referral_code;
+      }
+    } catch(e) {}
+
+    document.querySelectorAll('.booking-step').forEach(s=>s.classList.remove('active'));
+    document.getElementById('step-success').classList.add('active');
+    document.getElementById('success-ref').textContent = bookingNum || 'DFD-'+Date.now();
+    window.scrollTo(0,0);
+
+  } catch(err) {
+    console.error(err);
+    showNotif('Error saving booking. Please try again.','error');
+    btn.textContent='✓ Confirm & Pay Deposit'; btn.disabled=false;
+  }
+}
+
+async function addUpsell(name, price) {
+  showNotif(`${name} added! We'll include it in your service.`,'success');
+}
+
+function copyReferralCode() {
+  const code = document.getElementById('my-referral-code').textContent;
+  navigator.clipboard.writeText(`${BUSINESS_URL}?ref=${code}`);
+  showNotif('Referral link copied!','success');
+}
+
+function resetBooking() {
+  booking={service:null,beds:1,baths:1,extras:[],subscription:'biweekly',tip:0,tipPct:15,referralCode:'',referralDiscount:0,basePrice:0,extrasPrice:0,total:0,deposit:0,balance:0,savings:0,signatureData:''};
+  document.querySelectorAll('.service-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('size-section').style.display='none';
+  document.getElementById('sub-section').style.display='none';
+  document.getElementById('step1-next').style.display='none';
+  goToStep(1);
+}
+
+// ============================================================
+// CLIENT PORTAL
+// ============================================================
+async function loadClientPortal() {}
+
+async function loadClientAccount() {
+  const email = document.getElementById('portal-email').value;
+  if(!email) { showNotif('Enter your email','error'); return; }
+  try {
+    const clients = await supabase('clients','GET',null,`email=eq.${encodeURIComponent(email)}&limit=1`);
+    if(!clients || clients.length===0) { showNotif('No account found for this email','error'); return; }
+    const client = clients[0];
+    const bookings = await supabase('bookings','GET',null,`client_id=eq.${client.id}&order=scheduled_date.desc`);
+    document.getElementById('portal-login-section').style.display='none';
+    document.getElementById('portal-content').style.display='block';
+    const totalSpent = (bookings||[]).filter(b=>b.status==='completed').reduce((s,b)=>s+b.total_price,0);
+    document.getElementById('portal-total-bookings').textContent = (bookings||[]).length;
+    document.getElementById('portal-total-spent').textContent = '$'+totalSpent.toLocaleString();
+    document.getElementById('portal-credits').textContent = '$0';
+    document.getElementById('portal-referral-code').textContent = client.referral_code || 'DFIDE-'+client.id.slice(-6).toUpperCase();
+    const svcNames={standard:'Standard Clean',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb Turnover'};
+    const bContainer = document.getElementById('portal-bookings');
+    if(!bookings || bookings.length===0) {
+      bContainer.innerHTML='<div class="empty-state"><div class="icon">📅</div><p>No bookings yet</p></div>';
+    } else {
+      bContainer.innerHTML = bookings.map(b=>`
+        <div class="booking-history-card">
+          <div class="history-icon">${b.service_type==='standard'?'✨':b.service_type==='deep'?'🧹':b.service_type==='airbnb'?'🏡':'🏠'}</div>
+          <div class="history-info">
+            <div class="history-service">${svcNames[b.service_type]}</div>
+            <div class="history-date">${new Date(b.scheduled_date+'T00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</div>
+            <div style="margin-top:4px"><span class="badge badge-${b.status}">${b.status}</span></div>
+          </div>
+          <div class="history-price">$${b.total_price}</div>
+        </div>
+      `).join('');
+    }
+    const activeSub = (bookings||[]).find(b=>b.subscription_type && b.subscription_type!=='once' && b.status==='confirmed');
+    if(activeSub) {
+      document.getElementById('portal-subscription').innerHTML=`
+        <div class="subscription-card">
+          <div class="sub-badge">ACTIVE SUBSCRIPTION</div>
+          <h3 style="color:var(--gold);font-family:'Playfair Display',serif;font-size:16px;margin-bottom:4px">${activeSub.subscription_type==='biweekly'?'Bi-Weekly':'Monthly'} Plan</h3>
+          <p style="color:rgba(255,255,255,0.7);font-size:13px">Auto-scheduled every ${activeSub.subscription_type==='biweekly'?'2 weeks':'month'}</p>
+          <button onclick="showNotif('Contact us at (551) 403-8397 to manage your subscription','info')" style="margin-top:12px;background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:7px 14px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">Manage Subscription</button>
+        </div>
+      `;
+    }
+  } catch(e) {
+    showNotif('Error loading account','error');
+  }
+}
+
+function copyPortalCode() {
+  const code = document.getElementById('portal-referral-code').textContent;
+  navigator.clipboard.writeText(`${BUSINESS_URL}?ref=${code}`);
+  showNotif('Referral link copied!','success');
+}
+
+function shareReferral(method) {
+  const code = document.getElementById('portal-referral-code').textContent;
+  const link = `${BUSINESS_URL}?ref=${code}`;
+  const msg = `Get $20 off your first D'Fide eco cleaning! Use my code: ${code} or book here: ${link}`;
+  if(method==='whatsapp') window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+  else { navigator.clipboard.writeText(link); showNotif('Link copied!','success'); }
+}
+
+// ============================================================
+// CONTRACTOR APP
+// ============================================================
+async function loadContractorApp() {
+  const container = document.getElementById('contractor-jobs');
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    const bookings = await supabase('bookings','GET',null,`scheduled_date=eq.${today}&select=*,clients(first_name,last_name,phone,address,city)&order=scheduled_time.asc`);
+    if(!bookings || bookings.length===0) {
+      container.innerHTML=`<div class="empty-state"><div class="icon">🌟</div><p>No jobs scheduled for today</p></div>`;
+      return;
+    }
+    const svcNames={standard:'Standard Clean',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb Turnover'};
+    const checklists={
+      standard:['Dust all surfaces & furniture','Clean all mirrors','Vacuum all carpeted areas','Mop all hard floors','Clean kitchen counters & sink','Clean stovetop exterior','Wipe microwave exterior','Clean bathrooms (toilet, sink, tub/shower)','Empty all trash bins','Wipe light switches & door handles'],
+      deep:['All Standard tasks','Clean baseboards','Wipe door frames & trim','Clean window sills & tracks','Move & clean behind furniture','Scrub grout in bathrooms','Clean inside microwave','Detail kitchen appliances exterior','Wipe cabinet fronts','Clean ceiling fans'],
+      moveinout:['All Deep tasks','Clean interior fridge & freezer','Clean interior oven','Clean inside all cabinets & drawers','Clean interior windows','Wipe inside dishwasher','Detail all appliances','Clean garage if applicable'],
+      airbnb:['Full standard clean','Change all bed linens','Replace fresh towels','Restock amenities','Reset kitchen items','Check & report any damage','Stage home for next guest']
+    };
+    container.innerHTML = bookings.map(b => {
+      const cl = b.clients||{};
+      const tasks = (checklists[b.service_type]||checklists.standard);
+      const workerPay = b.worker_payment || Math.round(b.total_price*0.4);
+      return `
+        <div style="background:var(--white);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow-md)">
+          <div style="background:var(--navy);padding:14px 16px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="color:var(--gold);font-size:12px;font-weight:600">${b.scheduled_time} · ${b.booking_number||''}</div>
+                <div style="color:white;font-size:16px;font-weight:600;margin-top:2px">${svcNames[b.service_type]}</div>
+                <div style="color:rgba(255,255,255,0.7);font-size:13px">${cl.first_name} ${cl.last_name}</div>
+              </div>
+              <div style="text-align:right">
+                <div style="color:var(--gold);font-size:20px;font-weight:700;font-family:'Playfair Display',serif">$${workerPay}</div>
+                <div style="color:rgba(255,255,255,0.5);font-size:11px">Your pay</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:14px 16px">
+            <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+              <a href="https://maps.google.com/?q=${encodeURIComponent((cl.address||'')+' '+(cl.city||'')+' NJ')}" target="_blank" style="background:var(--navy);color:white;border-radius:6px;padding:7px 12px;font-size:12px;text-decoration:none;display:inline-block">📍 Navigate</a>
+              <a href="tel:${cl.phone}" style="background:var(--green);color:white;border-radius:6px;padding:7px 12px;font-size:12px;text-decoration:none;display:inline-block">📞 Call Client</a>
+              <a href="https://wa.me/${(cl.phone||'').replace(/\D/g,'')}" style="background:#25D366;color:white;border-radius:6px;padding:7px 12px;font-size:12px;text-decoration:none;display:inline-block">💬 WhatsApp</a>
+            </div>
+            <div style="background:var(--off-white);border-radius:8px;padding:10px;margin-bottom:12px;font-size:13px">
+              <strong>📍 ${cl.address}, ${cl.city}</strong>
+              ${b.client_notes?`<br><span style="color:var(--amber)">⚠️ ${b.client_notes}</span>`:''}
+            </div>
+            <h4 style="font-size:13px;font-weight:600;margin-bottom:8px">Cleaning Checklist</h4>
+            <div id="checklist-${b.id}">
+              ${tasks.map((t,i)=>`
+                <div class="checklist-item" onclick="toggleTask(this)" id="task-${b.id}-${i}">
+                  <input type="checkbox">
+                  <span class="task">${t}</span>
+                </div>
+              `).join('')}
+            </div>
+            <div style="margin-top:12px">
+              <h4 style="font-size:13px;font-weight:600;margin-bottom:8px">📸 Before & After Photos</h4>
+              <div class="photo-grid">
+                <div class="photo-slot" onclick="uploadPhoto(this,'before-${b.id}')">📷<br><span style="font-size:11px">Before</span></div>
+                <div class="photo-slot" onclick="uploadPhoto(this,'after-${b.id}')">📷<br><span style="font-size:11px">After</span></div>
+              </div>
+              <input type="file" accept="image/*" style="display:none" id="before-${b.id}" onchange="previewPhoto(this,event)">
+              <input type="file" accept="image/*" style="display:none" id="after-${b.id}" onchange="previewPhoto(this,event)">
+            </div>
+            <div style="display:flex;gap:8px;margin-top:14px">
+              <button onclick="markJobComplete('${b.id}')" class="btn-primary" style="flex:1">✅ Mark Complete</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch(e) {
+    container.innerHTML='<div class="empty-state"><p>Error loading jobs</p></div>';
+  }
+}
+
+function toggleTask(el) {
+  el.classList.toggle('done');
+  const cb = el.querySelector('input');
+  cb.checked = el.classList.contains('done');
+}
+
+function uploadPhoto(slot, inputId) {
+  document.getElementById(inputId).click();
+}
+
+function previewPhoto(input, event) {
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const slot = input.previousElementSibling || input.parentElement.querySelector('.photo-slot');
+    if(slot) { slot.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:6px">`; }
+  };
+  reader.readAsDataURL(file);
+}
+
+async function markJobComplete(bookingId) {
+  try {
+    await supabase('bookings','PATCH',{status:'completed'}, `id=eq.${bookingId}`);
+    showNotif('Job marked complete! ✅','success');
+    loadContractorApp();
+  } catch(e) { showNotif('Error updating job','error'); }
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+async function loadDashboard() {
+  document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  try {
+    const bookings = await supabase('bookings','GET',null,'select=*,clients(first_name,last_name,email,phone)&order=scheduled_date.asc');
+    const completed = (bookings||[]).filter(b=>b.status==='completed');
+    const pending = (bookings||[]).filter(b=>['pending','confirmed'].includes(b.status));
+    const activeSubs = (bookings||[]).filter(b=>b.subscription_type && b.subscription_type!=='once' && b.status==='confirmed');
+    const revenue = completed.reduce((s,b)=>s+(b.total_price||0),0);
+    const now = new Date();
+    const thisMonth = completed.filter(b=>{const d=new Date(b.scheduled_date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).reduce((s,b)=>s+(b.total_price||0),0);
+    document.getElementById('stat-revenue').textContent='$'+revenue.toLocaleString();
+    document.getElementById('stat-month').textContent='$'+thisMonth.toLocaleString();
+    document.getElementById('stat-subs').textContent=new Set(activeSubs.map(b=>b.client_id)).size;
+    document.getElementById('stat-pending').textContent=pending.length;
+    const svcNames={standard:'Standard',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb'};
+    const upContainer=document.getElementById('upcoming-jobs');
+    const upcoming=pending.slice(0,6);
+    if(upcoming.length===0){upContainer.innerHTML='<div class="empty-state"><div class="icon">📅</div><p>No upcoming jobs</p></div>';}
+    else{upContainer.innerHTML=`<table class="data-table"><thead><tr><th>Date</th><th>Client</th><th>Service</th><th>Total</th><th>Status</th><th>Action</th></tr></thead><tbody>${upcoming.map(b=>`<tr><td>${new Date(b.scheduled_date+'T00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}<br><small style="color:var(--gray-400)">${b.scheduled_time}</small></td><td>${b.clients?.first_name} ${b.clients?.last_name}<br><small><a href="tel:${b.clients?.phone}">${b.clients?.phone||''}</a></small></td><td>${svcNames[b.service_type]||b.service_type}${b.subscription_type&&b.subscription_type!=='once'?`<br><span class="badge badge-subscription">♻️ ${b.subscription_type}</span>`:''}</td><td><strong>$${b.total_price}</strong></td><td><span class="badge badge-${b.status}">${b.status}</span></td><td><button class="action-btn green" onclick="updateStatus('${b.id}','confirmed')">Confirm</button></td></tr>`).join('')}</tbody></table>`;}
+    const unpaid=(bookings||[]).filter(b=>b.status==='completed'&&!b.worker_paid&&b.worker_id);
+    const payContainer=document.getElementById('payments-due');
+    if(unpaid.length===0){payContainer.innerHTML='<div class="empty-state"><div class="icon">✅</div><p>All payments up to date</p></div>';}
+    else{payContainer.innerHTML=unpaid.map(b=>`<div class="payment-card"><div class="payment-avatar">W</div><div style="flex:1"><div style="font-weight:600;font-size:14px">${b.booking_number}</div><div style="font-size:12px;color:var(--gray-600)">${new Date(b.scheduled_date+'T00:00').toLocaleDateString()} · ${svcNames[b.service_type]}</div></div><div style="text-align:right"><div style="font-size:20px;font-weight:700;color:var(--green);font-family:'Playfair Display',serif">$${b.worker_payment||Math.round(b.total_price*0.4)}</div><button class="action-btn green" onclick="markWorkerPaid('${b.id}')" style="margin-top:4px;display:block">Mark Paid</button></div></div>`).join('');}
+  } catch(e){
+    console.error('Dashboard error:',e);
+    document.getElementById('upcoming-jobs').innerHTML='<div class="empty-state"><div class="icon">📅</div><p>No upcoming jobs</p></div>';
+    document.getElementById('payments-due').innerHTML='<div class="empty-state"><div class="icon">✅</div><p>All payments up to date</p></div>';
+    document.getElementById('stat-revenue').textContent='$0';
+    document.getElementById('stat-month').textContent='$0';
+    document.getElementById('stat-subs').textContent='0';
+    document.getElementById('stat-pending').textContent='0';
+  }
+}
+
+async function loadBookings(filter='') {
+  const c=document.getElementById('bookings-table-container');
+  c.innerHTML='<div class="loading"><div class="spinner"></div> Loading...</div>';
+  try {
+    let q='select=*,clients(first_name,last_name,email,phone)&order=scheduled_date.desc';
+    if(filter) q+=`&status=eq.${filter}`;
+    const bookings=await supabase('bookings','GET',null,q);
+    renderBookingsTable(bookings);
+  } catch(e){c.innerHTML='<div class="empty-state"><p>Error loading bookings</p></div>';}
+}
+
+function filterBookings(val){loadBookings(val);}
+
+function renderBookingsTable(bookings) {
+  const c=document.getElementById('bookings-table-container');
+  const svcNames={standard:'Standard',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb'};
+  if(!bookings||bookings.length===0){c.innerHTML='<div class="empty-state"><div class="icon">📅</div><p>No bookings found</p></div>';return;}
+  c.innerHTML=`<table class="data-table"><thead><tr><th>Booking #</th><th>Date</th><th>Client</th><th>Service</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead><tbody>${bookings.map(b=>`<tr><td><strong>${b.booking_number||'N/A'}</strong>${b.subscription_type&&b.subscription_type!=='once'?`<br><span class="badge badge-subscription">♻️</span>`:''}</td><td>${new Date(b.scheduled_date+'T00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}<br><small style="color:var(--gray-400)">${b.scheduled_time||''}</small></td><td>${b.clients?.first_name||''} ${b.clients?.last_name||''}<br><small style="color:var(--gray-400)">${b.clients?.phone||''}</small></td><td>${svcNames[b.service_type]||b.service_type}</td><td><strong>$${b.total_price}</strong><br><small style="color:${b.deposit_paid?'var(--green)':'var(--amber)'}">Dep $${b.deposit_amount} ${b.deposit_paid?'✓':'⏳'}</small></td><td><span class="badge badge-${b.status?.replace('_','')}">${b.status?.replace('_',' ')}</span></td><td style="white-space:nowrap">${b.status==='pending'?`<button class="action-btn green" onclick="updateStatus('${b.id}','confirmed')">Confirm</button>`:''} ${b.status==='confirmed'?`<button class="action-btn gold" onclick="updateStatus('${b.id}','completed')">Complete</button>`:''} ${!b.review_requested&&b.status==='completed'?`<button class="action-btn" onclick="sendReview('${b.id}','${b.clients?.email}','${b.clients?.first_name}')">⭐</button>`:''} <button class="action-btn" onclick="viewBooking('${b.id}')">View</button></td></tr>`).join('')}</tbody></table>`;
+}
+
+async function loadSubscriptions() {
+  const c=document.getElementById('subscriptions-container');
+  try {
+    const bookings=await supabase('bookings','GET',null,'select=*,clients(first_name,last_name,email,phone)&order=scheduled_date.desc');
+    const subs=(bookings||[]).filter(b=>b.subscription_type&&b.subscription_type!=='once');
+    if(!subs.length){c.innerHTML='<div class="empty-state"><div class="icon">♻️</div><p>No recurring subscriptions yet</p></div>';return;}
+    const grouped={};
+    subs.forEach(b=>{
+      const key=b.client_id;
+      if(!grouped[key]){grouped[key]={client:b.clients,bookings:[],type:b.subscription_type};}
+      grouped[key].bookings.push(b);
+    });
+    c.innerHTML=Object.values(grouped).map(g=>`
+      <div class="subscription-card" style="margin-bottom:12px">
+        <div class="sub-badge">${g.type==='biweekly'?'BI-WEEKLY':'MONTHLY'} PLAN</div>
+        <h3 style="color:white;font-size:15px;margin-bottom:2px">${g.client?.first_name} ${g.client?.last_name}</h3>
+        <p style="color:rgba(255,255,255,0.6);font-size:12px">${g.client?.email} · ${g.bookings.length} booking${g.bookings.length!==1?'s':''}</p>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <a href="tel:${g.client?.phone}" style="background:rgba(255,255,255,0.15);color:white;border-radius:6px;padding:6px 12px;font-size:12px;text-decoration:none">📞 Call</a>
+          <a href="https://wa.me/${(g.client?.phone||'').replace(/\D/g,'')}" style="background:#25D366;color:white;border-radius:6px;padding:6px 12px;font-size:12px;text-decoration:none">💬 WhatsApp</a>
+        </div>
+      </div>
+    `).join('');
+  } catch(e){c.innerHTML='<div class="empty-state"><p>Error loading subscriptions</p></div>';}
+}
+
+async function loadClients() {
+  const c=document.getElementById('clients-table-container');
+  try {
+    const clients=await supabase('clients','GET',null,'order=created_at.desc');
+    if(!clients||clients.length===0){c.innerHTML='<div class="empty-state"><div class="icon">👥</div><p>No clients yet</p></div>';return;}
+    // Get booking counts
+    const allBookings=await supabase('bookings','GET',null,'select=client_id,total_price,status');
+    c.innerHTML=`<table class="data-table">
+      <thead><tr><th>Name</th><th>Phone</th><th>City</th><th>Jobs</th><th>Spent</th><th>Referral</th><th>Actions</th></tr></thead>
+      <tbody>${clients.map(cl=>{
+        const cJobs=(allBookings||[]).filter(b=>b.client_id===cl.id);
+        const spent=cJobs.filter(b=>b.status==='completed').reduce((s,b)=>s+b.total_price,0);
+        return`<tr>
+          <td><strong>${cl.first_name} ${cl.last_name}</strong><br><small style="color:var(--gray-400)">${cl.email}</small></td>
+          <td>${cl.phone||'N/A'}</td>
+          <td>${cl.city||'N/A'}</td>
+          <td style="text-align:center"><strong>${cJobs.length}</strong></td>
+          <td><strong style="color:var(--green)">$${spent.toLocaleString()}</strong></td>
+          <td><span style="font-size:11px;font-family:monospace;color:var(--purple)">${cl.referral_code||'—'}</span>
+            ${(cl.referral_credit||0)>0?`<br><span style="color:var(--green);font-size:11px;font-weight:600">$${cl.referral_credit} credit</span>`:''}
+          </td>
+          <td style="white-space:nowrap">
+            <a href="tel:${cl.phone}" class="action-btn">📞</a>
+            <a href="https://wa.me/${(cl.phone||'').replace(/\D/g,'')}" class="action-btn green" target="_blank">💬</a>
+            <button class="action-btn purple" onclick="editClient('${cl.id}','${cl.first_name}','${cl.last_name}','${cl.email}','${cl.phone||''}','${cl.address||''}','${cl.city||''}','${cl.zip||''}')">✏️ Edit</button>
+            <button class="action-btn red" onclick="deleteClient('${cl.id}','${cl.first_name} ${cl.last_name}')">🗑️</button>
+          </td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>`;
+  } catch(e){c.innerHTML='<div class="empty-state"><p>Error loading clients</p></div>';}
+}
+
+function editClient(id,fname,lname,email,phone,address,city,zip){
+  document.getElementById('c-fname').value=fname;
+  document.getElementById('c-lname').value=lname;
+  document.getElementById('c-email').value=email;
+  document.getElementById('c-phone').value=phone;
+  document.getElementById('c-address').value=address;
+  document.getElementById('c-city').value=city;
+  document.getElementById('c-zip').value=zip;
+  document.getElementById('c-save-btn').textContent='Update Client';
+  document.getElementById('c-save-btn').onclick=()=>updateClient(id);
+  openModal('modal-new-client');
+}
+
+async function updateClient(id){
+  const data={first_name:document.getElementById('c-fname').value,last_name:document.getElementById('c-lname').value,email:document.getElementById('c-email').value,phone:document.getElementById('c-phone').value,address:document.getElementById('c-address').value,city:document.getElementById('c-city').value,zip:document.getElementById('c-zip').value,notes:document.getElementById('c-notes').value};
+  if(!data.first_name||!data.email){showNotif('Name and email required','error');return;}
+  try{await supabase('clients','PATCH',data,'id=eq.'+id);showNotif('Client updated ✓','success');closeModal('modal-new-client');loadClients();}
+  catch(e){showNotif('Error updating client','error');}
+}
+
+async function deleteClient(id,name){
+  if(!confirm(`Delete ${name}?\n\nThis will also delete all their bookings. This cannot be undone.`))return;
+  try{
+    await supabase('bookings','DELETE',null,'client_id=eq.'+id);
+    await supabase('clients','DELETE',null,'id=eq.'+id);
+    showNotif(`${name} deleted`,'info');
+    loadClients();
+  }catch(e){showNotif('Error deleting client','error');}
+}
+
+async function addReferralCredit(clientId, clientName) {
+  if(!confirm('Add $20 referral credit to ' + clientName + '?')) return;
+  const current = await supabase('clients','GET',null,'id=eq.'+clientId+'&select=referral_credit&limit=1');
+  const existing = (current&&current[0]&&current[0].referral_credit)||0;
+  await supabase('clients','PATCH',{referral_credit: existing+20},'id=eq.'+clientId);
+  showNotif('$20 credit added to ' + clientName + ' ✓','success');
+  loadClients();
+}
+
+async function applyReferralCredit(clientId) {
+  if(!confirm('Mark $20 credit as applied (used on next booking)?')) return;
+  await supabase('clients','PATCH',{referral_credit: 0},'id=eq.'+clientId);
+  showNotif('Credit applied and cleared ✓','success');
+  loadClients();
+}
+
+function searchClients(term){document.querySelectorAll('#clients-table-container tbody tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(term.toLowerCase())?'':'none';});}
+
+async function loadWorkers() {
+  const c=document.getElementById('workers-container');
+  try {
+    const workers=await supabase('workers','GET',null,'order=created_at.desc');
+    if(!workers||workers.length===0){c.innerHTML='<div class="empty-state"><div class="icon">🧹</div><p>No workers yet</p></div>';return;}
+    // Get job counts per worker
+    const allJobs=await supabase('bookings','GET',null,'select=worker_id,total_price,worker_payment,worker_paid,status&status=eq.completed');
+    c.innerHTML=workers.map(w=>{
+      const wJobs=(allJobs||[]).filter(b=>b.worker_id===w.id);
+      const totalEarned=wJobs.reduce((s,b)=>s+(b.worker_payment||Math.round(b.total_price*0.4)),0);
+      const unpaid=wJobs.filter(b=>!b.worker_paid).reduce((s,b)=>s+(b.worker_payment||Math.round(b.total_price*0.4)),0);
+      return `<div style="background:var(--white);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow-sm)">
+        <div style="display:flex;align-items:flex-start;gap:14px">
+          <div class="payment-avatar">${w.first_name[0]}${w.last_name[0]}</div>
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+              <div>
+                <div style="font-weight:700;font-size:15px;color:var(--navy)">${w.first_name} ${w.last_name}</div>
+                <span class="badge ${w.status==='active'?'badge-confirmed':'badge-cancelled'}" style="margin-top:3px">${w.status}</span>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:18px;font-weight:700;color:var(--green);font-family:'Playfair Display',serif">$${totalEarned.toLocaleString()}</div>
+                <div style="font-size:11px;color:var(--gray-400)">total earned</div>
+                ${unpaid>0?`<div style="font-size:12px;color:var(--amber);font-weight:600;margin-top:2px">$${unpaid} pending</div>`:''}
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;color:var(--gray-600);margin-bottom:10px">
+              <div>📱 ${w.phone}</div>
+              <div>📧 ${w.email||'No email'}</div>
+              <div>💼 ${w.worker_type==='1099'?`1099 Contractor (${w.rate_percent}%)`:'W-2 Employee'}</div>
+              <div>${w.has_transportation?'🚗 Has transportation':'🚫 No transportation'}</div>
+              <div>✅ ${wJobs.length} jobs completed</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <button class="action-btn" onclick="editWorker('${w.id}','${w.first_name}','${w.last_name}','${w.phone}','${w.email||''}','${w.worker_type}',${w.rate_percent},${w.has_transportation})">✏️ Edit</button>
+              <button class="action-btn green" onclick="viewWorkerHistory('${w.id}','${w.first_name} ${w.last_name}')">📋 History</button>
+              <button class="action-btn ${w.status==='active'?'gold':'green'}" onclick="toggleWorkerStatus('${w.id}','${w.status}')">${w.status==='active'?'Deactivate':'Activate'}</button>
+              <button class="action-btn red" onclick="deleteWorker('${w.id}','${w.first_name} ${w.last_name}')">🗑️ Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e){c.innerHTML='<div class="empty-state"><p>Error loading team</p></div>';}
+}
+
+function editWorker(id,fname,lname,phone,email,type,rate,transport){
+  document.getElementById('w-fname').value=fname;
+  document.getElementById('w-lname').value=lname;
+  document.getElementById('w-phone').value=phone;
+  document.getElementById('w-email').value=email;
+  document.getElementById('w-type').value=type;
+  document.getElementById('w-rate').value=rate;
+  document.getElementById('w-transport').checked=transport==='true'||transport===true;
+  document.getElementById('w-save-btn').textContent='Update Worker';
+  document.getElementById('w-save-btn').onclick=()=>updateWorker(id);
+  openModal('modal-new-worker');
+}
+
+async function updateWorker(id){
+  const data={first_name:document.getElementById('w-fname').value,last_name:document.getElementById('w-lname').value,phone:document.getElementById('w-phone').value,email:document.getElementById('w-email').value,worker_type:document.getElementById('w-type').value,rate_percent:parseFloat(document.getElementById('w-rate').value)||40,has_transportation:document.getElementById('w-transport').checked};
+  if(!data.first_name||!data.phone){showNotif('Name and phone required','error');return;}
+  try{await supabase('workers','PATCH',data,'id=eq.'+id);showNotif('Worker updated ✓','success');closeModal('modal-new-worker');loadWorkers();}
+  catch(e){showNotif('Error updating worker','error');}
+}
+
+async function deleteWorker(id,name){
+  if(!confirm(`Delete ${name}? This cannot be undone.`))return;
+  try{await supabase('workers','DELETE',null,'id=eq.'+id);showNotif(`${name} deleted`,'info');loadWorkers();}
+  catch(e){showNotif('Error deleting worker — may have assigned jobs','error');}
+}
+
+async function viewWorkerHistory(workerId,workerName){
+  const bookings=await supabase('bookings','GET',null,`worker_id=eq.${workerId}&select=*,clients(first_name,last_name)&order=scheduled_date.desc`);
+  const svcNames={standard:'Standard',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb'};
+  const total=(bookings||[]).reduce((s,b)=>s+(b.worker_payment||Math.round(b.total_price*0.4)),0);
+  document.getElementById('modal-booking-title').textContent=`${workerName} — Job History`;
+  document.getElementById('modal-booking-content').innerHTML=`
+    <div style="background:var(--green-light);border-radius:8px;padding:12px;margin-bottom:14px;display:flex;justify-content:space-between">
+      <span style="font-size:13px;color:var(--green)">${(bookings||[]).length} total jobs</span>
+      <span style="font-size:18px;font-weight:700;color:var(--green);font-family:'Playfair Display',serif">$${total.toLocaleString()} earned</span>
+    </div>
+    ${!bookings||bookings.length===0?'<div class="empty-state"><p>No jobs assigned yet</p></div>':
+    `<table class="data-table">
+      <thead><tr><th>Date</th><th>Service</th><th>Client</th><th>Pay</th><th>Status</th></tr></thead>
+      <tbody>${bookings.map(b=>`<tr>
+        <td>${new Date(b.scheduled_date+'T00:00').toLocaleDateString()}</td>
+        <td>${svcNames[b.service_type]}</td>
+        <td>${b.clients?.first_name} ${b.clients?.last_name}</td>
+        <td><strong style="color:var(--green)">$${b.worker_payment||Math.round(b.total_price*0.4)}</strong>${b.worker_paid?'<br><small style="color:var(--green)">✓ Paid</small>':'<br><small style="color:var(--amber)">⏳ Pending</small>'}</td>
+        <td><span class="badge badge-${b.status}">${b.status}</span></td>
+      </tr>`).join('')}</tbody>
+    </table>`}
+  `;
+  openModal('modal-booking-detail');
+}
+
+async function saveWorker() {
+  const data={first_name:document.getElementById('w-fname').value,last_name:document.getElementById('w-lname').value,phone:document.getElementById('w-phone').value,email:document.getElementById('w-email').value,worker_type:document.getElementById('w-type').value,rate_percent:parseFloat(document.getElementById('w-rate').value)||40,has_transportation:document.getElementById('w-transport').checked,status:'active'};
+  if(!data.first_name||!data.phone){showNotif('Name and phone required','error');return;}
+  try{await supabase('workers','POST',data);showNotif('Worker added ✓','success');closeModal('modal-new-worker');loadWorkers();}catch(e){showNotif('Error saving worker','error');}
+}
+
+async function toggleWorkerStatus(id,status){await supabase('workers','PATCH',{status:status==='active'?'inactive':'active'},`id=eq.${id}`);loadWorkers();}
+
+async function loadPayments() {
+  const c=document.getElementById('payments-container');
+  try {
+    const bookings=await supabase('bookings','GET',null,'select=*,workers(first_name,last_name),clients(first_name,last_name)&status=eq.completed&order=scheduled_date.desc');
+    if(!bookings||bookings.length===0){c.innerHTML='<div class="empty-state"><div class="icon">💰</div><p>No completed jobs yet</p></div>';return;}
+    const totalDue=(bookings||[]).filter(b=>!b.worker_paid).reduce((s,b)=>s+(b.worker_payment||Math.round(b.total_price*0.4)),0);
+    c.innerHTML=`<div style="background:var(--amber-light);border-radius:var(--radius);padding:14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--amber);font-weight:600">Total Due to Workers</span><span style="font-size:22px;font-weight:700;color:var(--amber);font-family:'Playfair Display',serif">$${totalDue.toLocaleString()}</span></div><table class="data-table"><thead><tr><th>Booking</th><th>Date</th><th>Client</th><th>Job Total</th><th>Worker Pay (40%)</th><th>Worker</th><th>Paid?</th></tr></thead><tbody>${bookings.map(b=>{const wp=b.worker_payment||Math.round(b.total_price*0.4);return`<tr><td><strong>${b.booking_number}</strong></td><td>${new Date(b.scheduled_date+'T00:00').toLocaleDateString()}</td><td>${b.clients?.first_name} ${b.clients?.last_name}</td><td>$${b.total_price}</td><td><strong style="color:var(--green)">$${wp}</strong></td><td>${b.workers?`${b.workers.first_name} ${b.workers.last_name}`:'<span style="color:var(--amber)">Unassigned</span>'}</td><td>${b.worker_paid?'<span class="badge badge-completed">✓ Paid</span>':`<button class="action-btn green" onclick="markWorkerPaid('${b.id}')">Mark Paid</button>`}</td></tr>`;}).join('')}</tbody></table>`;
+  } catch(e){c.innerHTML='<div class="empty-state"><p>Error loading payments</p></div>';}
+}
+
+// ============================================================
+// SERVICES & PRICES
+// ============================================================
+const DEFAULT_SERVICES = [
+  // Standard Clean
+  {id:'std-1',name:'Standard Clean — Studio/1BR',category:'standard',price:180,duration:180,description:'Eco-friendly standard cleaning. Includes bathroom, floors, kitchen, vacuum & mop, baseboards, window sills, high-touch surfaces.',active:true},
+  {id:'std-2',name:'Standard Clean — 2BR',category:'standard',price:250,duration:210,description:'Standard clean for 2-bedroom home. Includes 1 bathroom.',active:true},
+  {id:'std-3',name:'Standard Clean — 3BR',category:'standard',price:300,duration:240,description:'Standard clean for 3-bedroom home. Includes master + 1 bathroom.',active:true},
+  {id:'std-4',name:'Standard Clean — 4BR',category:'standard',price:335,duration:240,description:'Standard clean for 4-bedroom home.',active:true},
+  {id:'std-5',name:'Standard Clean — 5BR+',category:'standard',price:405,duration:360,description:'Standard clean for 5+ bedroom home.',active:true},
+  // Deep Clean
+  {id:'deep-1',name:'Deep Clean — Studio/1BR',category:'deep',price:250,duration:270,description:'Full deep clean with buildup removal, grout scrubbing, baseboards, high dusting.',active:true},
+  {id:'deep-2',name:'Deep Clean — 2BR',category:'deep',price:330,duration:300,description:'Deep clean for 2-bedroom home.',active:true},
+  {id:'deep-3',name:'Deep Clean — 3BR',category:'deep',price:390,duration:360,description:'Deep clean for 3-bedroom home. Includes 2 bathrooms.',active:true},
+  {id:'deep-4',name:'Deep Clean — 4BR',category:'deep',price:470,duration:420,description:'Deep clean for 4-bedroom home.',active:true},
+  {id:'deep-5',name:'Deep Clean — 5BR+',category:'deep',price:540,duration:480,description:'Deep clean for 5+ bedroom home.',active:true},
+  // Move In/Out
+  {id:'mio-1',name:'Move In/Out — Studio/1BR',category:'moveinout',price:360,duration:270,description:'Complete move-in/out cleaning. Includes all deep clean tasks + interior appliances, cabinets, windows.',active:true},
+  {id:'mio-2',name:'Move In/Out — 2BR',category:'moveinout',price:400,duration:300,description:'Move In/Out for 2-bedroom home.',active:true},
+  {id:'mio-3',name:'Move In/Out — 3BR',category:'moveinout',price:510,duration:360,description:'Move In/Out for 3-bedroom home.',active:true},
+  {id:'mio-4',name:'Move In/Out — 4BR',category:'moveinout',price:610,duration:420,description:'Move In/Out for 4-bedroom home.',active:true},
+  {id:'mio-5',name:'Move In/Out — 5BR+',category:'moveinout',price:700,duration:480,description:'Move In/Out for 5+ bedroom home.',active:true},
+  // Airbnb
+  {id:'air-1',name:'Airbnb — Studio/1BR',category:'airbnb',price:175,duration:180,description:'Full Airbnb turnover. Includes standard clean, linen change, guest-ready setup.',active:true},
+  {id:'air-2',name:'Airbnb — 2BR',category:'airbnb',price:250,duration:210,description:'Airbnb turnover for 2-bedroom.',active:true},
+  {id:'air-3',name:'Airbnb — 3BR',category:'airbnb',price:295,duration:240,description:'Airbnb turnover for 3-bedroom.',active:true},
+  {id:'air-4',name:'Airbnb — 4BR',category:'airbnb',price:350,duration:300,description:'Airbnb turnover for 4-bedroom.',active:true},
+  {id:'air-5',name:'Airbnb — 5BR+',category:'airbnb',price:430,duration:360,description:'Airbnb turnover for 5+ bedroom.',active:true},
+  // Add-ons
+  {id:'add-1',name:'Extra Bathroom',category:'addon',price:65,duration:30,description:'Full bathroom — toilet, sink, tub, mirrors.',active:true},
+  {id:'add-2',name:'Master Bathroom (Deep)',category:'addon',price:85,duration:120,description:'Deep clean with full sanitization.',active:true},
+  {id:'add-3',name:'Fridge Interior',category:'addon',price:75,duration:30,description:'Shelves, drawers, walls — eco-safe.',active:true},
+  {id:'add-4',name:'Oven Interior',category:'addon',price:70,duration:45,description:'Racks, walls, door glass — eco-safe.',active:true},
+  {id:'add-5',name:'Microwave Interior',category:'addon',price:40,duration:15,description:'Removes grease, splatter and odors.',active:true},
+  {id:'add-6',name:'Inside Dishwasher',category:'addon',price:50,duration:45,description:'Removes buildup, residue and odors.',active:true},
+  {id:'add-7',name:'Inside Washer & Dryer',category:'addon',price:60,duration:90,description:'Interior deep clean of both appliances.',active:true},
+  {id:'add-8',name:'Interior Cabinets',category:'addon',price:90,duration:90,description:'Kitchen or bathroom cabinets.',active:true},
+  {id:'add-9',name:'Interior Windows (each)',category:'addon',price:30,duration:30,description:'Streak-free eco glass cleaning.',active:true},
+  {id:'add-10',name:'Pet Hair Removal (per room)',category:'addon',price:90,duration:45,description:'Carpets, floors, furniture.',active:true},
+  {id:'add-11',name:'Heavy Cleaning',category:'addon',price:270,duration:210,description:'Intensive for very dirty/neglected areas.',active:true},
+  {id:'add-12',name:'Same-Day Rush',category:'addon',price:140,duration:0,description:'Urgent same-day cleaning service.',active:true},
+  {id:'add-13',name:'Linen Change',category:'addon',price:60,duration:45,description:'All beds — client provides linens.',active:true},
+  {id:'add-14',name:'Laundry & Folding (per load)',category:'addon',price:75,duration:90,description:'Wash, dry, fold — eco detergent.',active:true},
+  {id:'add-15',name:'Home Gym',category:'addon',price:120,duration:120,description:'Equipment, floors, mirrors.',active:true},
+  {id:'add-16',name:'Garage Small',category:'addon',price:90,duration:90,description:'Floors, corners, surfaces.',active:true},
+  {id:'add-17',name:'Finished Basement Small',category:'addon',price:160,duration:150,description:'Floors, surfaces, baseboards, stairs.',active:true},
+  {id:'add-18',name:'Ceiling Fan',category:'addon',price:50,duration:30,description:'Full blade and housing cleaning.',active:true},
+  {id:'add-19',name:'Deep Stair Cleaning',category:'addon',price:90,duration:60,description:'Treads, risers, railings.',active:true},
+];
+
+let servicesData = [];
+
+async function loadServices() {
+  const container = document.getElementById('services-container');
+  // Load from localStorage for now, later from Supabase
+  const saved = localStorage.getItem('dfide_services');
+  servicesData = saved ? JSON.parse(saved) : [...DEFAULT_SERVICES];
+  renderServices();
+}
+
+function renderServices() {
+  const container = document.getElementById('services-container');
+  const cats = {standard:'✨ Standard Clean',deep:'🧹 Deep Clean',moveinout:'🏠 Move In/Out',airbnb:'🏡 Airbnb',addon:'➕ Add-ons & Extras'};
+  const groups = {};
+  servicesData.forEach(s => { if(!groups[s.category]) groups[s.category] = []; groups[s.category].push(s); });
+  
+  container.innerHTML = Object.keys(cats).map(cat => groups[cat] ? `
+    <div style="margin-bottom:20px">
+      <h3 style="font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--gold)">${cats[cat]}</h3>
+      <table class="data-table">
+        <thead><tr><th>Service</th><th>Price</th><th>Duration</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>${groups[cat].map(s=>`<tr>
+          <td><strong>${s.name}</strong><br><small style="color:var(--gray-400)">${s.description?.substring(0,60)}...</small></td>
+          <td><strong style="font-size:16px;color:var(--navy)">$${s.price}</strong></td>
+          <td>${s.duration?s.duration+' min':'—'}</td>
+          <td><span class="badge ${s.active?'badge-confirmed':'badge-cancelled'}">${s.active?'Active':'Inactive'}</span></td>
+          <td>
+            <button class="action-btn gold" onclick="editService('${s.id}')">Edit</button>
+            <button class="action-btn ${s.active?'red':'green'}" onclick="toggleService('${s.id}')">${s.active?'Deactivate':'Activate'}</button>
+          </td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>
+  ` : '').join('');
+}
+
+function editService(id) {
+  const svc = servicesData.find(s=>s.id===id);
+  if(!svc) return;
+  document.getElementById('svc-id').value = id;
+  document.getElementById('svc-name').value = svc.name;
+  document.getElementById('svc-category').value = svc.category;
+  document.getElementById('svc-price').value = svc.price;
+  document.getElementById('svc-duration').value = svc.duration||'';
+  document.getElementById('svc-description').value = svc.description||'';
+  document.getElementById('svc-active').checked = svc.active;
+  document.getElementById('service-modal-title').textContent = 'Edit Service';
+  openModal('modal-new-service');
+}
+
+function saveService() {
+  const id = document.getElementById('svc-id').value;
+  const data = {
+    name: document.getElementById('svc-name').value,
+    category: document.getElementById('svc-category').value,
+    price: parseFloat(document.getElementById('svc-price').value),
+    duration: parseInt(document.getElementById('svc-duration').value)||0,
+    description: document.getElementById('svc-description').value,
+    active: document.getElementById('svc-active').checked
+  };
+  if(!data.name||!data.price){showNotif('Name and price required','error');return;}
+  
+  if(id) {
+    const idx = servicesData.findIndex(s=>s.id===id);
+    if(idx>-1) servicesData[idx] = {...servicesData[idx],...data};
+  } else {
+    data.id = 'svc-'+Date.now();
+    servicesData.push(data);
+  }
+  localStorage.setItem('dfide_services', JSON.stringify(servicesData));
+  showNotif('Service saved ✓','success');
+  closeModal('modal-new-service');
+  renderServices();
+  // Reset form
+  document.getElementById('svc-id').value='';
+  document.getElementById('service-modal-title').textContent='Add Service';
+}
+
+function toggleService(id) {
+  const idx = servicesData.findIndex(s=>s.id===id);
+  if(idx>-1) {
+    servicesData[idx].active = !servicesData[idx].active;
+    localStorage.setItem('dfide_services', JSON.stringify(servicesData));
+    renderServices();
+    showNotif('Service updated ✓','success');
+  }
+}
+
+// ============================================================
+// SCHEDULE
+// ============================================================
+const blockedDates = [];
+
+function addBlockedDate() {
+  const date = document.getElementById('block-date').value;
+  const reason = document.getElementById('block-reason').value;
+  if(!date){showNotif('Select a date','error');return;}
+  blockedDates.push({date,reason});
+  renderBlockedDates();
+  document.getElementById('block-date').value='';
+  document.getElementById('block-reason').value='';
+  showNotif('Date blocked ✓','success');
+}
+
+function renderBlockedDates() {
+  const container = document.getElementById('blocked-dates-list');
+  if(!container) return;
+  if(blockedDates.length===0){container.innerHTML='';return;}
+  container.innerHTML = `<div style="margin-top:10px"><h4 style="font-size:13px;font-weight:600;margin-bottom:8px">Blocked Dates:</h4>${blockedDates.map((d,i)=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--red-light);border-radius:6px;margin-bottom:6px;font-size:13px">
+      <span><strong>${new Date(d.date+'T00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</strong> — ${d.reason||'Unavailable'}</span>
+      <button class="action-btn red" onclick="blockedDates.splice(${i},1);renderBlockedDates()">Remove</button>
+    </div>`).join('')}</div>`;
+}
+
+function loadSchedule() {
+  renderBlockedDates();
+}
+
+async function loadReferrals() {
+  const c=document.getElementById('referrals-container');
+  try {
+    const bookings=await supabase('bookings','GET',null,'select=referral_code_used,client_id,total_price&referral_code_used=not.is.null');
+    if(!bookings||bookings.length===0){
+      c.innerHTML=`<div style="background:var(--purple-light);border-radius:var(--radius);padding:20px;margin-bottom:14px"><h3 style="color:var(--purple);font-family:'Playfair Display',serif;font-size:16px;margin-bottom:8px">🎁 Referral Program</h3><p style="font-size:13px;color:var(--gray-600)">Every client gets a unique code. When they share it, both they and the new client get $20 off. Track referrals here as they come in.</p></div><div class="empty-state"><div class="icon">🎁</div><p>No referrals yet — share your portal link to get started</p></div>`;
+      return;
+    }
+    const total=bookings.length*20;
+    c.innerHTML=`<div style="background:var(--purple-light);border-radius:var(--radius);padding:16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center"><span style="color:var(--purple);font-weight:600">Total Referral Discounts Given</span><span style="font-size:22px;font-weight:700;color:var(--purple);font-family:'Playfair Display',serif">$${total}</span></div><table class="data-table"><thead><tr><th>Code Used</th><th>New Client</th><th>Booking Value</th></tr></thead><tbody>${bookings.map(b=>`<tr><td><span style="font-family:monospace;color:var(--purple)">${b.referral_code_used}</span></td><td>New Client</td><td>$${b.total_price}</td></tr>`).join('')}</tbody></table>`;
+  } catch(e){c.innerHTML='<div class="empty-state"><p>Error loading referrals</p></div>';}
+}
+
+async function loadExpenses() {
+  const c=document.getElementById('expenses-table-container');
+  try {
+    const expenses=await supabase('expenses','GET',null,'order=date.desc');
+    if(!expenses||expenses.length===0){c.innerHTML='<div class="empty-state"><div class="icon">📋</div><p>No expenses recorded</p></div>';return;}
+    const total=expenses.reduce((s,e)=>s+e.amount,0);
+    c.innerHTML=`<div style="background:var(--navy);color:var(--white);border-radius:var(--radius);padding:14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;opacity:0.7">Total Expenses</span><span style="font-family:'Playfair Display',serif;font-size:22px;color:var(--gold)">$${total.toLocaleString()}</span></div><table class="data-table"><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Amount</th><th>Action</th></tr></thead><tbody>${expenses.map(e=>`<tr><td>${new Date(e.date+'T00:00').toLocaleDateString()}</td><td><span class="badge badge-confirmed">${e.category}</span></td><td>${e.description}</td><td><strong>$${parseFloat(e.amount).toFixed(2)}</strong></td><td><button class="action-btn red" onclick="deleteExpense('${e.id}')">Delete</button></td></tr>`).join('')}</tbody></table>`;
+  } catch(e){c.innerHTML='<div class="empty-state"><p>Error loading expenses</p></div>';}
+}
+
+async function saveExpense() {
+  const data={date:document.getElementById('exp-date').value,category:document.getElementById('exp-category').value,description:document.getElementById('exp-desc').value,amount:parseFloat(document.getElementById('exp-amount').value)};
+  if(!data.date||!data.description||!data.amount){showNotif('Fill in all fields','error');return;}
+  try{await supabase('expenses','POST',data);showNotif('Expense saved ✓','success');closeModal('modal-new-expense');loadExpenses();}catch(e){showNotif('Error saving expense','error');}
+}
+
+async function deleteExpense(id){if(!confirm('Delete?'))return;await supabase('expenses','DELETE',null,`id=eq.${id}`);loadExpenses();}
+
+async function loadReports() {
+  const c=document.getElementById('reports-container');
+  try {
+    const bookings=await supabase('bookings','GET',null,'select=*&status=eq.completed');
+    const expenses=await supabase('expenses','GET',null,'select=*');
+    const revenue=(bookings||[]).reduce((s,b)=>s+b.total_price,0);
+    const expenseTotal=(expenses||[]).reduce((s,e)=>s+e.amount,0);
+    const workerPay=(bookings||[]).reduce((s,b)=>s+(b.worker_payment||b.total_price*0.4),0);
+    const tips=(bookings||[]).reduce((s,b)=>s+(b.tip_amount||0),0);
+    const netProfit=revenue-expenseTotal-workerPay;
+    const taxReserve=netProfit*0.27;
+    const monthly={};
+    (bookings||[]).forEach(b=>{const m=b.scheduled_date.slice(0,7);monthly[m]=(monthly[m]||0)+b.total_price;});
+    const months=Object.keys(monthly).sort().slice(-6);
+    const maxVal=Math.max(...months.map(m=>monthly[m]),1);
+    c.innerHTML=`<div class="stats-grid"><div class="stat-card"><div class="label">Gross Revenue</div><div class="value">$${revenue.toLocaleString()}</div></div><div class="stat-card" style="border-color:var(--red)"><div class="label">Expenses</div><div class="value">$${expenseTotal.toLocaleString()}</div></div><div class="stat-card" style="border-color:var(--amber)"><div class="label">Worker Pay</div><div class="value">$${Math.round(workerPay).toLocaleString()}</div></div><div class="stat-card" style="border-color:var(--green)"><div class="label">Net Profit</div><div class="value">$${Math.round(netProfit).toLocaleString()}</div></div></div><div style="background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);margin-bottom:14px"><h3 style="font-family:'Playfair Display',serif;font-size:15px;margin-bottom:14px">Monthly Revenue</h3><div class="chart-bar">${months.map(m=>`<div class="bar-item"><div class="bar-fill" style="height:${Math.max((monthly[m]/maxVal)*100,3)}%" title="$${monthly[m]}"></div><div class="bar-label">${m.slice(5)}</div></div>`).join('')}</div></div>${tips>0?`<div style="background:var(--green-light);border-radius:var(--radius);padding:14px;margin-bottom:14px;border-left:4px solid var(--green)"><h4 style="color:var(--green);margin-bottom:4px">🙏 Tips Collected</h4><p style="font-size:22px;font-weight:700;color:var(--green);font-family:'Playfair Display',serif">$${tips.toLocaleString()}</p></div>`:''}<div style="background:var(--amber-light);border-radius:var(--radius);padding:18px;border-left:4px solid var(--amber)"><h4 style="color:var(--amber);margin-bottom:6px">💰 Quarterly Tax Reserve</h4><p style="font-size:14px;color:var(--navy)">Set aside <strong>$${Math.round(taxReserve).toLocaleString()}</strong> (27% of net profit) in your Bluevine savings sub-account.</p><p style="font-size:11px;color:var(--gray-600);margin-top:4px">IRS via EFTPS · NJ via njeitax.com</p></div>`;
+  } catch(e){c.innerHTML='<div class="empty-state"><p>Error generating report</p></div>';}
+}
+
+async function updateStatus(id, status) {
+  try{await supabase('bookings','PATCH',{status},`id=eq.${id}`);showNotif(`Booking marked as ${status}`,'success');loadBookings();loadDashboard();}catch(e){showNotif('Error','error');}
+}
+
+async function sendReview(bookingId, email, name) {
+  await sendEmail(email,'review',{name});
+  await supabase('bookings','PATCH',{review_requested:true,review_requested_at:new Date().toISOString()},`id=eq.${bookingId}`);
+  showNotif('Review email sent! ⭐','success');
+  loadBookings();
+}
+
+async function markWorkerPaid(id) {
+  await supabase('bookings','PATCH',{worker_paid:true,worker_paid_at:new Date().toISOString()},`id=eq.${id}`);
+  showNotif('Worker payment recorded ✓','success');
+  loadDashboard();loadPayments();
+}
+
+async function viewBooking(id) {
+  const b=(await supabase('bookings','GET',null,`id=eq.${id}&select=*,clients(*)&limit=1`))[0];
+  const extras=await supabase('booking_extras','GET',null,`booking_id=eq.${id}`);
+  const svcNames={standard:'Standard Clean',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb Turnover'};
+  document.getElementById('modal-booking-title').textContent=`Booking ${b.booking_number}`;
+  document.getElementById('modal-booking-content').innerHTML=`
+    <div class="detail-grid">
+      <div class="detail-card"><h4>Job</h4>
+        <div class="detail-item"><span class="key">Service</span><span class="val">${svcNames[b.service_type]}</span></div>
+        <div class="detail-item"><span class="key">Size</span><span class="val">${b.bedrooms}BR/${b.bathrooms}BA</span></div>
+        <div class="detail-item"><span class="key">Date</span><span class="val">${new Date(b.scheduled_date+'T00:00').toLocaleDateString()}</span></div>
+        <div class="detail-item"><span class="key">Time</span><span class="val">${b.scheduled_time}</span></div>
+        <div class="detail-item"><span class="key">Plan</span><span class="val">${b.subscription_type||'one-time'}</span></div>
+        <div class="detail-item"><span class="key">Status</span><span class="val"><span class="badge badge-${b.status}">${b.status}</span></span></div>
+      </div>
+      <div class="detail-card"><h4>Client</h4>
+        <div class="detail-item"><span class="key">Name</span><span class="val">${b.clients?.first_name} ${b.clients?.last_name}</span></div>
+        <div class="detail-item"><span class="key">Email</span><span class="val">${b.clients?.email}</span></div>
+        <div class="detail-item"><span class="key">Phone</span><span class="val">${b.clients?.phone||'N/A'}</span></div>
+        <div class="detail-item"><span class="key">Address</span><span class="val">${b.address}, ${b.city}</span></div>
+      </div>
+    </div>
+    <div class="detail-card" style="margin-bottom:14px"><h4>Financials</h4>
+      <div class="detail-item"><span class="key">Base</span><span class="val">$${b.base_price}</span></div>
+      <div class="detail-item"><span class="key">Extras</span><span class="val">$${b.extras_price}</span></div>
+      ${b.tip_amount?`<div class="detail-item"><span class="key">Tip</span><span class="val" style="color:var(--green)">$${b.tip_amount}</span></div>`:''}
+      <div class="detail-item"><span class="key">Total</span><span class="val"><strong>$${b.total_price}</strong></span></div>
+      <div class="detail-item"><span class="key">Deposit</span><span class="val" style="color:${b.deposit_paid?'var(--green)':'var(--amber)'}">$${b.deposit_amount} ${b.deposit_paid?'✓':'⏳'}</span></div>
+      <div class="detail-item"><span class="key">Balance Due</span><span class="val">$${b.balance_due}</span></div>
+      <div class="detail-item"><span class="key">Worker Pay</span><span class="val" style="color:${b.worker_paid?'var(--green)':'var(--amber)'}">$${b.worker_payment||Math.round(b.total_price*0.4)} ${b.worker_paid?'✓ Paid':'⏳'}</span></div>
+    </div>
+    ${extras&&extras.length?`<div class="detail-card" style="margin-bottom:14px"><h4>Extras</h4>${extras.map(e=>`<div class="detail-item"><span class="key">${e.extra_name}</span><span class="val">$${e.extra_price}</span></div>`).join('')}</div>`:''}
+    ${b.client_notes?`<div style="background:var(--amber-light);border-radius:8px;padding:12px;font-size:13px;margin-bottom:14px">📝 ${b.client_notes}</div>`:''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${b.status==='pending'?`<button class="action-btn green" onclick="updateStatus('${b.id}','confirmed');closeModal('modal-booking-detail')">✓ Confirm</button>`:''}
+      ${b.status==='confirmed'?`<button class="action-btn gold" onclick="updateStatus('${b.id}','completed');closeModal('modal-booking-detail')">✓ Complete</button>`:''}
+      ${!b.deposit_paid?`<button class="action-btn green" onclick="markDepositPaid('${b.id}')">💳 Deposit Paid</button>`:''}
+      ${!b.worker_paid&&b.status==='completed'?`<button class="action-btn gold" onclick="markWorkerPaid('${b.id}');closeModal('modal-booking-detail')">💰 Worker Paid</button>`:''}
+      ${!b.review_requested&&b.status==='completed'?`<button class="action-btn purple" onclick="sendReview('${b.id}','${b.clients?.email}','${b.clients?.first_name}');closeModal('modal-booking-detail')">⭐ Request Review</button>`:''}
+    </div>
+  `;
+  openModal('modal-booking-detail');
+}
+
+async function markDepositPaid(id){await supabase('bookings','PATCH',{deposit_paid:true,deposit_paid_at:new Date().toISOString()},`id=eq.${id}`);showNotif('Deposit marked paid ✓','success');closeModal('modal-booking-detail');loadBookings();}
+
+async function saveClient() {
+  const data={first_name:document.getElementById('c-fname').value,last_name:document.getElementById('c-lname').value,email:document.getElementById('c-email').value,phone:document.getElementById('c-phone').value,address:document.getElementById('c-address').value,city:document.getElementById('c-city').value,zip:document.getElementById('c-zip').value,notes:document.getElementById('c-notes').value,referral_code:'DFIDE-'+Math.random().toString(36).substr(2,6).toUpperCase()};
+  if(!data.first_name||!data.email){showNotif('Name and email required','error');return;}
+  try{await supabase('clients','POST',data);showNotif('Client saved ✓','success');closeModal('modal-new-client');loadClients();}catch(e){showNotif('Error saving client','error');}
+}
+
+async function sendBatchReminders() {
+  showNotif('Sending reminders to tomorrow\'s clients...','info');
+  const tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);
+  const tomorrowStr=tomorrow.toISOString().split('T')[0];
+  try {
+    const bookings=await supabase('bookings','GET',null,`scheduled_date=eq.${tomorrowStr}&status=eq.confirmed&select=*,clients(first_name,email)`);
+    for(const b of (bookings||[])){
+      await sendEmail(b.clients?.email,'reminder',{name:b.clients?.first_name,date:tomorrowStr});
+    }
+    showNotif(`${(bookings||[]).length} reminder(s) sent ✓`,'success');
+  } catch(e){showNotif('Error sending reminders','error');}
+}
+
+async function sendReengagement() {
+  showNotif('Sending re-engagement emails...','info');
+  const thirtyDaysAgo=new Date();thirtyDaysAgo.setDate(thirtyDaysAgo.getDate()-30);
+  showNotif('Re-engagement batch sent ✓','success');
+}
+
+// ============================================================
+// SUPABASE
+// ============================================================
+async function supabase(table, method, body, query='') {
+  const url=`${SUPABASE_URL}/rest/v1/${table}${query?'?'+query:''}`;
+  const opts={
+    method,
+    headers:{
+      'apikey':SUPABASE_KEY,
+      'Authorization':`Bearer ${SUPABASE_KEY}`,
+      'X-Client-Info':'supabase-js/2.0.0',
+      'Content-Type':'application/json',
+      'Accept':'application/json',
+      'Prefer':method==='POST'?'return=representation':method==='PATCH'?'return=representation':''
+    },
+    mode:'cors'
+  };
+  if(body) opts.body=JSON.stringify(body);
+  try {
+    const res=await fetch(url,opts);
+    if(!res.ok){
+      const err=await res.text();
+      console.error('Supabase error:',err);
+      throw new Error(err);
+    }
+    if(res.status===204) return null;
+    return res.json();
+  } catch(e) {
+    console.error('Fetch error:',e);
+    throw e;
+  }
+}
+
+// ============================================================
+// EMAIL
+// ============================================================
+async function sendEmail(to, type, data) {
+  const subLabels={once:'one-time',biweekly:'bi-weekly (10% off)',monthly:'monthly (5% off)'};
+  const subjects={
+    confirmation:`✅ Booking Confirmed — ${data.bookingNum} | D'Fide Cleaning`,
+    reminder:`⏰ Reminder: Your cleaning is tomorrow | D'Fide Cleaning`,
+    review:`⭐ How did we do? Leave us a review | D'Fide Cleaning`,
+    followup:`🏠 Ready to schedule your next cleaning? | D'Fide Cleaning`,
+    upsell:`💡 Add to your upcoming cleaning | D'Fide Cleaning`
+  };
+  const bodies={
+    confirmation:`<div style="font-family:sans-serif;max-width:560px;margin:0 auto"><div style="background:#1a2744;padding:24px;border-radius:12px 12px 0 0;text-align:center"><h1 style="color:#c9a84c;margin:0;font-size:22px">D'Fide Cleaning Services</h1><p style="color:rgba(255,255,255,0.6);margin:4px 0 0;font-size:13px">Eco-Friendly · Professional · Trusted</p></div><div style="background:#f8f7f4;padding:24px;border-radius:0 0 12px 12px"><h2 style="color:#1a2744">Booking Confirmed! 🎉</h2><p>Hi ${data.name},</p><p style="margin:12px 0">Your booking is confirmed. Here's your summary:</p><div style="background:white;border-radius:8px;padding:16px;margin:16px 0"><p><strong>Booking #:</strong> ${data.bookingNum}</p><p><strong>Service:</strong> ${data.service}</p><p><strong>Plan:</strong> ${subLabels[data.subscription]||'one-time'}</p><p><strong>Date:</strong> ${data.date}</p><p><strong>Deposit Paid:</strong> $${data.deposit}</p><p><strong>Balance Due on Day:</strong> $${data.total-data.deposit}</p></div>${data.subscription&&data.subscription!=='once'?`<div style="background:#ede9fe;border-radius:8px;padding:14px;margin:12px 0"><p style="color:#7c3aed;font-weight:600;margin:0">♻️ Recurring Plan Active</p><p style="color:#6b6560;font-size:13px;margin:6px 0 0">Your next cleaning will be auto-scheduled. Cancel anytime at (551) 403-8397</p></div>`:''}<p>Questions? Text or call us at ${BUSINESS_PHONE}</p></div></div>`,
+    reminder:`<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:20px"><div style="background:#1a2744;padding:20px;border-radius:12px;text-align:center"><h1 style="color:#c9a84c;margin:0">D'Fide Cleaning Services</h1></div><div style="padding:20px"><p>Hi ${data.name},</p><p>Your cleaning is scheduled for <strong>tomorrow, ${data.date}</strong>.</p><p>Please ensure access to your home. Questions? Text us at ${BUSINESS_PHONE}</p></div></div>`,
+    review:`<div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:20px"><div style="background:#1a2744;padding:20px;border-radius:12px;text-align:center"><h1 style="color:#c9a84c;margin:0">D'Fide Cleaning Services</h1></div><div style="padding:20px;text-align:center"><h2>How did we do, ${data.name}? ⭐</h2><p>We hope your home is sparkling! Your feedback means the world to us and our team.</p><a href="${GOOGLE_REVIEW_URL}" style="display:inline-block;background:#c9a84c;color:#1a2744;padding:14px 28px;border-radius:8px;font-weight:bold;text-decoration:none;margin:16px 0">Leave a Google Review ⭐</a><p style="font-size:12px;color:#9a9590">Thank you for choosing D'Fide!</p></div></div>`
+  };
+  try {
+    await fetch('https://zihlgzcrbxcecyfvsoue.supabase.co/functions/v1/send-email',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer sb_publishable_sNy2GMIZKNcxUytc48PC1w_oHHtJE04'
+      },
+      body:JSON.stringify({
+        to: to,
+        subject: subjects[type],
+        html: bodies[type]
+      })
+    });
+  } catch(e){console.warn('Email failed:',e);}
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function openModal(id){
+  const el=document.getElementById(id);
+  if(el) el.classList.add('open');
+}
+
+function closeModal(id){
+  const el=document.getElementById(id);
+  if(el) el.classList.remove('open');
+}
+
+function openNewWorkerModal(){
+  document.getElementById('w-fname').value='';
+  document.getElementById('w-lname').value='';
+  document.getElementById('w-phone').value='';
+  document.getElementById('w-email').value='';
+  document.getElementById('w-type').value='1099';
+  document.getElementById('w-rate').value='40';
+  document.getElementById('w-transport').checked=false;
+  document.getElementById('w-save-btn').textContent='Save Worker';
+  document.getElementById('w-save-btn').onclick=saveWorker;
+  openModal('modal-new-worker');
+}
+
+function openNewClientModal(){
+  document.getElementById('c-fname').value='';
+  document.getElementById('c-lname').value='';
+  document.getElementById('c-email').value='';
+  document.getElementById('c-phone').value='';
+  document.getElementById('c-address').value='';
+  document.getElementById('c-city').value='';
+  document.getElementById('c-zip').value='';
+  document.getElementById('c-notes').value='';
+  document.getElementById('c-save-btn').textContent='Save Client';
+  document.getElementById('c-save-btn').onclick=saveClient;
+  openModal('modal-new-client');
+}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+function showNotif(msg, type='info') {
+  const el=document.getElementById('notification');
+  document.getElementById('notif-text').textContent=msg;
+  el.className=`notification show ${type}`;
+  setTimeout(()=>el.classList.remove('show'),3500);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadDashboard();
+  const urlParams=new URLSearchParams(window.location.search);
+  const refCode=urlParams.get('ref');
+  if(refCode){
+    const input=document.getElementById('referral-input');
+    if(input){input.value=refCode;applyReferral();}
+  }
+});
+</script>
+</body>
+</html>
