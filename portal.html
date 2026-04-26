@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D'Fide Cleaning Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2744;--navy-l:#243566;--gold:#c9a84c;--gold-l:#e8c97a;--white:#fff;--off:#f8f7f4;--g100:#f3f2ef;--g200:#e8e6e1;--g400:#9a9590;--g600:#6b6560;--green:#2d7a4f;--green-l:#e8f5ee;--red:#c0392b;--red-l:#fdf0ef;--amber:#d97706;--amber-l:#fef3c7;--purple:#7c3aed;--purple-l:#ede9fe;--r:12px;--r-sm:8px;--sh-sm:0 1px 3px rgba(26,39,68,.08);--sh-md:0 4px 16px rgba(26,39,68,.12);--sh-lg:0 8px 32px rgba(26,39,68,.16)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--navy);min-height:100vh}
+.top-nav{background:var(--navy);padding:0 14px;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:200;box-shadow:var(--sh-md)}
+.logo{font-family:'Playfair Display',serif;color:var(--gold);font-size:17px;font-weight:700;flex-shrink:0}
+.logo span{color:#fff}
+.nav-tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{background:none;border:none;color:rgba(255,255,255,.6);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:6px 9px;border-radius:7px;cursor:pointer;white-space:nowrap;transition:all .2s}
+.nav-tab.active{background:rgba(201,168,76,.2);color:var(--gold)}
+.nav-tab:hover:not(.active){background:rgba(255,255,255,.08);color:#fff}
+.page{display:none}.page.active{display:block}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-l) 100%);padding:36px 16px 28px;text-align:center}
+.eco-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,.2);border:1px solid rgba(201,168,76,.4);color:var(--gold-l);font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;margin-bottom:12px}
+.hero h1{font-family:'Playfair Display',serif;color:#fff;font-size:24px;margin-bottom:6px}
+.hero p{color:rgba(255,255,255,.7);font-size:13px}
+.bk-wrap{max-width:660px;margin:0 auto;padding:20px 14px 60px}
+.step-row{display:flex;align-items:center;justify-content:center;margin-bottom:22px}
+.dot{width:28px;height:28px;border-radius:50%;background:var(--g200);color:var(--g400);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0}
+.dot.active{background:var(--navy);color:#fff}.dot.done{background:var(--gold);color:#fff}
+.line{flex:1;height:2px;background:var(--g200);max-width:48px}.line.done{background:var(--gold)}
+.bk-step{display:none}.bk-step.active{display:block}
+.card{background:#fff;border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:var(--sh-sm)}
+.card h3{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--g200)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg{margin-bottom:12px}.fg:last-child{margin-bottom:0}
+label{display:block;font-size:12px;font-weight:500;color:var(--navy);margin-bottom:5px}
+input,select,textarea{width:100%;padding:9px 12px;border:1.5px solid var(--g200);border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);background:#fff;outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.svc-card{background:#fff;border:2px solid var(--g200);border-radius:var(--r);padding:16px;cursor:pointer;transition:all .2s}
+.svc-card:hover{border-color:var(--navy)}.svc-card.sel{border-color:var(--gold);background:linear-gradient(135deg,#fdf9ef,#fff)}
+.svc-card .ic{font-size:24px;margin-bottom:8px}.svc-card h3{font-size:14px;font-weight:600;margin-bottom:6px}
+.svc-card ul{list-style:none;font-size:11px;color:var(--g600);line-height:1.8}
+.svc-card .pt{font-size:13px;font-weight:700;color:var(--gold);margin-top:8px}
+.svc-card .bg{font-size:10px;font-weight:600;margin-top:3px}
+.sz-row{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:14px}
+.sz-btn{border:1.5px solid var(--g200);background:#fff;border-radius:var(--r-sm);padding:8px 4px;text-align:center;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.sz-btn:hover{border-color:var(--navy)}.sz-btn.sel{border-color:var(--gold);background:rgba(201,168,76,.08)}
+.sz-btn .n{font-size:15px;font-weight:700;color:var(--navy);display:block}.sz-btn .l{font-size:10px;color:var(--g400);display:block}
+.sub-cards{display:grid;gap:8px}
+.sub-card{background:#fff;border:2px solid var(--g200);border-radius:var(--r);padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s;position:relative}
+.sub-card:hover{border-color:var(--navy)}.sub-card.sel{border-color:var(--gold);background:rgba(201,168,76,.05)}
+.sub-card.pop{border-color:var(--purple)}.sub-card.pop.sel{border-color:var(--purple);background:var(--purple-l)}
+.pop-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--purple);color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.si{font-size:24px;flex-shrink:0}.sn{font-weight:600;font-size:13px;color:var(--navy)}.sd{font-size:11px;color:var(--g400);margin-top:1px}
+.sp{font-size:18px;font-weight:700;color:var(--navy);font-family:'Playfair Display',serif;text-align:right}.sper{font-size:10px;color:var(--g400)}.ssave{font-size:11px;color:var(--green);font-weight:600}
+.ext-cat{margin-bottom:12px}
+.ext-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:var(--navy);border-radius:var(--r-sm);cursor:pointer}
+.ext-hdr-l{display:flex;align-items:center;gap:10px}
+.ext-icon{font-size:18px}.ext-name{font-weight:600;color:#fff;font-size:13px}.ext-desc{font-size:11px;color:rgba(255,255,255,.5)}
+.ext-arrow{color:var(--gold);font-size:16px;transition:transform .2s}
+.ext-body{border:1.5px solid var(--g200);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);overflow:hidden;display:none}
+.ext-body.open{display:block}
+.ext-item{display:flex;align-items:center;padding:10px 12px;border-bottom:1px solid var(--g100);cursor:pointer;transition:background .15s}
+.ext-item:last-child{border-bottom:none}.ext-item:hover{background:var(--g100)}.ext-item.sel{background:rgba(201,168,76,.06)}
+.ext-cb{width:16px;height:16px;border-radius:4px;accent-color:var(--gold);flex-shrink:0;margin-right:10px}
+.ext-n{font-size:13px;font-weight:500;color:var(--navy)}.ext-d{font-size:11px;color:var(--g400)}.ext-p{font-size:13px;font-weight:600;color:var(--gold)}
+.pbox{background:var(--navy);border-radius:var(--r);padding:16px;margin-bottom:14px;color:#fff}
+.pbox h3{font-family:'Playfair Display',serif;font-size:14px;color:var(--gold);margin-bottom:12px}
+.pl{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;color:rgba(255,255,255,.8)}
+.pl.tot{border-top:1px solid rgba(255,255,255,.15);margin-top:8px;padding-top:10px;font-size:16px;font-weight:700;color:#fff}
+.pl.dep{color:var(--gold);font-weight:600;font-size:14px}
+.tip-grid{display:flex;gap:8px;flex-wrap:wrap}
+.tip-btn{border:1.5px solid var(--g200);background:#fff;border-radius:var(--r-sm);padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--navy);transition:all .2s}
+.tip-btn.sel{border-color:var(--gold);background:rgba(201,168,76,.1)}
+.btn{border:none;border-radius:var(--r-sm);padding:13px 18px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;width:100%;transition:all .2s;display:block}
+.btn-g{background:var(--gold);color:var(--navy)}.btn-g:hover{background:var(--gold-l);transform:translateY(-1px)}
+.btn-o{background:transparent;color:var(--navy);border:1.5px solid var(--g200);font-weight:500;margin-bottom:8px}.btn-o:hover{border-color:var(--navy)}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none!important}
+.overlay{display:none;position:fixed;inset:0;background:rgba(26,39,68,.6);z-index:1000;align-items:center;justify-content:center;padding:14px}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:var(--r);padding:22px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--sh-lg)}
+.mhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.mhdr h3{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy)}
+.mcls{background:none;border:none;font-size:22px;color:var(--g400);cursor:pointer;line-height:1}
+.admin-lay{display:grid;grid-template-columns:200px 1fr;min-height:calc(100vh - 52px)}
+.sidebar{background:var(--navy);padding:14px 0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto}
+.s-lbl{font-size:9px;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1px;padding:0 12px;margin:12px 0 4px}
+.s-btn{display:flex;align-items:center;gap:8px;width:calc(100% - 12px);margin:0 6px;padding:9px 10px;border:none;background:none;color:rgba(255,255,255,.65);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;border-radius:7px;transition:all .2s;text-align:left}
+.s-btn:hover{background:rgba(255,255,255,.08);color:#fff}.s-btn.active{background:rgba(201,168,76,.2);color:var(--gold)}
+.a-main{padding:18px;overflow-y:auto}.av{display:none}.av.active{display:block}
+.mob-nav{display:none;position:sticky;top:52px;background:var(--navy-l);z-index:99;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid rgba(255,255,255,.1)}
+.mob-nav::-webkit-scrollbar{display:none}
+.mob-inner{display:flex;padding:4px}
+.mb{flex:0 0 auto;background:none;border:none;color:rgba(255,255,255,.6);font-size:9px;font-family:'DM Sans',sans-serif;padding:5px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;border-radius:6px;white-space:nowrap}
+.mb .mi{font-size:16px}.mb.active{color:var(--gold);background:rgba(201,168,76,.15)}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.stat{background:#fff;border-radius:var(--r);padding:16px;box-shadow:var(--sh-sm)}
+.stat .sl{font-size:11px;font-weight:500;color:var(--g400);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.stat .sv{font-size:24px;font-weight:700;color:var(--navy);font-family:'Playfair Display',serif}
+.stat .ss{font-size:11px;color:var(--g400);margin-top:3px}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-sm)}
+th{background:var(--navy);color:rgba(255,255,255,.7);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;padding:10px 12px;text-align:left;white-space:nowrap}
+td{padding:11px 12px;font-size:13px;border-bottom:1px solid var(--g100);vertical-align:middle}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--off)}
+.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.b-p{background:var(--amber-l);color:var(--amber)}.b-c{background:#e0f0ff;color:#1a6fb5}
+.b-ok{background:var(--green-l);color:var(--green)}.b-x{background:var(--red-l);color:var(--red)}
+.pghdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.pghdr h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy)}
+.btn-add{background:var(--gold);color:var(--navy);border:none;border-radius:var(--r-sm);padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-add:hover{background:var(--gold-l)}
+.ab{background:none;border:1.5px solid var(--g200);border-radius:5px;padding:4px 8px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-right:3px;transition:all .2s;white-space:nowrap}
+.ab:hover{border-color:var(--navy)}.ab.g{border-color:var(--green);color:var(--green)}.ab.g:hover{background:var(--green-l)}
+.ab.a{border-color:var(--gold);color:#8b6914}.ab.a:hover{background:rgba(201,168,76,.1)}
+.ab.r{border-color:var(--red);color:var(--red)}.ab.r:hover{background:var(--red-l)}
+.ab.p{border-color:var(--purple);color:var(--purple)}.ab.p:hover{background:var(--purple-l)}
+.notif{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#fff;padding:12px 18px;border-radius:var(--r-sm);font-size:13px;font-weight:500;box-shadow:var(--sh-lg);z-index:9999;display:none;align-items:center;gap:8px;max-width:300px;animation:sIn .3s ease}
+.notif.show{display:flex}.notif.success{border-left:4px solid var(--green)}.notif.error{border-left:4px solid var(--red)}.notif.info{border-left:4px solid var(--gold)}
+@keyframes sIn{from{transform:translateX(100px);opacity:0}to{transform:translateX(0);opacity:1}}
+.ld{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--g400);gap:10px}
+.spin{width:18px;height:18px;border:2px solid var(--g200);border-top-color:var(--gold);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:48px 20px;color:var(--g400)}.empty .ei{font-size:44px;margin-bottom:10px}
+.sc{text-align:center;padding:36px 16px}
+.sc-icon{width:64px;height:64px;background:var(--green-l);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px}
+.sc h2{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:8px}
+.bref{background:var(--off);border-radius:var(--r-sm);padding:12px;margin:16px 0;font-size:12px;color:var(--g600)}
+.bref strong{font-size:20px;color:var(--navy);display:block;font-family:'Playfair Display',serif;margin-bottom:3px}
+.wcard{background:#fff;border-radius:var(--r);padding:16px;margin-bottom:10px;box-shadow:var(--sh-sm)}
+.av8{width:42px;height:42px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:15px;font-weight:700;font-family:'Playfair Display',serif;flex-shrink:0}
+.pin-overlay{display:none;position:fixed;inset:0;background:rgba(26,39,68,.97);z-index:9998;align-items:center;justify-content:center}
+.pin-overlay.open{display:flex}
+.pin-box{background:#fff;border-radius:var(--r);padding:32px;max-width:360px;width:100%;text-align:center;box-shadow:var(--sh-lg)}
+.pin-box h2{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:8px}
+.pin-box p{font-size:13px;color:var(--g600);margin-bottom:20px}
+.pin-row{display:flex;gap:10px;justify-content:center;margin-bottom:20px}
+.pd{width:48px;height:56px;text-align:center;font-size:22px;font-weight:700;border:2px solid var(--g200);border-radius:var(--r-sm);font-family:'Playfair Display',serif;color:var(--navy)}
+.pd:focus{border-color:var(--gold);outline:none}
+.perr{color:var(--red);font-size:13px;margin-top:8px;min-height:20px}
+@media(max-width:768px){
+  .admin-lay{grid-template-columns:1fr}.sidebar{display:none}.a-main{padding:12px 10px 80px}
+  .sg{grid-template-columns:1fr 1fr;gap:8px}.mob-nav{display:block}
+  .frow{grid-template-columns:1fr}.svc-grid{grid-template-columns:1fr}.sz-row{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:480px){.nav-tab .nt{display:none}.nav-tab{font-size:18px;padding:5px 7px}}
+</style>
+</head>
+<body>
+
+<div class="notif" id="notif"><span id="notif-text"></span></div>
+
+<!-- PIN OVERLAY -->
+<div class="pin-overlay" id="pin-overlay">
+  <div class="pin-box">
+    <div style="font-size:36px;margin-bottom:12px">🔒</div>
+    <h2>Admin Access</h2>
+    <p>Enter your 4-digit PIN</p>
+    <div class="pin-row">
+      <input class="pd" type="password" maxlength="1" inputmode="numeric" id="p0" oninput="pinIn(0)">
+      <input class="pd" type="password" maxlength="1" inputmode="numeric" id="p1" oninput="pinIn(1)">
+      <input class="pd" type="password" maxlength="1" inputmode="numeric" id="p2" oninput="pinIn(2)">
+      <input class="pd" type="password" maxlength="1" inputmode="numeric" id="p3" oninput="pinIn(3)">
+      <input class="pd" type="password" maxlength="1" inputmode="numeric" id="p4" oninput="pinIn(4)">
+      <input class="pd" type="password" maxlength="1" inputmode="numeric" id="p5" oninput="pinIn(5)">
+    </div>
+    <div class="perr" id="perr"></div>
+    <button class="btn btn-o" style="width:auto;padding:8px 20px;margin-top:8px" onclick="closePIN()">Cancel</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="logo">D'Fide <span>Cleaning</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('booking',this)">📅 <span class="nt">Book</span></button>
+    <button class="nav-tab" onclick="showPage('portal',this)">👤 <span class="nt">My Account</span></button>
+    <button class="nav-tab" onclick="showPage('contractor',this)">🧹 <span class="nt">Team</span></button>
+    <button class="nav-tab" onclick="showPage('admin',this)">🔒 <span class="nt">Admin</span></button>
+  </div>
+</nav>
+
+<!-- MOBILE ADMIN NAV -->
+<div class="mob-nav" id="mob-nav" style="display:none">
+  <div class="mob-inner">
+    <button class="mb active" onclick="showView('dashboard',this);loadDashboard()"><span class="mi">📊</span>Dashboard</button>
+    <button class="mb" onclick="showView('bookings',this);loadBookings()"><span class="mi">📅</span>Bookings</button>
+    <button class="mb" onclick="showView('clients',this);loadClients()"><span class="mi">👥</span>Clients</button>
+    <button class="mb" onclick="showView('workers',this);loadWorkers()"><span class="mi">🧹</span>Team</button>
+    <button class="mb" onclick="showView('payments',this);loadPayments()"><span class="mi">💰</span>Pay</button>
+    <button class="mb" onclick="showView('expenses',this);loadExpenses()"><span class="mi">📋</span>Expenses</button>
+    <button class="mb" onclick="showView('reports',this);loadReports()"><span class="mi">📈</span>Reports</button>
+  </div>
+</div>
+
+<!-- ===== BOOKING ===== -->
+<div class="page active" id="page-booking">
+  <div class="hero">
+    <div class="eco-badge">🌿 Eco-Friendly Certified</div>
+    <h1>Book Your Cleaning</h1>
+    <p>Bergen & Essex County, NJ · Professional Eco-Safe Service</p>
+  </div>
+  <div class="bk-wrap">
+    <div class="step-row">
+      <div class="dot active" id="d1">1</div><div class="line" id="l1"></div>
+      <div class="dot" id="d2">2</div><div class="line" id="l2"></div>
+      <div class="dot" id="d3">3</div><div class="line" id="l3"></div>
+      <div class="dot" id="d4">4</div><div class="line" id="l4"></div>
+      <div class="dot" id="d5">5</div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="bk-step active" id="s1">
+      <div class="card">
+        <h3>Select Your Service</h3>
+        <div class="svc-grid">
+          <div class="svc-card" onclick="selSvc('standard',this)">
+            <div class="ic">✨</div><h3>Standard Clean</h3>
+            <ul><li>✓ Dusting all surfaces</li><li>✓ Vacuum & mop floors</li><li>✓ Kitchen counters & sink</li><li>✓ Bathrooms full clean</li><li>✓ Mirrors & glass</li><li>✓ Trash removal</li><li>✓ Eco products 🌿</li></ul>
+            <div class="pt">From $180</div><div class="bg" style="color:var(--green)">Ideal for regular maintenance</div>
+          </div>
+          <div class="svc-card" onclick="selSvc('deep',this)">
+            <div class="ic">🧹</div><h3>Deep Clean</h3>
+            <ul><li>✓ Everything in Standard +</li><li>✓ Baseboards & door frames</li><li>✓ Window sills & tracks</li><li>✓ Behind & under furniture</li><li>✓ Grout scrubbing</li><li>✓ Light switches & outlets</li><li>✓ Eco products 🌿</li></ul>
+            <div class="pt">From $260</div><div class="bg" style="color:var(--gold)">Recommended for first-time clients</div>
+          </div>
+        </div>
+      </div>
+      <div class="card" id="size-sec" style="display:none">
+        <h3>Home Size</h3>
+        <label style="margin-bottom:8px">Bedrooms</label>
+        <div class="sz-row" id="bed-row">
+          <button class="sz-btn sel" onclick="selBed(1,this)"><span class="n">1</span><span class="l">BR</span></button>
+          <button class="sz-btn" onclick="selBed(2,this)"><span class="n">2</span><span class="l">BR</span></button>
+          <button class="sz-btn" onclick="selBed(3,this)"><span class="n">3</span><span class="l">BR</span></button>
+          <button class="sz-btn" onclick="selBed(4,this)"><span class="n">4</span><span class="l">BR</span></button>
+          <button class="sz-btn" onclick="selBed(5,this)"><span class="n">5</span><span class="l">BR</span></button>
+          <button class="sz-btn" onclick="selBed(6,this)"><span class="n">6+</span><span class="l">BR</span></button>
+        </div>
+        <label style="margin-bottom:8px">Bathrooms</label>
+        <div class="sz-row" id="bath-row">
+          <button class="sz-btn sel" onclick="selBath(1,this)"><span class="n">1</span><span class="l">BA</span></button>
+          <button class="sz-btn" onclick="selBath(2,this)"><span class="n">2</span><span class="l">BA</span></button>
+          <button class="sz-btn" onclick="selBath(3,this)"><span class="n">3</span><span class="l">BA</span></button>
+          <button class="sz-btn" onclick="selBath(4,this)"><span class="n">4</span><span class="l">BA</span></button>
+          <button class="sz-btn" onclick="selBath(5,this)"><span class="n">5</span><span class="l">BA</span></button>
+          <button class="sz-btn" onclick="selBath(6,this)"><span class="n">6+</span><span class="l">BA</span></button>
+        </div>
+      </div>
+      <div class="card" id="sub-sec" style="display:none">
+        <h3>⭐ Save with a Recurring Plan</h3>
+        <div class="sub-cards">
+          <div class="sub-card" onclick="selSub('once',this)">
+            <div class="si">📅</div><div style="flex:1"><div class="sn">One-Time</div><div class="sd">No commitment</div></div>
+            <div><div class="sp" id="sp-once">$0</div><div class="sper">per visit</div></div>
+          </div>
+          <div class="sub-card pop sel" onclick="selSub('biweekly',this)" style="position:relative">
+            <div class="pop-badge">MOST POPULAR</div>
+            <div class="si">🔄</div><div style="flex:1"><div class="sn">Every 2 Weeks</div><div class="sd">Auto-scheduled</div></div>
+            <div><div class="sp" id="sp-bi">$0</div><div class="sper">per visit</div><div class="ssave">Save 10%</div></div>
+          </div>
+          <div class="sub-card" onclick="selSub('monthly',this)">
+            <div class="si">📆</div><div style="flex:1"><div class="sn">Monthly</div><div class="sd">Auto-scheduled</div></div>
+            <div><div class="sp" id="sp-mo">$0</div><div class="sper">per visit</div><div class="ssave">Save 5%</div></div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-g" id="s1-next" style="display:none" onclick="goStep(2)">Continue → Add Extras</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="bk-step" id="s2">
+      <div class="card">
+        <h3>➕ Add Extras <span style="font-size:12px;font-weight:400;color:var(--g400)">(Optional)</span></h3>
+        <div style="background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:8px;padding:11px;margin-bottom:14px;font-size:12px;color:var(--navy)">
+          💡 Tap each category to expand. Most clients add 2–3 extras.
+        </div>
+        <div id="ext-list"></div>
+      </div>
+      <div class="pbox">
+        <h3>Price Summary</h3>
+        <div class="pl"><span>Base Price</span><span id="sb">$0</span></div>
+        <div class="pl"><span>Extras</span><span id="se">$0</span></div>
+        <div class="pl" id="sd-row" style="display:none;color:var(--green-l)"><span>Plan Discount</span><span id="sd">-$0</span></div>
+        <div class="pl tot"><span>Total</span><span id="st">$0</span></div>
+        <div class="pl dep"><span>💳 Deposit Due Now (50%)</span><span id="sdp">$0</span></div>
+        <div class="pl" style="font-size:11px;color:rgba(255,255,255,.5)"><span>Balance due day of service</span><span id="sbl">$0</span></div>
+      </div>
+      <button class="btn btn-o" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-g" onclick="goStep(3)">Continue → Add a Tip</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="bk-step" id="s3">
+      <div class="card">
+        <h3>💰 Add a Tip for Your Cleaner</h3>
+        <p style="font-size:12px;color:var(--g600);margin-bottom:12px">100% goes directly to your cleaning professional</p>
+        <div class="tip-grid">
+          <button class="tip-btn" onclick="selTip(0,this)">No tip</button>
+          <button class="tip-btn sel" onclick="selTip(10,this)">$10</button>
+          <button class="tip-btn" onclick="selTip(15,this)">$15</button>
+          <button class="tip-btn" onclick="selTip(20,this)">$20</button>
+          <button class="tip-btn" onclick="selTip('custom',this)">Custom</button>
+        </div>
+        <div id="custom-tip" style="display:none;margin-top:10px">
+          <input type="number" placeholder="Enter tip amount" oninput="b.tip=parseFloat(this.value)||0">
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎁 Have a Referral Code?</h3>
+        <input type="text" id="ref-input" placeholder="e.g. DFIDE-ABC123" style="text-transform:uppercase">
+        <div id="ref-status" style="font-size:12px;margin-top:6px"></div>
+      </div>
+      <button class="btn btn-o" onclick="goStep(2)">← Back</button>
+      <button class="btn btn-g" onclick="goStep(4)">Continue → Schedule & Details</button>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="bk-step" id="s4">
+      <div class="card">
+        <h3>📅 Schedule</h3>
+        <div class="frow">
+          <div class="fg"><label>Preferred Date *</label><input type="date" id="b-date"></div>
+          <div class="fg"><label>Preferred Time</label>
+            <select id="b-time">
+              <option value="08:00">8:00 AM</option><option value="09:00" selected>9:00 AM</option>
+              <option value="10:00">10:00 AM</option><option value="11:00">11:00 AM</option>
+              <option value="12:00">12:00 PM</option><option value="13:00">1:00 PM</option>
+              <option value="14:00">2:00 PM</option><option value="15:00">3:00 PM</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>👤 Your Information</h3>
+        <div class="frow">
+          <div class="fg"><label>First Name *</label><input type="text" id="b-fname" placeholder="Jane"></div>
+          <div class="fg"><label>Last Name *</label><input type="text" id="b-lname" placeholder="Smith"></div>
+        </div>
+        <div class="frow">
+          <div class="fg"><label>Email *</label><input type="email" id="b-email" placeholder="jane@email.com"></div>
+          <div class="fg"><label>Phone</label><input type="tel" id="b-phone" placeholder="(201) 555-0000"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>📍 Service Address</h3>
+        <div class="fg"><label>Street Address *</label><input type="text" id="b-addr" placeholder="123 Main Street"></div>
+        <div class="frow">
+          <div class="fg"><label>City *</label>
+            <select id="b-city">
+              <option value="">Select city...</option>
+              <option>Montclair</option><option>Ridgewood</option><option>Glen Ridge</option>
+              <option>South Orange</option><option>Maplewood</option><option>Westfield</option>
+              <option>Summit</option><option>Millburn</option><option>Short Hills</option>
+              <option>Livingston</option><option>West Orange</option><option>Bloomfield</option>
+              <option>Hoboken</option><option>Jersey City</option><option>Other NJ</option>
+            </select>
+          </div>
+          <div class="fg"><label>ZIP Code</label><input type="text" id="b-zip" placeholder="07042"></div>
+        </div>
+        <div class="fg"><label>Special Instructions</label><textarea id="b-notes" rows="2" placeholder="Gate code, pets, areas to focus on..."></textarea></div>
+      </div>
+      <button class="btn btn-o" onclick="goStep(3)">← Back</button>
+      <button class="btn btn-g" onclick="goStep(5)">Continue → Review & Pay</button>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="bk-step" id="s5">
+      <div class="card"><h3>Booking Review</h3><div id="rev-content" style="font-size:13px"></div></div>
+      <div class="pbox">
+        <h3>Payment Summary</h3>
+        <div class="pl"><span>Service Total</span><span id="pt">$0</span></div>
+        <div class="pl" id="pt-row"><span>Tip for Cleaner</span><span id="ptip">$0</span></div>
+        <div class="pl dep"><span>💳 Deposit Due Now (50%)</span><span id="pdep">$0</span></div>
+        <div class="pl" style="font-size:11px;color:rgba(255,255,255,.5)"><span>Balance due day of service</span><span id="pbal">$0</span></div>
+      </div>
+      <div class="card">
+        <h3>🔒 Secure Payment</h3>
+        <p style="font-size:13px;color:var(--g600);margin-bottom:12px">Your 50% deposit secures your booking. Balance due on service day.</p>
+        <div id="stripe-el" style="background:var(--off);border:1.5px solid var(--g200);border-radius:8px;padding:14px;min-height:46px"></div>
+        <div id="stripe-err" style="color:var(--red);font-size:12px;margin-top:6px"></div>
+        <div style="background:var(--amber-l);border-radius:6px;padding:10px;margin-top:10px;font-size:12px;color:var(--amber)">
+          🔒 Your card will be saved securely to charge the remaining balance on the day of service.
+        </div>
+        <div style="font-size:11px;color:var(--g400);margin-top:8px">Secured by Stripe · All major cards accepted</div>
+      </div>
+      <button class="btn btn-o" onclick="goStep(4)">← Back</button>
+      <button class="btn btn-g" id="pay-btn" onclick="submitBooking()">✓ Confirm & Pay Deposit</button>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="bk-step" id="s-ok">
+      <div class="sc">
+        <div class="sc-icon">✅</div>
+        <h2>Booking Confirmed!</h2>
+        <p style="color:var(--g600);font-size:14px">Thank you! Confirmation sent to your email.</p>
+        <div class="bref"><strong id="ok-ref">DFD-0000</strong>Your booking reference number</div>
+        <div id="ok-pay"></div>
+        <p style="font-size:12px;color:var(--g400);margin-top:12px">Questions? Call or text (551) 403-8397</p>
+        <br>
+        <button class="btn btn-g" onclick="resetBooking()" style="max-width:240px;margin:0 auto">Book Another Service</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CLIENT PORTAL ===== -->
+<div class="page" id="page-portal">
+  <div class="hero"><div class="eco-badge">👤 My Account</div><h1>Client Portal</h1><p>View your bookings and history</p></div>
+  <div style="max-width:600px;margin:0 auto;padding:20px 14px">
+    <div class="card">
+      <h3>Look Up My Bookings</h3>
+      <div class="fg"><label>Email Address</label><input type="email" id="portal-email" placeholder="your@email.com"></div>
+      <button class="btn btn-g" style="margin-top:4px" onclick="lookupClient()">Find My Bookings</button>
+    </div>
+    <div id="portal-result"></div>
+  </div>
+</div>
+
+<!-- ===== CONTRACTOR ===== -->
+<div class="page" id="page-contractor">
+  <div class="hero"><div class="eco-badge">🧹 Team Portal</div><h1>Team Login</h1><p>View your jobs and checklists</p></div>
+  <div style="max-width:500px;margin:0 auto;padding:20px 14px">
+    <div class="card">
+      <h3>Sign In</h3>
+      <div class="fg"><label>Your Phone Number</label><input type="tel" id="w-phone-login" placeholder="(551) 000-0000"></div>
+      <button class="btn btn-g" style="margin-top:4px" onclick="workerLogin()">View My Jobs</button>
+    </div>
+    <div id="w-jobs"></div>
+  </div>
+</div>
+
+<!-- ===== ADMIN ===== -->
+<div class="page" id="page-admin">
+  <div class="admin-lay">
+    <aside class="sidebar">
+      <div style="padding:0 12px 14px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:10px">
+        <div style="font-family:'Playfair Display',serif;color:var(--gold);font-size:15px;font-weight:700">D'Fide Admin</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:2px">Management Portal</div>
+      </div>
+      <div class="s-lbl">Operations</div>
+      <button class="s-btn active" onclick="showView('dashboard',this);loadDashboard()">📊 Dashboard</button>
+      <button class="s-btn" onclick="showView('bookings',this);loadBookings()">📅 Bookings</button>
+      <button class="s-btn" onclick="showView('clients',this);loadClients()">👥 Clients</button>
+      <button class="s-btn" onclick="showView('workers',this);loadWorkers()">🧹 Team</button>
+      <button class="s-btn" onclick="showView('payments',this);loadPayments()">💰 Payments</button>
+      <div class="s-lbl">Finance</div>
+      <button class="s-btn" onclick="showView('expenses',this);loadExpenses()">📋 Expenses</button>
+      <button class="s-btn" onclick="showView('reports',this);loadReports()">📈 Reports</button>
+    </aside>
+    <main class="a-main">
+      <div class="av active" id="view-dashboard">
+        <div class="pghdr"><h2>Dashboard</h2><span style="font-size:12px;color:var(--g400)" id="today"></span></div>
+        <div class="sg">
+          <div class="stat" style="border-left:4px solid var(--gold)"><div class="sl">Total Revenue</div><div class="sv" id="st-rev">$0</div><div class="ss">All time</div></div>
+          <div class="stat" style="border-left:4px solid var(--green)"><div class="sl">This Month</div><div class="sv" id="st-mo">$0</div><div class="ss">Revenue</div></div>
+          <div class="stat" style="border-left:4px solid #1a6fb5"><div class="sl">Total Jobs</div><div class="sv" id="st-jobs">0</div><div class="ss">Completed</div></div>
+          <div class="stat" style="border-left:4px solid var(--amber)"><div class="sl">Pending</div><div class="sv" id="st-pend">0</div><div class="ss">Upcoming</div></div>
+        </div>
+        <div class="card" style="margin-bottom:16px"><h3>Upcoming Jobs</h3><div id="dash-up"><div class="ld"><div class="spin"></div>Loading...</div></div></div>
+        <div class="card"><h3>Worker Payments Due</h3><div id="dash-pay"><div class="ld"><div class="spin"></div>Loading...</div></div></div>
+      </div>
+      <div class="av" id="view-bookings">
+        <div class="pghdr"><h2>Bookings</h2><button class="btn-add" onclick="showPage('booking',null)">+ New Booking</button></div>
+        <select onchange="loadBookings(this.value)" style="margin-bottom:14px;width:auto;padding:7px 12px;font-size:13px;border:1.5px solid var(--g200);border-radius:var(--r-sm)">
+          <option value="">All Statuses</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option>
+        </select>
+        <div id="bk-cont"><div class="ld"><div class="spin"></div>Loading...</div></div>
+      </div>
+      <div class="av" id="view-clients">
+        <div class="pghdr"><h2>Clients</h2><button class="btn-add" onclick="openNewClient()">+ New Client</button></div>
+        <input type="text" placeholder="🔍 Search clients..." oninput="filterTbl(this.value)" style="margin-bottom:14px">
+        <div id="cl-cont"><div class="ld"><div class="spin"></div>Loading...</div></div>
+      </div>
+      <div class="av" id="view-workers">
+        <div class="pghdr"><h2>Team / Workers</h2><button class="btn-add" onclick="openNewWorker()">+ Add Worker</button></div>
+        <div id="wk-cont"><div class="ld"><div class="spin"></div>Loading...</div></div>
+      </div>
+      <div class="av" id="view-payments">
+        <div class="pghdr"><h2>Worker Payments</h2></div>
+        <div id="pay-cont"><div class="ld"><div class="spin"></div>Loading...</div></div>
+      </div>
+      <div class="av" id="view-expenses">
+        <div class="pghdr"><h2>Expenses</h2><button class="btn-add" onclick="openNewExpense()">+ Add Expense</button></div>
+        <div id="exp-cont"><div class="ld"><div class="spin"></div>Loading...</div></div>
+      </div>
+      <div class="av" id="view-reports">
+        <div class="pghdr"><h2>Financial Reports</h2></div>
+        <div id="rep-cont"><div class="ld"><div class="spin"></div>Loading...</div></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="overlay" id="m-booking">
+  <div class="modal" style="max-width:660px">
+    <div class="mhdr"><h3 id="m-bk-title">Booking Detail</h3><button class="mcls" onclick="closeModal('m-booking')">×</button></div>
+    <div id="m-bk-body"></div>
+  </div>
+</div>
+<div class="overlay" id="m-worker">
+  <div class="modal">
+    <div class="mhdr"><h3 id="m-wk-title">Add Worker</h3><button class="mcls" onclick="closeModal('m-worker')">×</button></div>
+    <input type="hidden" id="wk-id">
+    <div class="frow"><div class="fg"><label>First Name *</label><input type="text" id="wk-fname"></div><div class="fg"><label>Last Name *</label><input type="text" id="wk-lname"></div></div>
+    <div class="fg"><label>Phone *</label><input type="tel" id="wk-phone"></div>
+    <div class="fg"><label>Email</label><input type="email" id="wk-email"></div>
+    <div class="frow">
+      <div class="fg"><label>Type</label><select id="wk-type"><option value="1099">1099 Contractor</option><option value="w2">W-2 Employee</option></select></div>
+      <div class="fg"><label>Rate (%)</label><input type="number" id="wk-rate" value="40"></div>
+    </div>
+    <div class="fg" style="margin-top:4px"><label><input type="checkbox" id="wk-trans" style="width:auto;margin-right:6px">Has own transportation</label></div>
+    <br><button class="btn btn-g" id="wk-save" onclick="saveWorker()">Save Worker</button>
+  </div>
+</div>
+<div class="overlay" id="m-expense">
+  <div class="modal">
+    <div class="mhdr"><h3>Add Expense</h3><button class="mcls" onclick="closeModal('m-expense')">×</button></div>
+    <div class="frow"><div class="fg"><label>Date *</label><input type="date" id="ex-date"></div><div class="fg"><label>Amount *</label><input type="number" id="ex-amt" step="0.01" placeholder="0.00"></div></div>
+    <div class="fg"><label>Category *</label><select id="ex-cat"><option>Cleaning Supplies</option><option>Equipment</option><option>Transportation/Gas</option><option>Insurance</option><option>Marketing</option><option>Software/Tools</option><option>Worker Payment</option><option>Other</option></select></div>
+    <div class="fg"><label>Description *</label><input type="text" id="ex-desc" placeholder="Branch Basics..."></div>
+    <br><button class="btn btn-g" onclick="saveExpense()">Save Expense</button>
+  </div>
+</div>
+<div class="overlay" id="m-client">
+  <div class="modal">
+    <div class="mhdr"><h3 id="m-cl-title">Add Client</h3><button class="mcls" onclick="closeModal('m-client')">×</button></div>
+    <input type="hidden" id="cl-id">
+    <div class="frow"><div class="fg"><label>First Name *</label><input type="text" id="cl-fname"></div><div class="fg"><label>Last Name *</label><input type="text" id="cl-lname"></div></div>
+    <div class="frow"><div class="fg"><label>Email *</label><input type="email" id="cl-email"></div><div class="fg"><label>Phone</label><input type="tel" id="cl-phone"></div></div>
+    <div class="fg"><label>Address</label><input type="text" id="cl-addr"></div>
+    <div class="frow"><div class="fg"><label>City</label><input type="text" id="cl-city"></div><div class="fg"><label>ZIP</label><input type="text" id="cl-zip"></div></div>
+    <div class="fg"><label>Notes</label><textarea id="cl-notes" rows="2"></textarea></div>
+    <br><button class="btn btn-g" id="cl-save" onclick="saveClient()">Save Client</button>
+  </div>
+</div>
+
+<script>
+// CONFIG
+const SB_URL='https://zihlgzcrbxcecyfvsoue.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppaGxnemNyYnhjZWN5ZnZzb3VlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMTQ3MTEsImV4cCI6MjA5MTU5MDcxMX0.k8QrBbVgaM5xx2zcmhPXRFMdhFOcfiTBv_dcslfVFaI';
+const STRIPE_PK='pk_live_51TLTgLFhnbfbbulQkXX5THQOACmOiUZDYkWBsEVe5wpH68w4tgm3hd5T7xaIsgCSlm99kkWLOxRKqOgorBfFZEik00fzvgWKK0';
+const RESEND='re_FhsYoQ2W_HoLUHk1YFSyFMtgTkJZ7Azq5';
+const BIZ_EMAIL='info@dfidecleaning.com';
+const BIZ_PHONE='(551) 403-8397';
+const REVIEW_URL='https://g.page/r/CcFplXLBHf5TEBI/review';
+const PIN='282026';
+
+// PRICING
+const PRICES={standard:{1:180,2:215,3:255,4:295,5:340,6:385},deep:{1:260,2:305,3:360,4:420,5:480,6:545},moveinout:{1:350,2:415,3:485,4:560,5:640,6:720},airbnb:{1:195,2:230,3:270,4:310,5:355,6:400}};
+const BATH_X={1:0,2:0,3:45,4:90,5:135,6:180};
+const SUB_D={once:0,biweekly:.10,monthly:.05};
+
+const EXTRAS=[
+  {id:'bath',icon:'🚿',name:'Bathroom Extras',desc:'Additional bathrooms & deep cleaning',items:[
+    {name:'Extra Bathroom',price:65,desc:'Full bathroom — toilet, sink, tub, mirrors'},
+    {name:'Master Bathroom (Deep)',price:85,desc:'Deep clean with full sanitization'},
+  ]},
+  {id:'app',icon:'🧼',name:'Appliance & Cabinet Interiors',desc:'Deep cleaning inside appliances and cabinets',items:[
+    {name:'Fridge Interior',price:75,desc:'Shelves, drawers, walls — eco-safe'},
+    {name:'Oven Interior',price:70,desc:'Racks, walls, door glass — eco-safe'},
+    {name:'Microwave Interior',price:40,desc:'Removes grease, splatter and odors'},
+    {name:'Inside Dishwasher',price:50,desc:'Removes buildup, residue and odors'},
+    {name:'Inside Washer',price:35,desc:'Interior drum and seal cleaning'},
+    {name:'Inside Dryer',price:30,desc:'Interior drum and lint trap cleaning'},
+    {name:'Inside Washer & Dryer',price:55,desc:'Both appliances full interior cleaning'},
+    {name:'Interior Cabinets',price:90,desc:'Kitchen or bathroom cabinets'},
+  ]},
+  {id:'win',icon:'🪟',name:'Windows, Fans & Surfaces',desc:'Glass, fans and detailed surface work',items:[
+    {name:'Interior Windows (each)',price:30,desc:'Streak-free eco glass cleaning'},
+    {name:'Ceiling Fan',price:50,desc:'Full blade and housing cleaning'},
+    {name:'Blinds / Shades (per room)',price:50,desc:'Dusting and detailed cleaning'},
+    {name:'Sliding Door / Track',price:45,desc:'Glass and track deep cleaning'},
+    {name:'Light Fixture',price:50,desc:'Removes dust and residue'},
+  ]},
+  {id:'deep',icon:'🧹',name:'Deep Detail Work',desc:'Heavy-duty cleaning for tough areas',items:[
+    {name:'Pet Hair Removal (per room)',price:90,desc:'Carpets, floors, furniture'},
+    {name:'Heavy Cleaning',price:270,desc:'Intensive for very dirty/neglected areas'},
+    {name:'Deep Stair Cleaning',price:90,desc:'Treads, risers, railings'},
+    {name:'High Cobwebs & Corners',price:60,desc:'Ceilings, high corners, hard-to-reach areas'},
+    {name:'Wall / Baseboard Spot Cleaning',price:100,desc:'Marks, scuffs, dirt from walls & baseboards'},
+    {name:'Heavy Tidy-Up / Organization',price:110,desc:'Items sorted, surfaces cleared & reset'},
+  ]},
+  {id:'sp',icon:'🏠',name:'Extra Spaces',desc:'Additional rooms beyond standard scope',items:[
+    {name:'Home Office',price:85,desc:'Desk, shelves, electronics dusting'},
+    {name:'Home Gym',price:120,desc:'Equipment, floors, mirrors'},
+    {name:'Garage Small (1-car)',price:90,desc:'Floors, corners, surfaces'},
+    {name:'Garage Medium (2-car)',price:120,desc:'Floors, corners, accessible surfaces'},
+    {name:'Garage Large (3-car)',price:160,desc:'Floors, corners, accessible surfaces'},
+    {name:'Finished Basement Small',price:160,desc:'Floors, surfaces, baseboards, stairs'},
+    {name:'Finished Basement Medium',price:210,desc:'Multiple areas, floors, stairs'},
+    {name:'Finished Basement Large',price:330,desc:'Full large basement cleaning'},
+    {name:'Balcony / Patio',price:65,desc:'Sweep, wipe surfaces and furniture'},
+  ]},
+  {id:'cv',icon:'⚡',name:'Convenience Services',desc:'Laundry, linens and same-day scheduling',items:[
+    {name:'Same-Day Rush',price:140,desc:'Urgent same-day cleaning service'},
+    {name:'Linen Change',price:60,desc:'All beds — client provides linens'},
+    {name:'Laundry & Folding (per load)',price:75,desc:'Wash, dry, fold — eco detergent'},
+    {name:'Dish Washing',price:45,desc:'Hand wash and dry all dishes in sink'},
+    {name:'Trash Removal',price:30,desc:'All bins emptied and bags replaced'},
+    {name:'Restocking & Amenity Setup',price:55,desc:'Hotel-quality finish + supplies restock'},
+  ]}
+];
+
+const CHECKLIST={
+  standard:['Dust all surfaces & furniture','Vacuum all floors & carpets','Mop hard floors','Clean kitchen counters & sink','Clean stovetop exterior','Wipe cabinet exteriors','Clean all bathrooms','Clean mirrors & glass','Empty trash cans & replace bags','Spot clean light switches'],
+  deep:['All Standard tasks, plus:','Deep scrub baseboards & door frames','Clean window sills & tracks','Behind & under furniture','Deep scrub bathroom grout','Clean light switches & outlets','Wipe inside microwave','Clean oven exterior','Detailed vacuum edges & corners','Wipe ceiling fan blades'],
+  moveinout:['All Deep Clean tasks, plus:','Clean interior fridge & freezer','Clean interior oven','Interior microwave','Interior dishwasher','Inside all cabinets & drawers','Interior windows','Wipe all walls & baseboards'],
+  airbnb:['Full standard clean','Change all bed linens','Replace towels','Restock guest amenities','Kitchen reset & dishes','Guest-ready presentation check']
+};
+
+// STATE
+let b={service:null,beds:1,baths:1,extras:[],subscription:'biweekly',tip:10,basePrice:0,extrasPrice:0,total:0,deposit:0,balance:0,savings:0,referralCode:'',referralDiscount:0};
+let adminOK=false;
+let stripe,stripeEl,stripeCard;
+
+// PIN
+function pinIn(i){
+  const v=document.getElementById('p'+i).value;
+  if(v&&i<5)document.getElementById('p'+(i+1)).focus();
+  const pin=[0,1,2,3,4,5].map(x=>document.getElementById('p'+x).value).join('');
+  if(pin.length===6){
+    if(pin===PIN){adminOK=true;document.getElementById('pin-overlay').classList.remove('open');openAdmin();}
+    else{document.getElementById('perr').textContent='Incorrect PIN.';[0,1,2,3,4,5].forEach(x=>{document.getElementById('p'+x).value='';});document.getElementById('p0').focus();}
+  }
+}
+function closePIN(){document.getElementById('pin-overlay').classList.remove('open');[0,1,2,3,4,5].forEach(x=>document.getElementById('p'+x).value='');document.getElementById('perr').textContent='';}
+function openAdmin(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-admin').classList.add('active');
+  document.querySelectorAll('.nav-tab')[3].classList.add('active');
+  document.getElementById('mob-nav').style.display='block';
+  loadDashboard();
+}
+
+// NAV
+function showPage(page,el){
+  if(page==='admin'){
+    if(!adminOK){document.getElementById('pin-overlay').classList.add('open');setTimeout(()=>document.getElementById('p0').focus(),100);return;}
+    openAdmin();return;
+  }
+  document.getElementById('mob-nav').style.display='none';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  if(el)el.classList.add('active');
+}
+function showView(view,el){
+  document.querySelectorAll('.av').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.s-btn,.mb').forEach(x=>x.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  if(el)el.classList.add('active');
+}
+
+// BOOKING
+function selSvc(type,el){
+  document.querySelectorAll('.svc-card').forEach(c=>c.classList.remove('sel'));
+  if(el)el.classList.add('sel');
+  b.service=type;
+  document.getElementById('size-sec').style.display='block';
+  document.getElementById('sub-sec').style.display='block';
+  document.getElementById('s1-next').style.display='block';
+  calcP();
+}
+function selBed(n,el){document.querySelectorAll('#bed-row .sz-btn').forEach(x=>x.classList.remove('sel'));if(el)el.classList.add('sel');b.beds=n;calcP();}
+function selBath(n,el){document.querySelectorAll('#bath-row .sz-btn').forEach(x=>x.classList.remove('sel'));if(el)el.classList.add('sel');b.baths=n;calcP();}
+function selSub(type,el){document.querySelectorAll('.sub-card').forEach(c=>c.classList.remove('sel'));if(el)el.classList.add('sel');b.subscription=type;calcP();}
+function selTip(amt,el){
+  document.querySelectorAll('.tip-btn').forEach(x=>x.classList.remove('sel'));if(el)el.classList.add('sel');
+  if(amt==='custom'){document.getElementById('custom-tip').style.display='block';}
+  else{document.getElementById('custom-tip').style.display='none';b.tip=amt;}
+}
+
+function calcP(){
+  if(!b.service)return;
+  try{
+    const base=PRICES[b.service][Math.min(b.beds,6)];
+    const bx=BATH_X[Math.min(b.baths,6)];
+    b.basePrice=base+bx;
+    b.extrasPrice=b.extras.reduce((s,e)=>s+e.price,0);
+    const sub=b.basePrice+b.extrasPrice;
+    b.savings=Math.round(sub*SUB_D[b.subscription]);
+    b.referralDiscount=b.referralCode?20:0;
+    b.total=sub-b.savings-b.referralDiscount;
+    b.deposit=Math.ceil(b.total*.5);
+    b.balance=b.total-b.deposit;
+    const f=n=>'$'+n.toLocaleString();
+    const s=document.getElementById('sp-once');if(s)s.textContent=f(sub);
+    const bi=document.getElementById('sp-bi');if(bi)bi.textContent=f(Math.round(sub*.90));
+    const mo=document.getElementById('sp-mo');if(mo)mo.textContent=f(Math.round(sub*.95));
+    const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=f(v);};
+    set('sb',b.basePrice);set('se',b.extrasPrice);set('st',b.total);set('sdp',b.deposit);set('sbl',b.balance);
+    set('pt',b.total);set('pdep',b.deposit);set('pbal',b.balance);set('ptip',b.tip);
+    const dr=document.getElementById('sd-row'),de=document.getElementById('sd');
+    if(dr)dr.style.display=b.savings>0?'flex':'none';if(de)de.textContent='-'+f(b.savings);
+    const tr=document.getElementById('pt-row');if(tr)tr.style.display=b.tip>0?'flex':'none';
+  }catch(e){console.warn('calcP:',e);}
+}
+
+function buildExt(){
+  const c=document.getElementById('ext-list');if(!c)return;
+  let gi=0;
+  c.innerHTML=EXTRAS.map((cat,ci)=>{
+    const items=cat.items.map((item,ii)=>{
+      const idx=gi++;
+      return`<div class="ext-item" onclick="togExt(${idx},this)"><input type="checkbox" class="ext-cb" onclick="event.stopPropagation();togExt(${idx},this.closest('.ext-item'))"><div style="flex:1"><div class="ext-n">${item.name}</div><div class="ext-d">${item.desc}</div></div><div class="ext-p">+$${item.price}</div></div>`;
+    }).join('');
+    return`<div class="ext-cat"><div class="ext-hdr" onclick="togCat('eb-${cat.id}','ea-${cat.id}')"><div class="ext-hdr-l"><span class="ext-icon">${cat.icon}</span><div><div class="ext-name">${cat.name}</div><div class="ext-desc">${cat.desc}</div></div></div><span class="ext-arrow" id="ea-${cat.id}">${ci===0?'▴':'▾'}</span></div><div class="ext-body ${ci===0?'open':''}" id="eb-${cat.id}">${items}</div></div>`;
+  }).join('');
+}
+
+function togCat(bodyId,arrId){
+  const body=document.getElementById(bodyId),arr=document.getElementById(arrId);
+  if(!body)return;
+  if(body.classList.contains('open')){body.classList.remove('open');if(arr)arr.textContent='▾';}
+  else{body.classList.add('open');if(arr)arr.textContent='▴';}
+}
+
+function togExt(idx,el){
+  const cb=el.querySelector('.ext-cb');
+  const allItems=EXTRAS.flatMap(c=>c.items);
+  const item=allItems[idx];
+  const ex=b.extras.findIndex(e=>e.name===item.name);
+  if(ex>-1){b.extras.splice(ex,1);el.classList.remove('sel');if(cb)cb.checked=false;}
+  else{b.extras.push(item);el.classList.add('sel');if(cb)cb.checked=true;}
+  calcP();
+}
+
+function goStep(step){
+  if(step===2){if(!b.service){showNotif('Please select a service','error');return;}buildExt();calcP();}
+  if(step===4){const t=new Date();t.setDate(t.getDate()+1);const di=document.getElementById('b-date');if(di)di.min=t.toISOString().split('T')[0];}
+  if(step===5){
+    const fname=document.getElementById('b-fname').value;
+    const email=document.getElementById('b-email').value;
+    const date=document.getElementById('b-date').value;
+    const addr=document.getElementById('b-addr').value;
+    const city=document.getElementById('b-city').value;
+    if(!fname||!email||!date||!addr||!city){showNotif('Please fill in all required fields','error');return;}
+    buildRev();calcP();setTimeout(initStripe,300);
+  }
+  document.querySelectorAll('.bk-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+step).classList.add('active');
+  for(let i=1;i<=5;i++){
+    const dot=document.getElementById('d'+i);if(!dot)continue;
+    if(i<step){dot.className='dot done';dot.textContent='✓';}
+    else if(i===step){dot.className='dot active';dot.textContent=i;}
+    else{dot.className='dot';dot.textContent=i;}
+    const line=document.getElementById('l'+i);if(line)line.className='line'+(i<step?' done':'');
+  }
+  window.scrollTo(0,0);
+}
+
+function buildRev(){
+  const sn={standard:'Standard Clean',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb Turnover'};
+  const subn={once:'One-Time',biweekly:'Every 2 Weeks (-10%)',monthly:'Monthly (-5%)'};
+  const date=new Date(document.getElementById('b-date').value+'T00:00');
+  const ds=date.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const ext=b.extras.length?b.extras.map(e=>e.name).join(', '):'None';
+  document.getElementById('rev-content').innerHTML=[
+    ['Service',sn[b.service]],['Plan',subn[b.subscription]],
+    ['Size',`${b.beds} BR / ${b.baths} BA`],['Date',ds],
+    ['Time',document.getElementById('b-time').value],
+    ['Address',document.getElementById('b-addr').value+', '+document.getElementById('b-city').value],
+    ['Client',document.getElementById('b-fname').value+' '+document.getElementById('b-lname').value],
+    ['Extras',ext],['Tip',b.tip>0?'$'+b.tip:'None'],
+  ].map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--g100)"><span style="color:var(--g600)">${k}</span><span style="font-weight:500">${v}</span></div>`).join('');
+}
+
+function resetBooking(){
+  b={service:null,beds:1,baths:1,extras:[],subscription:'biweekly',tip:10,basePrice:0,extrasPrice:0,total:0,deposit:0,balance:0,savings:0,referralCode:'',referralDiscount:0};
+  document.querySelectorAll('.svc-card').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('size-sec').style.display='none';
+  document.getElementById('sub-sec').style.display='none';
+  document.getElementById('s1-next').style.display='none';
+  stripeCard=null;stripeEl=null;
+  document.querySelectorAll('.bk-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s1').classList.add('active');
+  for(let i=1;i<=5;i++){const d=document.getElementById('d'+i);if(d){d.className='dot'+(i===1?' active':'');d.textContent=i;}const l=document.getElementById('l'+i);if(l)l.className='line';}
+  window.scrollTo(0,0);
+}
+
+// STRIPE
+function initStripe(){
+  if(typeof Stripe==='undefined'||stripeCard)return;
+  try{
+    stripe=Stripe(STRIPE_PK);
+    stripeEl=stripe.elements();
+    stripeCard=stripeEl.create('card',{style:{base:{fontSize:'14px',fontFamily:'"DM Sans",sans-serif',color:'#1a2744','::placeholder':{color:'#9a9590'}},invalid:{color:'#c0392b'}}});
+    stripeCard.mount('#stripe-el');
+    stripeCard.on('change',e=>{const el=document.getElementById('stripe-err');if(el)el.textContent=e.error?e.error.message:'';});
+  }catch(e){console.warn('Stripe:',e);}
+}
+
+// SUBMIT
+async function submitBooking(){
+  const btn=document.getElementById('pay-btn');
+  btn.textContent='Processing...';btn.disabled=true;
+  const cd={
+    first_name:document.getElementById('b-fname').value.trim(),
+    last_name:document.getElementById('b-lname').value.trim(),
+    email:document.getElementById('b-email').value.trim(),
+    phone:document.getElementById('b-phone').value.trim(),
+    address:document.getElementById('b-addr').value.trim(),
+    city:document.getElementById('b-city').value,
+    zip:document.getElementById('b-zip').value.trim(),
+  };
+  try{
+    let cid;
+    try{
+      const ex=await db('clients','GET',null,`email=eq.${encodeURIComponent(cd.email)}&limit=1`);
+      if(ex&&ex.length>0){cid=ex[0].id;}
+      else{const rc='DFIDE-'+Math.random().toString(36).substr(2,6).toUpperCase();const nc=await db('clients','POST',{...cd,referral_code:rc});cid=nc[0].id;}
+    }catch(e){const nc=await db('clients','POST',cd);cid=nc[0].id;}
+
+    const bd={client_id:cid,service_type:b.service,bedrooms:b.beds,bathrooms:b.baths,base_price:b.basePrice,extras_price:b.extrasPrice,total_price:b.total,deposit_amount:b.deposit,balance_due:b.balance,worker_payment:Math.round(b.total*.4),scheduled_date:document.getElementById('b-date').value,scheduled_time:document.getElementById('b-time').value,address:cd.address,city:cd.city,zip:cd.zip,client_notes:document.getElementById('b-notes').value,status:'pending',source:'online'};
+    try{bd.subscription_type=b.subscription||'once';}catch(e){}
+    try{bd.tip_amount=b.tip||0;}catch(e){}
+    try{if(b.referralCode)bd.referral_code_used=b.referralCode;}catch(e){}
+
+    const nb=await db('bookings','POST',bd);
+    if(!nb||!nb[0])throw new Error('Booking save failed');
+    const bid=nb[0].id,bnum=nb[0].booking_number;
+
+    for(const ex of b.extras){try{await db('booking_extras','POST',{booking_id:bid,extra_name:ex.name,extra_price:ex.price});}catch(e){}}
+
+    let payOK=false;
+    if(stripe&&stripeCard){
+      try{
+        const pr=await fetch('https://dfidecleaning.vercel.app/api/create-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:b.deposit,bookingNum:bnum,service:b.service,clientName:`${cd.first_name} ${cd.last_name}`,clientEmail:cd.email})});
+        if(pr.ok){
+          const {clientSecret}=await pr.json();
+          const confirmResult = await stripe.confirmCardPayment(clientSecret,{payment_method:{card:stripeCard,billing_details:{name:`${cd.first_name} ${cd.last_name}`,email:cd.email}}});
+          if(confirmResult.error){document.getElementById('stripe-err').textContent=confirmResult.error.message;btn.textContent='✓ Confirm & Pay Deposit';btn.disabled=false;return;}
+          payOK=true;
+          // Save payment method for future balance charge
+          const pmId = confirmResult.paymentIntent?.payment_method;
+          await db('bookings','PATCH',{
+            status:'confirmed',
+            deposit_paid:true,
+            deposit_paid_at:new Date().toISOString(),
+            stripe_payment_method: pmId||null
+          },'id=eq.'+bid);
+        }
+      }catch(pe){console.warn('Payment:',pe);}
+    }
+
+    try{await sendEmail(cd.email,'confirmation',{name:cd.first_name,bookingNum:bnum,service:b.service,date:document.getElementById('b-date').value,total:b.total,deposit:b.deposit});}catch(e){}
+
+    document.querySelectorAll('.bk-step').forEach(s=>s.classList.remove('active'));
+    document.getElementById('s-ok').classList.add('active');
+    document.getElementById('ok-ref').textContent=bnum||'DFD-'+Date.now();
+
+    const pi=document.getElementById('ok-pay');
+    if(pi&&!payOK){pi.innerHTML=`<div style="background:var(--amber-l);border-radius:var(--r-sm);padding:14px;margin:14px 0;border-left:4px solid var(--amber)"><div style="font-weight:600;font-size:14px;color:var(--amber);margin-bottom:6px">💳 Deposit Due: $${b.deposit}</div><div style="font-size:13px;color:var(--navy);margin-bottom:8px">Pay your deposit to confirm:</div><div style="display:grid;gap:6px"><div style="background:#fff;border-radius:6px;padding:10px;font-size:13px">💚 Zelle — (551) 403-8397</div><div style="background:#fff;border-radius:6px;padding:10px;font-size:13px">💙 Venmo — @DFideCleaning</div></div><div style="font-size:11px;color:var(--g600);margin-top:8px">Include: <strong>${bnum}</strong></div></div>`;}
+    window.scrollTo(0,0);
+  }catch(err){
+    console.error('Booking error:',err);
+    showNotif('Error: '+(err.message||'Please try again.'),'error');
+    btn.textContent='✓ Confirm & Pay Deposit';btn.disabled=false;
+  }
+}
+
+// CLIENT PORTAL
+async function lookupClient(){
+  const email=document.getElementById('portal-email').value.trim();
+  if(!email){showNotif('Enter your email','error');return;}
+  const c=document.getElementById('portal-result');
+  c.innerHTML='<div class="ld"><div class="spin"></div>Looking up...</div>';
+  try{
+    const clients=await db('clients','GET',null,`email=eq.${encodeURIComponent(email)}&limit=1`);
+    if(!clients||clients.length===0){c.innerHTML='<div class="empty"><div class="ei">🔍</div><p>No account found with that email</p></div>';return;}
+    const cl=clients[0];
+    const bks=await db('bookings','GET',null,`client_id=eq.${cl.id}&order=scheduled_date.desc`);
+    const sn={standard:'Standard Clean',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb'};
+    c.innerHTML=`<div class="card"><h3>Welcome, ${cl.first_name}!</h3>${!bks||bks.length===0?'<div class="empty" style="padding:20px"><p>No bookings yet</p></div>':bks.map(bk=>`<div style="background:var(--off);border-radius:var(--r-sm);padding:14px;margin-bottom:10px;border-left:4px solid var(--gold)"><div style="display:flex;justify-content:space-between"><div><div style="font-weight:600;font-size:14px">${sn[bk.service_type]||bk.service_type}</div><div style="font-size:12px;color:var(--g400)">${new Date(bk.scheduled_date+'T00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})} at ${bk.scheduled_time}</div><div style="font-size:11px;color:var(--g400)">${bk.booking_number}</div></div><div style="text-align:right"><span class="badge b-${bk.status==='completed'?'ok':bk.status==='confirmed'?'c':bk.status==='cancelled'?'x':'p'}">${bk.status}</span><div style="font-size:16px;font-weight:700;margin-top:4px">$${bk.total_price}</div></div></div></div>`).join('')}</div>`;
+  }catch(e){c.innerHTML='<div class="empty"><p>Error loading bookings</p></div>';}
+}
+
+// CONTRACTOR
+async function workerLogin(){
+  const phone=document.getElementById('w-phone-login').value.replace(/\D/g,'');
+  if(!phone){showNotif('Enter your phone number','error');return;}
+  const c=document.getElementById('w-jobs');
+  c.innerHTML='<div class="ld"><div class="spin"></div>Loading...</div>';
+  try{
+    const workers=await db('workers','GET',null,'status=eq.active');
+    const w=workers?.find(x=>x.phone.replace(/\D/g,'').includes(phone)||phone.includes(x.phone.replace(/\D/g,'')));
+    if(!w){c.innerHTML='<div class="empty"><div class="ei">🧹</div><p>No active worker found.<br>Contact your manager.</p></div>';return;}
+    const jobs=await db('bookings','GET',null,`worker_id=eq.${w.id}&status=in.(confirmed,in_progress)&order=scheduled_date.asc`);
+    const sn={standard:'Standard',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb'};
+    c.innerHTML=`<div class="card" style="margin-top:14px"><div style="background:var(--green-l);border-radius:var(--r-sm);padding:12px;margin-bottom:14px"><strong>Welcome, ${w.first_name}!</strong> — ${w.worker_type==='1099'?`1099 (${w.rate_percent}%)`:'W-2'}</div>${!jobs||jobs.length===0?'<div class="empty" style="padding:20px"><div class="ei">✅</div><p>No upcoming jobs assigned</p></div>':jobs.map(j=>`<div class="wcard"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><div><div style="font-weight:600;font-size:14px">${sn[j.service_type]}</div><div style="font-size:12px;color:var(--g600)">${new Date(j.scheduled_date+'T00:00').toLocaleDateString()} at ${j.scheduled_time}</div><div style="font-size:12px;color:var(--g600)">${j.address}, ${j.city}</div></div><div style="text-align:right"><div style="font-size:20px;font-weight:700;color:var(--green)">$${j.worker_payment||Math.round(j.total_price*.4)}</div><div style="font-size:11px;color:var(--g400)">your pay</div></div></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="ab g" onclick="showCL('${j.id}','${j.service_type}','${j.booking_number}')">📋 Checklist</button><button class="ab a" onclick="setJobSt('${j.id}','in_progress')">▶ Start</button><button class="ab g" onclick="setJobSt('${j.id}','completed')">✓ Complete</button></div></div>`).join('')}</div>`;
+  }catch(e){c.innerHTML='<div class="empty"><p>Error loading jobs</p></div>';}
+}
+
+function showCL(id,stype,bnum){
+  const items=CHECKLIST[stype]||CHECKLIST.standard;
+  document.getElementById('m-bk-title').textContent='Checklist — '+bnum;
+  document.getElementById('m-bk-body').innerHTML=`<div>${items.map((item,i)=>`<div id="ci${i}" style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--g100);cursor:pointer" onclick="togCL(${i})"><input type="checkbox" style="width:20px;height:20px;accent-color:var(--green)"><span style="font-size:14px">${item}</span></div>`).join('')}</div>`;
+  openModal('m-booking');
+}
+function togCL(i){const r=document.getElementById('ci'+i);const cb=r.querySelector('input');cb.checked=!cb.checked;const sp=r.querySelector('span');sp.style.textDecoration=cb.checked?'line-through':'';sp.style.color=cb.checked?'var(--g400)':'';}
+async function setJobSt(id,status){await db('bookings','PATCH',{status},'id=eq.'+id);showNotif(status==='completed'?'Job completed! ✓':'Job started','success');setTimeout(workerLogin,500);}
+
+// DB
+async function db(table,method,body,query=''){
+  const url=`${SB_URL}/rest/v1/${table}${query?'?'+query:''}`;
+  const opts={method,headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':method==='POST'?'return=representation':''},mode:'cors'};
+  if(body)opts.body=JSON.stringify(body);
+  const res=await fetch(url,opts);
+  if(!res.ok){const e=await res.text();throw new Error(e);}
+  if(res.status===204)return null;
+  return res.json();
+}
+
+// EMAIL
+async function sendEmail(to,type,data){
+  try{
+    const res=await fetch('/api/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,type,data})});
+    const result=await res.json();
+    console.log('Email sent:',result);
+  }catch(e){console.warn('Email error:',e);}
+}
+
+// ADMIN DASHBOARD
+async function loadDashboard(){
+  document.getElementById('today').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  try{
+    const bks=await db('bookings','GET',null,'select=*,clients(first_name,last_name,email,phone)&order=scheduled_date.asc');
+    const done=bks.filter(x=>x.status==='completed');
+    const pend=bks.filter(x=>['pending','confirmed'].includes(x.status));
+    const rev=done.reduce((s,x)=>s+(x.total_price||0),0);
+    const now=new Date();
+    const mo=done.filter(x=>{const d=new Date(x.scheduled_date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).reduce((s,x)=>s+(x.total_price||0),0);
+    document.getElementById('st-rev').textContent='$'+rev.toLocaleString();
+    document.getElementById('st-mo').textContent='$'+mo.toLocaleString();
+    document.getElementById('st-jobs').textContent=done.length;
+    document.getElementById('st-pend').textContent=pend.length;
+    const sn={standard:'Standard',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb'};
+    const upEl=document.getElementById('dash-up');
+    if(pend.length===0){upEl.innerHTML='<div class="empty" style="padding:20px"><div class="ei">📅</div><p>No upcoming jobs</p></div>';}
+    else{upEl.innerHTML=`<div class="tw"><table><thead><tr><th>Date</th><th>Client</th><th>Service</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead><tbody>${pend.slice(0,8).map(bk=>`<tr><td>${new Date(bk.scheduled_date+'T00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}<br><small style="color:var(--g400)">${bk.scheduled_time}</small></td><td>${bk.clients?.first_name||''} ${bk.clients?.last_name||''}</td><td>${sn[bk.service_type]||bk.service_type}</td><td><strong>$${bk.total_price}</strong></td><td><span class="badge ${bk.status==='confirmed'?'b-c':'b-p'}">${bk.status}</span></td><td>${bk.status==='pending'?`<button class="ab g" onclick="updSt('${bk.id}','confirmed')">Confirm</button>`:''}<button class="ab" onclick="viewBk('${bk.id}')">View</button></td></tr>`).join('')}</tbody></table></div>`;}
+    const unpaid=bks.filter(x=>x.status==='completed'&&!x.worker_paid&&x.worker_payment);
+    const payEl=document.getElementById('dash-pay');
+    if(unpaid.length===0){payEl.innerHTML='<div class="empty" style="padding:20px"><div class="ei">✅</div><p>All payments up to date</p></div>';}
+    else{payEl.innerHTML=unpaid.slice(0,5).map(x=>`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--g100)"><div class="av8" style="width:36px;height:36px;font-size:12px">W</div><div style="flex:1"><div style="font-weight:600;font-size:13px">${x.booking_number}</div><div style="font-size:12px;color:var(--g400)">${x.service_type}</div></div><div style="text-align:right"><div style="font-size:18px;font-weight:700;color:var(--green)">$${x.worker_payment}</div><button class="ab g" onclick="markWP('${x.id}')" style="margin-top:4px">Paid ✓</button></div></div>`).join('');}
+  }catch(e){
+    console.error('Dashboard:',e);
+    ['dash-up','dash-pay'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<div class="empty" style="padding:20px"><p>Unable to load — check Supabase connection</p></div>';});
+    ['st-rev','st-mo'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='$0';});
+    ['st-jobs','st-pend'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='0';});
+  }
+}
+
+// ADMIN BOOKINGS
+async function loadBookings(filter=''){
+  const c=document.getElementById('bk-cont');c.innerHTML='<div class="ld"><div class="spin"></div>Loading...</div>';
+  try{
+    let q='select=*,clients(first_name,last_name,email,phone)&order=scheduled_date.desc';if(filter)q+='&status=eq.'+filter;
+    const bks=await db('bookings','GET',null,q);
+    if(!bks||bks.length===0){c.innerHTML='<div class="empty"><div class="ei">📅</div><p>No bookings found</p></div>';return;}
+    const sn={standard:'Standard',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb'};
+    c.innerHTML=`<div class="tw"><table><thead><tr><th>Booking #</th><th>Date</th><th>Client</th><th>Service</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead><tbody>${bks.map(bk=>`<tr><td><strong>${bk.booking_number||'N/A'}</strong></td><td>${new Date(bk.scheduled_date+'T00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}<br><small style="color:var(--g400)">${bk.scheduled_time||''}</small></td><td>${bk.clients?.first_name||''} ${bk.clients?.last_name||''}<br><small style="color:var(--g400)">${bk.clients?.phone||''}</small></td><td>${sn[bk.service_type]||bk.service_type}</td><td><strong>$${bk.total_price}</strong><br><small style="color:${bk.deposit_paid?'var(--green)':'var(--amber)'}">Dep ${bk.deposit_paid?'✓':'⏳'}</small></td><td><span class="badge ${bk.status==='completed'?'b-ok':bk.status==='confirmed'?'b-c':bk.status==='cancelled'?'b-x':'b-p'}">${bk.status.replace('_',' ')}</span></td><td style="white-space:nowrap"><button class="ab" onclick="viewBk('${bk.id}')">View</button>${bk.status==='pending'?`<button class="ab g" onclick="updSt('${bk.id}','confirmed')">Confirm</button>`:''} ${bk.status==='confirmed'?`<button class="ab a" onclick="updSt('${bk.id}','completed')">Complete</button>`:''} ${!bk.review_requested&&bk.status==='completed'?`<button class="ab" onclick="sendRev('${bk.id}','${bk.clients?.email||''}','${bk.clients?.first_name||''}')">⭐</button>`:''}</td></tr>`).join('')}</tbody></table></div>`;
+  }catch(e){c.innerHTML='<div class="empty"><p>Error loading bookings</p></div>';}
+}
+
+async function viewBk(id){
+  const bks=await db('bookings','GET',null,`id=eq.${id}&select=*,clients(*)&limit=1`);
+  const bk=bks[0];const ext=await db('booking_extras','GET',null,`booking_id=eq.${id}`);
+  const sn={standard:'Standard Clean',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb Turnover'};
+  document.getElementById('m-bk-title').textContent='Booking '+bk.booking_number;
+  document.getElementById('m-bk-body').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div style="background:var(--off);border-radius:var(--r-sm);padding:12px;font-size:13px">
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--g400);margin-bottom:8px">Job</div>
+        ${[['Service',sn[bk.service_type]],['Size',`${bk.bedrooms} BR / ${bk.bathrooms} BA`],['Date',new Date(bk.scheduled_date+'T00:00').toLocaleDateString()],['Time',bk.scheduled_time]].map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:3px 0"><span style="color:var(--g600)">${k}</span><span>${v}</span></div>`).join('')}
+        <div style="margin-top:6px"><span class="badge ${bk.status==='completed'?'b-ok':bk.status==='confirmed'?'b-c':'b-p'}">${bk.status}</span></div>
+      </div>
+      <div style="background:var(--off);border-radius:var(--r-sm);padding:12px;font-size:13px">
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--g400);margin-bottom:8px">Client</div>
+        <div><strong>${bk.clients?.first_name} ${bk.clients?.last_name}</strong></div>
+        <div style="color:var(--g600)">${bk.clients?.email}</div>
+        <div style="color:var(--g600)">${bk.clients?.phone||'N/A'}</div>
+        <div style="color:var(--g600)">${bk.address}, ${bk.city}</div>
+      </div>
+    </div>
+    <div style="background:var(--navy);color:#fff;border-radius:var(--r-sm);padding:14px;margin-bottom:12px;font-size:13px">
+      <div style="display:flex;justify-content:space-between;padding:3px 0"><span style="opacity:.7">Base</span><span>$${bk.base_price}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0"><span style="opacity:.7">Extras</span><span>$${bk.extras_price||0}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0;border-top:1px solid rgba(255,255,255,.15);margin-top:6px;padding-top:8px"><span>Total</span><span style="font-weight:700;font-size:16px">$${bk.total_price}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0"><span style="opacity:.7">Deposit</span><span style="color:${bk.deposit_paid?'#86efac':'var(--gold-l)'}">$${bk.deposit_amount} ${bk.deposit_paid?'✓':'⏳'}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:3px 0"><span style="opacity:.7">Worker Pay</span><span style="color:${bk.worker_paid?'#86efac':'var(--gold-l)'}">$${bk.worker_payment||Math.round(bk.total_price*.4)} ${bk.worker_paid?'✓':'⏳'}</span></div>
+    </div>
+    ${ext&&ext.length?`<div style="font-size:13px;color:var(--g600);margin-bottom:12px"><strong>Extras:</strong> ${ext.map(e=>e.extra_name).join(', ')}</div>`:''}
+    ${bk.client_notes?`<div style="background:var(--amber-l);border-radius:6px;padding:10px;font-size:13px;color:var(--amber);margin-bottom:12px">📝 ${bk.client_notes}</div>`:''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${bk.status==='pending'?`<button class="ab g" onclick="updSt('${bk.id}','confirmed');closeModal('m-booking')">✓ Confirm</button>`:''}
+      ${bk.status==='confirmed'?`<button class="ab a" onclick="updSt('${bk.id}','completed');closeModal('m-booking')">Complete</button>`:''}
+      ${!bk.deposit_paid?`<button class="ab g" onclick="markDP('${bk.id}')">💳 Deposit Paid</button>`:''}
+      ${!bk.worker_paid&&bk.status==='completed'?`<button class="ab a" onclick="markWP('${bk.id}');closeModal('m-booking')">💰 Worker Paid</button>`:''}
+      ${!bk.review_requested&&bk.status==='completed'?`<button class="ab" onclick="sendRev('${bk.id}','${bk.clients?.email||''}','${bk.clients?.first_name||''}');closeModal('m-booking')">⭐ Review</button>`:''}
+    </div>
+  `;
+  openModal('m-booking');
+}
+
+async function updSt(id,st){
+  try{
+    await db('bookings','PATCH',{status:st},'id=eq.'+id);
+    showNotif('Updated: '+st,'success');
+    if(st==='completed'){
+      try{
+        const bks=await db('bookings','GET',null,`id=eq.${id}&select=*,clients(first_name,email)&limit=1`);
+        const bk=bks[0];
+        if(bk&&bk.clients){
+          // Charge balance via Stripe if payment method saved
+          if(bk.stripe_payment_method&&bk.balance_due>0){
+            try{
+              const pr=await fetch('https://dfidecleaning.vercel.app/api/charge-balance',{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({
+                  paymentMethod:bk.stripe_payment_method,
+                  amount:bk.balance_due,
+                  bookingNum:bk.booking_number,
+                  clientEmail:bk.clients.email,
+                  service:bk.service_type
+                })
+              });
+              if(pr.ok){
+                await db('bookings','PATCH',{balance_paid:true},'id=eq.'+id);
+                showNotif('Balance charged automatically ✓','success');
+              }
+            }catch(ce){console.warn('Balance charge error:',ce);}
+          }
+          // Send balance email
+          if(bk.balance_due>0){
+            await sendEmail(bk.clients.email,'balance',{
+              name:bk.clients.first_name,
+              bookingNum:bk.booking_number,
+              balance:bk.balance_due,
+              service:bk.service_type
+            });
+          }
+        }
+      }catch(e){console.warn('Complete job error:',e);}
+    }
+    loadBookings();loadDashboard();
+  }catch(e){showNotif('Error updating','error');}
+}
+async function markDP(id){await db('bookings','PATCH',{deposit_paid:true,deposit_paid_at:new Date().toISOString()},'id=eq.'+id);showNotif('Deposit marked paid ✓','success');closeModal('m-booking');loadBookings();}
+async function markWP(id){await db('bookings','PATCH',{worker_paid:true,worker_paid_at:new Date().toISOString()},'id=eq.'+id);showNotif('Worker payment recorded ✓','success');loadDashboard();}
+async function sendRev(id,email,name){if(!email){showNotif('No email for client','error');return;}try{await sendEmail(email,'review',{name});}catch(e){}await db('bookings','PATCH',{review_requested:true,review_requested_at:new Date().toISOString()},'id=eq.'+id);showNotif('Review email sent ⭐','success');loadBookings();}
+
+// ADMIN CLIENTS
+async function loadClients(){
+  const c=document.getElementById('cl-cont');c.innerHTML='<div class="ld"><div class="spin"></div>Loading...</div>';
+  try{
+    const cls=await db('clients','GET',null,'order=created_at.desc');
+    if(!cls||cls.length===0){c.innerHTML='<div class="empty"><div class="ei">👥</div><p>No clients yet</p></div>';return;}
+    const allBk=await db('bookings','GET',null,'select=client_id,total_price,status');
+    c.innerHTML=`<div class="tw"><table id="cl-tbl"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>City</th><th>Jobs</th><th>Spent</th><th>Actions</th></tr></thead><tbody>${cls.map(cl=>{const cb=(allBk||[]).filter(x=>x.client_id===cl.id);const sp=cb.filter(x=>x.status==='completed').reduce((s,x)=>s+x.total_price,0);return`<tr><td><strong>${cl.first_name} ${cl.last_name}</strong></td><td style="font-size:12px">${cl.email}</td><td>${cl.phone||'N/A'}</td><td>${cl.city||'N/A'}</td><td style="text-align:center"><strong>${cb.length}</strong></td><td><strong style="color:var(--green)">$${sp.toLocaleString()}</strong></td><td style="white-space:nowrap"><a href="tel:${cl.phone}" class="ab">📞</a><a href="https://wa.me/${(cl.phone||'').replace(/\D/g,'')}" class="ab g" target="_blank">💬</a><button class="ab p" onclick="editCl('${cl.id}','${cl.first_name}','${cl.last_name}','${cl.email}','${cl.phone||''}','${cl.address||''}','${cl.city||''}','${cl.zip||''}')">✏️</button><button class="ab r" onclick="delCl('${cl.id}','${cl.first_name} ${cl.last_name}')">🗑️</button></td></tr>`;}).join('')}</tbody></table></div>`;
+  }catch(e){c.innerHTML='<div class="empty"><p>Error loading clients</p></div>';}
+}
+
+function filterTbl(term){document.querySelectorAll('#cl-tbl tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(term.toLowerCase())?'':'none');}
+
+function openNewClient(){document.getElementById('m-cl-title').textContent='Add Client';document.getElementById('cl-id').value='';['cl-fname','cl-lname','cl-email','cl-phone','cl-addr','cl-city','cl-zip','cl-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('cl-save').textContent='Save Client';document.getElementById('cl-save').onclick=saveClient;openModal('m-client');}
+
+function editCl(id,fn,ln,em,ph,addr,city,zip){
+  document.getElementById('m-cl-title').textContent='Edit Client';document.getElementById('cl-id').value=id;
+  document.getElementById('cl-fname').value=fn;document.getElementById('cl-lname').value=ln;
+  document.getElementById('cl-email').value=em;document.getElementById('cl-phone').value=ph;
+  document.getElementById('cl-addr').value=addr;document.getElementById('cl-city').value=city;document.getElementById('cl-zip').value=zip;
+  document.getElementById('cl-save').textContent='Update Client';document.getElementById('cl-save').onclick=()=>updCl(id);openModal('m-client');
+}
+
+async function saveClient(){
+  const d={first_name:document.getElementById('cl-fname').value,last_name:document.getElementById('cl-lname').value,email:document.getElementById('cl-email').value,phone:document.getElementById('cl-phone').value,address:document.getElementById('cl-addr').value,city:document.getElementById('cl-city').value,zip:document.getElementById('cl-zip').value,notes:document.getElementById('cl-notes').value};
+  if(!d.first_name||!d.email){showNotif('Name and email required','error');return;}
+  try{await db('clients','POST',d);showNotif('Client saved ✓','success');closeModal('m-client');loadClients();}catch(e){showNotif('Error saving client','error');}
+}
+
+async function updCl(id){
+  const d={first_name:document.getElementById('cl-fname').value,last_name:document.getElementById('cl-lname').value,email:document.getElementById('cl-email').value,phone:document.getElementById('cl-phone').value,address:document.getElementById('cl-addr').value,city:document.getElementById('cl-city').value,zip:document.getElementById('cl-zip').value};
+  try{await db('clients','PATCH',d,'id=eq.'+id);showNotif('Client updated ✓','success');closeModal('m-client');loadClients();}catch(e){showNotif('Error updating client','error');}
+}
+
+async function delCl(id,name){
+  if(!confirm(`Delete ${name}? Cannot be undone.`))return;
+  try{await db('bookings','DELETE',null,'client_id=eq.'+id);await db('clients','DELETE',null,'id=eq.'+id);showNotif(`${name} deleted`,'info');loadClients();}catch(e){showNotif('Error deleting client','error');}
+}
+
+// ADMIN WORKERS
+async function loadWorkers(){
+  const c=document.getElementById('wk-cont');c.innerHTML='<div class="ld"><div class="spin"></div>Loading...</div>';
+  try{
+    const wks=await db('workers','GET',null,'order=created_at.desc');
+    if(!wks||wks.length===0){c.innerHTML='<div class="empty"><div class="ei">🧹</div><p>No workers added yet</p></div>';return;}
+    const allBk=await db('bookings','GET',null,'select=worker_id,total_price,worker_payment,worker_paid,status&status=eq.completed');
+    c.innerHTML=wks.map(w=>{const wb=(allBk||[]).filter(x=>x.worker_id===w.id);const earn=wb.reduce((s,x)=>s+(x.worker_payment||Math.round(x.total_price*.4)),0);const unp=wb.filter(x=>!x.worker_paid).reduce((s,x)=>s+(x.worker_payment||Math.round(x.total_price*.4)),0);return`<div class="wcard"><div style="display:flex;align-items:flex-start;gap:12px"><div class="av8">${w.first_name[0]}${w.last_name[0]}</div><div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div style="font-weight:700;font-size:15px">${w.first_name} ${w.last_name}</div><span class="badge ${w.status==='active'?'b-c':'b-x'}" style="margin-top:3px">${w.status}</span></div><div style="text-align:right"><div style="font-size:18px;font-weight:700;color:var(--green)">$${earn.toLocaleString()}</div><div style="font-size:11px;color:var(--g400)">total earned</div>${unp>0?`<div style="font-size:12px;color:var(--amber);font-weight:600">$${unp} pending</div>`:''}</div></div><div style="font-size:12px;color:var(--g600);margin:8px 0;display:grid;grid-template-columns:1fr 1fr;gap:3px"><span>📱 ${w.phone}</span><span>📧 ${w.email||'No email'}</span><span>💼 ${w.worker_type==='1099'?`1099 (${w.rate_percent}%)`:'W-2'}</span><span>${w.has_transportation?'🚗 Has transport':'🚫 No transport'}</span><span>✅ ${wb.length} jobs</span></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="ab" onclick="editWk('${w.id}','${w.first_name}','${w.last_name}','${w.phone}','${w.email||''}','${w.worker_type}',${w.rate_percent},${w.has_transportation})">✏️ Edit</button><button class="ab ${w.status==='active'?'a':'g'}" onclick="togWkSt('${w.id}','${w.status}')">${w.status==='active'?'Deactivate':'Activate'}</button><button class="ab r" onclick="delWk('${w.id}','${w.first_name} ${w.last_name}')">🗑️ Delete</button></div></div></div></div>`;}).join('');
+  }catch(e){c.innerHTML='<div class="empty"><p>Error loading team</p></div>';}
+}
+
+function openNewWorker(){document.getElementById('m-wk-title').textContent='Add Worker';document.getElementById('wk-id').value='';['wk-fname','wk-lname','wk-phone','wk-email'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('wk-type').value='1099';document.getElementById('wk-rate').value='40';document.getElementById('wk-trans').checked=false;document.getElementById('wk-save').textContent='Save Worker';document.getElementById('wk-save').onclick=saveWorker;openModal('m-worker');}
+
+function editWk(id,fn,ln,ph,em,type,rate,trans){
+  document.getElementById('m-wk-title').textContent='Edit Worker';document.getElementById('wk-id').value=id;
+  document.getElementById('wk-fname').value=fn;document.getElementById('wk-lname').value=ln;
+  document.getElementById('wk-phone').value=ph;document.getElementById('wk-email').value=em;
+  document.getElementById('wk-type').value=type;document.getElementById('wk-rate').value=rate;
+  document.getElementById('wk-trans').checked=trans==='true'||trans===true;
+  document.getElementById('wk-save').textContent='Update Worker';document.getElementById('wk-save').onclick=()=>updWk(id);openModal('m-worker');
+}
+
+async function saveWorker(){
+  const d={first_name:document.getElementById('wk-fname').value,last_name:document.getElementById('wk-lname').value,phone:document.getElementById('wk-phone').value,email:document.getElementById('wk-email').value,worker_type:document.getElementById('wk-type').value,rate_percent:parseFloat(document.getElementById('wk-rate').value)||40,has_transportation:document.getElementById('wk-trans').checked,status:'active'};
+  if(!d.first_name||!d.phone){showNotif('Name and phone required','error');return;}
+  try{await db('workers','POST',d);showNotif('Worker added ✓','success');closeModal('m-worker');loadWorkers();}catch(e){showNotif('Error saving worker','error');}
+}
+
+async function updWk(id){
+  const d={first_name:document.getElementById('wk-fname').value,last_name:document.getElementById('wk-lname').value,phone:document.getElementById('wk-phone').value,email:document.getElementById('wk-email').value,worker_type:document.getElementById('wk-type').value,rate_percent:parseFloat(document.getElementById('wk-rate').value)||40,has_transportation:document.getElementById('wk-trans').checked};
+  try{await db('workers','PATCH',d,'id=eq.'+id);showNotif('Worker updated ✓','success');closeModal('m-worker');loadWorkers();}catch(e){showNotif('Error updating worker','error');}
+}
+
+async function togWkSt(id,cur){await db('workers','PATCH',{status:cur==='active'?'inactive':'active'},'id=eq.'+id);loadWorkers();}
+async function delWk(id,name){if(!confirm(`Delete ${name}?`))return;try{await db('workers','DELETE',null,'id=eq.'+id);showNotif(`${name} deleted`,'info');loadWorkers();}catch(e){showNotif('Error — may have assigned jobs','error');}}
+
+// ADMIN PAYMENTS
+async function loadPayments(){
+  const c=document.getElementById('pay-cont');c.innerHTML='<div class="ld"><div class="spin"></div>Loading...</div>';
+  try{
+    const bks=await db('bookings','GET',null,'select=*,workers(first_name,last_name),clients(first_name,last_name)&status=eq.completed&order=scheduled_date.desc');
+    if(!bks||bks.length===0){c.innerHTML='<div class="empty"><div class="ei">💰</div><p>No completed jobs yet</p></div>';return;}
+    const unp=bks.filter(x=>!x.worker_paid).reduce((s,x)=>s+(x.worker_payment||Math.round(x.total_price*.4)),0);
+    c.innerHTML=`${unp>0?`<div style="background:var(--amber-l);border-radius:var(--r-sm);padding:14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--amber);font-weight:500">Total Unpaid</span><span style="font-size:22px;font-weight:700;color:var(--amber)">$${unp.toLocaleString()}</span></div>`:''}<div class="tw"><table><thead><tr><th>Booking</th><th>Date</th><th>Client</th><th>Total</th><th>Worker Pay</th><th>Worker</th><th>Status</th></tr></thead><tbody>${bks.map(bk=>{const wp=bk.worker_payment||Math.round(bk.total_price*.4);return`<tr><td><strong>${bk.booking_number}</strong></td><td>${new Date(bk.scheduled_date+'T00:00').toLocaleDateString()}</td><td>${bk.clients?.first_name||''} ${bk.clients?.last_name||''}</td><td>$${bk.total_price}</td><td><strong style="color:var(--green)">$${wp}</strong></td><td>${bk.workers?`${bk.workers.first_name} ${bk.workers.last_name}`:`<span style="color:var(--amber)">Unassigned</span>`}</td><td>${bk.worker_paid?'<span class="badge b-ok">✓ Paid</span>':`<button class="ab g" onclick="markWP('${bk.id}')">Mark Paid</button>`}</td></tr>`;}).join('')}</tbody></table></div>`;
+  }catch(e){c.innerHTML='<div class="empty"><p>Error loading payments</p></div>';}
+}
+
+// ADMIN EXPENSES
+async function loadExpenses(){
+  const c=document.getElementById('exp-cont');c.innerHTML='<div class="ld"><div class="spin"></div>Loading...</div>';
+  try{
+    const exps=await db('expenses','GET',null,'order=date.desc');
+    if(!exps||exps.length===0){c.innerHTML='<div class="empty"><div class="ei">📋</div><p>No expenses recorded</p></div>';return;}
+    const tot=exps.reduce((s,e)=>s+e.amount,0);
+    c.innerHTML=`<div style="background:var(--navy);color:#fff;border-radius:var(--r-sm);padding:14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;opacity:.7">Total Expenses</span><span style="font-family:'Playfair Display',serif;font-size:22px;color:var(--gold)">$${tot.toLocaleString()}</span></div><div class="tw"><table><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Amount</th><th>Action</th></tr></thead><tbody>${exps.map(e=>`<tr><td>${new Date(e.date+'T00:00').toLocaleDateString()}</td><td><span class="badge b-c">${e.category}</span></td><td>${e.description}</td><td><strong>$${parseFloat(e.amount).toFixed(2)}</strong></td><td><button class="ab r" onclick="delExp('${e.id}')">Delete</button></td></tr>`).join('')}</tbody></table></div>`;
+  }catch(e){c.innerHTML='<div class="empty"><p>Error loading expenses</p></div>';}
+}
+
+function openNewExpense(){document.getElementById('ex-date').value=new Date().toISOString().split('T')[0];document.getElementById('ex-amt').value='';document.getElementById('ex-desc').value='';openModal('m-expense');}
+async function saveExpense(){
+  const d={date:document.getElementById('ex-date').value,category:document.getElementById('ex-cat').value,description:document.getElementById('ex-desc').value,amount:parseFloat(document.getElementById('ex-amt').value)};
+  if(!d.date||!d.description||!d.amount){showNotif('Fill in all fields','error');return;}
+  try{await db('expenses','POST',d);showNotif('Expense saved ✓','success');closeModal('m-expense');loadExpenses();}catch(e){showNotif('Error saving expense','error');}
+}
+async function delExp(id){if(!confirm('Delete this expense?'))return;await db('expenses','DELETE',null,'id=eq.'+id);loadExpenses();}
+
+// ADMIN REPORTS
+async function loadReports(){
+  const c=document.getElementById('rep-cont');c.innerHTML='<div class="ld"><div class="spin"></div>Loading...</div>';
+  try{
+    const bks=await db('bookings','GET',null,'select=*&status=eq.completed');
+    const exps=await db('expenses','GET',null,'select=*');
+    const rev=bks.reduce((s,x)=>s+x.total_price,0);
+    const expTot=exps.reduce((s,x)=>s+x.amount,0);
+    const wkPay=bks.reduce((s,x)=>s+(x.worker_payment||x.total_price*.4),0);
+    const net=rev-expTot-wkPay;const tax=net*.27;
+    const md={};bks.forEach(x=>{const m=x.scheduled_date.slice(0,7);md[m]=(md[m]||0)+x.total_price;});
+    const months=Object.keys(md).sort().slice(-6);const mx=Math.max(...months.map(m=>md[m]),1);
+    c.innerHTML=`<div class="sg"><div class="stat" style="border-left:4px solid var(--navy)"><div class="sl">Gross Revenue</div><div class="sv">$${rev.toLocaleString()}</div></div><div class="stat" style="border-left:4px solid var(--red)"><div class="sl">Expenses + Worker Pay</div><div class="sv">$${Math.round(expTot+wkPay).toLocaleString()}</div></div><div class="stat" style="border-left:4px solid var(--green)"><div class="sl">Net Profit</div><div class="sv">$${Math.round(net).toLocaleString()}</div></div><div class="stat" style="border-left:4px solid var(--amber)"><div class="sl">Tax Reserve (27%)</div><div class="sv">$${Math.round(tax).toLocaleString()}</div></div></div><div class="card" style="margin-bottom:14px"><h3>Monthly Revenue</h3><div style="display:flex;align-items:flex-end;gap:6px;height:100px;padding-top:10px">${months.map(m=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end"><div style="width:100%;background:var(--gold);border-radius:3px 3px 0 0;height:${Math.max((md[m]/mx)*100,3)}%;opacity:.85" title="$${md[m]}"></div><div style="font-size:10px;color:var(--g400)">${m.slice(5)}</div></div>`).join('')}</div></div><div style="background:var(--amber-l);border-radius:var(--r);padding:18px;border-left:4px solid var(--amber)"><h4 style="color:var(--amber);margin-bottom:6px">💰 Quarterly Tax Reserve</h4><p style="font-size:13px;color:var(--navy)">Set aside <strong>$${Math.round(tax).toLocaleString()}</strong> (27% of net profit) for quarterly taxes.</p><p style="font-size:11px;color:var(--g600);margin-top:4px">Federal: EFTPS · New Jersey: njeitax.com</p></div>`;
+  }catch(e){c.innerHTML='<div class="empty"><p>Error generating report</p></div>';}
+}
+
+// MODALS & NOTIF
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function showNotif(msg,type='info'){const el=document.getElementById('notif');document.getElementById('notif-text').textContent=msg;el.className='notif show '+type;setTimeout(()=>el.classList.remove('show'),3500);}
+
+// INIT
+document.addEventListener('DOMContentLoaded',()=>{
+  const t=new Date();t.setDate(t.getDate()+1);
+  const di=document.getElementById('b-date');if(di)di.min=t.toISOString().split('T')[0];
+});
+</script>
+<script src="https://js.stripe.com/v3/" onerror="console.warn('Stripe unavailable')"></script>
+</body>
+</html>
