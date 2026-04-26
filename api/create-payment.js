@@ -1,46 +1,53 @@
-export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+export const config = { runtime: 'edge' };
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+export default async function handler(req) {
+  const cors = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method === 'OPTIONS') return new Response(null, { headers: cors });
+  if (req.method !== 'POST') return new Response('Method not allowed', { status: 405 });
 
   try {
-    const { amount, bookingNum, clientName, clientEmail, service } = req.body;
+    const { amount, bookingNum, clientName, clientEmail, service } = await req.json();
 
-    if (!amount || amount < 50) {
-      return res.status(400).json({ error: 'Invalid amount' });
+    if (!amount || amount < 1) {
+      return new Response(JSON.stringify({ error: 'Invalid amount' }), { status: 400, headers: cors });
     }
 
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100),
-      currency: 'usd',
-      metadata: {
-        booking_number: bookingNum || '',
-        client_name: clientName || '',
-        client_email: clientEmail || '',
-        service: service || '',
-        type: 'deposit'
+    const response = await fetch('https://api.stripe.com/v1/payment_intents', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + stripeKey,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      description: `D'Fide Cleaning — Deposit for ${service} (${bookingNum})`,
-      receipt_email: clientEmail,
+      body: new URLSearchParams({
+        amount: Math.round(amount * 100).toString(),
+        currency: 'usd',
+        'metadata[booking_number]': bookingNum || '',
+        'metadata[client_name]': clientName || '',
+        'metadata[service]': service || '',
+        description: "D'Fide Cleaning Deposit " + (bookingNum || ''),
+        receipt_email: clientEmail || '',
+      }),
     });
 
-    return res.status(200).json({
-      clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id
+    const paymentIntent = await response.json();
+
+    if (!response.ok) {
+      return new Response(JSON.stringify({ error: paymentIntent.error?.message || 'Stripe error' }), { status: 400, headers: cors });
+    }
+
+    return new Response(JSON.stringify({ clientSecret: paymentIntent.client_secret }), {
+      status: 200,
+      headers: { ...cors, 'Content-Type': 'application/json' }
     });
 
   } catch (err) {
-    console.error('Stripe error:', err);
-    return res.status(500).json({ error: err.message });
+    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: cors });
   }
 }
