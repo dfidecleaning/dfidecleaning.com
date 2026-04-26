@@ -12,13 +12,28 @@ export default async function handler(req) {
 
   try {
     const { amount, bookingNum, clientName, clientEmail, service } = await req.json();
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
 
     if (!amount || amount < 1) {
       return new Response(JSON.stringify({ error: 'Invalid amount' }), { status: 400, headers: cors });
     }
 
-    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    // Create customer first to save card
+    const custRes = await fetch('https://api.stripe.com/v1/customers', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + stripeKey,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        email: clientEmail || '',
+        name: clientName || '',
+        'metadata[booking_number]': bookingNum || '',
+      }),
+    });
+    const customer = await custRes.json();
 
+    // Create payment intent with setup for future use
     const response = await fetch('https://api.stripe.com/v1/payment_intents', {
       method: 'POST',
       headers: {
@@ -28,6 +43,8 @@ export default async function handler(req) {
       body: new URLSearchParams({
         amount: Math.round(amount * 100).toString(),
         currency: 'usd',
+        customer: customer.id,
+        setup_future_usage: 'off_session',
         'metadata[booking_number]': bookingNum || '',
         'metadata[client_name]': clientName || '',
         'metadata[service]': service || '',
@@ -39,10 +56,13 @@ export default async function handler(req) {
     const paymentIntent = await response.json();
 
     if (!response.ok) {
-      return new Response(JSON.stringify({ error: paymentIntent.error?.message || 'Stripe error' }), { status: 400, headers: cors });
+      return new Response(JSON.stringify({ error: paymentIntent.error?.message }), { status: 400, headers: cors });
     }
 
-    return new Response(JSON.stringify({ clientSecret: paymentIntent.client_secret }), {
+    return new Response(JSON.stringify({
+      clientSecret: paymentIntent.client_secret,
+      customerId: customer.id
+    }), {
       status: 200,
       headers: { ...cors, 'Content-Type': 'application/json' }
     });
