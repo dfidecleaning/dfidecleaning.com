@@ -1,0 +1,189 @@
+/* ============================================================
+   D'FIDE CLEANING SERVICES — SHARED STYLES
+   Used by: index.html + app/index.html (portal)
+   ============================================================ */
+
+:root {
+  /* Brand Colors */
+  --navy:       #0B1F3A;
+  --navy-mid:   #112847;
+  --navy-light: #1a3a5c;
+  --gold:       #C9A84C;
+  --gold-light: #E2C47A;
+  --gold-pale:  #F9F3E3;
+  --cream:      #FAF8F3;
+  --white:      #FFFFFF;
+  --gray:       #8A9AB0;
+  --gray-light: #F0F2F5;
+  --text:       #0B1F3A;
+  --green:      #2D7A5F;
+  --green-light:#3AA87F;
+
+  /* Portal aliases */
+  --off:        #F5F5F5;
+  --g100:       #f3f2ef;
+  --g200:       #e8e6e1;
+  --g400:       #9a9590;
+  --g600:       #6b6560;
+  --red:        #c0392b;
+  --amber:      #d97706;
+  --amber-l:    #fef3c7;
+  --purple:     #7c3aed;
+  --purple-l:   #ede9fe;
+
+  /* Radius & Shadows */
+  --r:          12px;
+  --r-sm:       8px;
+  --sh-sm:      0 1px 3px rgba(11,31,58,.08);
+  --sh-md:      0 4px 16px rgba(11,31,58,.12);
+  --sh-lg:      0 8px 32px rgba(11,31,58,.16);
+}
+
+/* ============================================================
+   SHARED NAV — same header on both pages
+   ============================================================ */
+.dfide-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  height: 64px;
+  background: rgba(11,31,58,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+.dfide-nav .nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.5px;
+  text-decoration: none;
+}
+.dfide-nav .nav-logo span { color: var(--gold); }
+
+.dfide-nav .nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.dfide-nav .nav-links a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  font-family: 'Jost', sans-serif;
+}
+.dfide-nav .nav-links a:hover { color: var(--gold); }
+
+/* ============================================================
+   SHARED BUTTON SYSTEM
+   ============================================================ */
+
+/* Primary — gold background */
+.btn-book {
+  background: var(--gold);
+  color: var(--navy);
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  padding: 12px 28px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  font-family: 'Jost', sans-serif;
+  transition: all 0.25s;
+}
+.btn-book:hover {
+  background: var(--navy);
+  color: var(--white);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201,168,76,0.3);
+}
+
+/* Ghost — transparent with gold border */
+.btn-ghost {
+  background: transparent;
+  color: var(--white);
+  border: 1.5px solid rgba(255,255,255,0.35);
+  border-radius: 4px;
+  padding: 12px 28px;
+  font-weight: 500;
+  font-size: 0.82rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  font-family: 'Jost', sans-serif;
+  transition: all 0.25s;
+}
+.btn-ghost:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Nav CTA button */
+.btn-nav-cta {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  padding: 0.45rem 1.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  font-family: 'Jost', sans-serif;
+  transition: all 0.2s;
+}
+.btn-nav-cta:hover {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+/* ============================================================
+   SHARED FOOTER
+   ============================================================ */
+.dfide-footer {
+  background: var(--navy);
+  border-top: 1px solid rgba(201,168,76,0.15);
+  padding: 2rem 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.dfide-footer .footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--white);
+}
+.dfide-footer .footer-logo span { color: var(--gold); }
+.dfide-footer p {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.4);
+  font-family: 'Jost', sans-serif;
+}
+
+/* ============================================================
+   RESPONSIVE NAV
+   ============================================================ */
+@media(max-width: 768px) {
+  .dfide-nav { padding: 0 4%; height: 56px; }
+  .dfide-nav .nav-links { display: none; }
+}
