@@ -1415,7 +1415,7 @@ nav {
 .eco-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,.2);border:1px solid rgba(201,168,76,.4);color:var(--gold-l);font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;margin-bottom:12px}
 .hero h1{font-family:'Cormorant Garamond',serif;color:#fff;font-size:28px;font-weight:300;margin-bottom:6px;letter-spacing:-0.5px}
 .hero p{color:rgba(255,255,255,.7);font-size:13px}
-.bk-wrap{max-width:660px;margin:0 auto;padding:20px 14px 100px}
+.bk-wrap{max-width:660px;margin:0 auto;padding:20px 14px 120px}
 .step-row{display:flex;align-items:center;justify-content:center;margin-bottom:22px}
 .dot{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.12);color:rgba(255,255,255,.45);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0}
 .dot.active{background:var(--gold);color:var(--navy)}.dot.done{background:var(--gold);color:var(--navy)}
@@ -1451,8 +1451,8 @@ nav {
 .ext-hdr-l{display:flex;align-items:center;gap:10px}
 .ext-icon{font-size:18px}.ext-name{font-weight:600;color:#fff;font-size:13px}.ext-desc{font-size:11px;color:rgba(255,255,255,.5)}
 .ext-arrow{color:var(--gold);font-size:16px;transition:transform .2s}
-.ext-body{border:1.5px solid var(--g200);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);overflow:hidden;display:none}
-.ext-body.open{display:block}
+.ext-body{border:1.5px solid var(--g200);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);overflow:visible;display:none}
+.ext-body.open{display:block;overflow:visible}
 .ext-item{display:flex;align-items:center;padding:10px 12px;border-bottom:1px solid var(--g100);cursor:pointer;transition:background .15s}
 .ext-item:last-child{border-bottom:none}.ext-item:hover{background:var(--g100)}.ext-item.sel{background:rgba(201,168,76,.06)}
 .ext-cb{width:16px;height:16px;border-radius:4px;accent-color:var(--gold);flex-shrink:0;margin-right:10px}
@@ -1633,7 +1633,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
   </div>
 
   <!-- PORTAL CONTENT (embedded) -->
-  <div id="portal-content" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div id="portal-content" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;height:0;">
     <div class="notif" id="notif"><span id="notif-text"></span></div>
 
 <!-- PIN OVERLAY -->
@@ -2200,7 +2200,7 @@ function buildExt(){
       const idx=gi++;
       return`<div class="ext-item" onclick="togExt(${idx},this)"><input type="checkbox" class="ext-cb" onclick="event.stopPropagation();togExt(${idx},this.closest('.ext-item'))"><div style="flex:1"><div class="ext-n">${item.name}</div><div class="ext-d">${item.desc}</div></div><div class="ext-p">+$${item.price}</div></div>`;
     }).join('');
-    return`<div class="ext-cat"><div class="ext-hdr" onclick="togCat('eb-${cat.id}','ea-${cat.id}')"><div class="ext-hdr-l"><span class="ext-icon">${cat.icon}</span><div><div class="ext-name">${cat.name}</div><div class="ext-desc">${cat.desc}</div></div></div><span class="ext-arrow" id="ea-${cat.id}">${ci===0?'▴':'▾'}</span></div><div class="ext-body ${ci===0?'open':''}" id="eb-${cat.id}">${items}</div></div>`;
+    return`<div class="ext-cat"><div class="ext-hdr" onclick="togCat('eb-${cat.id}','ea-${cat.id}')"><div class="ext-hdr-l"><span class="ext-icon">${cat.icon}</span><div><div class="ext-name">${cat.name}</div><div class="ext-desc">${cat.desc}</div></div></div><span class="ext-arrow" id="ea-${cat.id}">▴</span></div><div class="ext-body open" id="eb-${cat.id}">${items}</div></div>`;
   }).join('');
 }
 
