@@ -1733,12 +1733,12 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
           <div class="svc-card" onclick="selSvc('standard',this)">
             <div class="ic">✨</div><h3>Standard Clean</h3>
             <ul><li>✓ Dusting all surfaces</li><li>✓ Vacuum & mop floors</li><li>✓ Kitchen counters & sink</li><li>✓ 1 bathroom included</li><li>✓ Mirrors & glass</li><li>✓ Trash removal</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">From $180</div><div class="bg" style="color:var(--green)">1 bathroom included · Weekly -15% · Biweekly -10% · Monthly -5%</div>
+            <div class="pt">From $180</div><div class="bg" style="color:var(--green)">1 bathroom included · Recurring discount applies from 2nd visit · Weekly -15% · Biweekly -10%</div>
           </div>
           <div class="svc-card" onclick="selSvc('deep',this)">
             <div class="ic">🧹</div><h3>Deep Clean</h3>
             <ul><li>✓ Everything in Standard +</li><li>✓ Baseboards & door frames</li><li>✓ 1 bathroom included</li><li>✓ Behind & under furniture</li><li>✓ Grout scrubbing</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">From $260</div><div class="bg" style="color:var(--gold)">20% OFF your first Deep Clean</div>
+            <div class="pt">From $260</div><div class="bg" style="color:var(--gold)">20% OFF — New clients only · First Deep Clean</div>
           </div>
           <div class="svc-card" onclick="selSvc('moveinout',this)">
             <div class="ic">📦</div><h3>Move-In/Out</h3>
@@ -1753,7 +1753,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
         </div>
       </div>
       <div class="card" id="size-sec" style="display:none">
-        <div id="deep-discount-badge" style="display:none;background:rgba(201,168,76,.15);border:1px solid var(--gold);border-radius:6px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:var(--gold);text-align:center">🎉 20% OFF — First Deep Clean discount for new clients</div>
+        <div id="deep-discount-badge" style="display:none;background:rgba(201,168,76,.15);border:1px solid var(--gold);border-radius:6px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:var(--gold);text-align:center">🎉 20% OFF — First Deep Clean for new clients only</div>
         <h3>Home Size</h3>
         <label style="margin-bottom:8px">Bedrooms</label>
         <div class="sz-row" id="bed-row">
@@ -2051,6 +2051,8 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
       <div class="fg"><label>Type</label><select id="wk-type" onchange="toggleRateLabel()"><option value="1099">1099 Contractor</option><option value="w2">W-2 Employee</option></select></div>
       <div class="fg"><label id="wk-rate-label">Rate (%)</label><div style="display:flex;align-items:center;gap:6px"><span id="wk-rate-prefix" style="display:none;font-weight:600;color:var(--g600)">$</span><input type="number" id="wk-rate" value="40"><span id="wk-rate-suffix" style="font-weight:600;color:var(--g600)">%</span></div></div>
     </div>
+    <div class="fg"><label>Address</label><input type="text" id="wk-address" placeholder="123 Main St, City, NJ 07000"></div>
+    <div class="fg"><label>Social Security Number (SSN) <span style="font-size:11px;color:var(--g400);font-weight:400">— for 1099 filing</span></label><div style="position:relative"><input type="password" id="wk-ssn" placeholder="XXX-XX-XXXX" maxlength="11" oninput="fmtSSN(this)"><button type="button" onclick="toggleSSN()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--g400);font-size:13px" id="wk-ssn-eye">👁</button></div></div>
     <div class="fg" style="margin-top:4px"><label><input type="checkbox" id="wk-trans" style="width:auto;margin-right:6px">Has own transportation</label></div>
     <br><button class="btn btn-g" id="wk-save" onclick="saveWorker()">Save Worker</button>
   </div>
@@ -2309,7 +2311,7 @@ function calcP(){
     const mo=document.getElementById('sp-mo');if(mo)mo.textContent=f(Math.round(sub*.95));
     // Show/hide recurring plans - only for standard
     const isStandard=b.service==='standard';
-    ['sub-weekly','sub-biweekly','sub-monthly'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=isStandard?'flex':'none';});
+    ['sub-weekly','sub-biweekly'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=isStandard?'flex':'none';});const moEl=document.getElementById('sub-monthly');if(moEl)moEl.style.display='none';;
     const note=document.getElementById('sub-sec-note');if(note)note.style.display=!isStandard&&b.service?'block':'none';
     if(!isStandard&&b.subscription!=='once'){b.subscription='once';document.querySelectorAll('.sub-card').forEach(c=>c.classList.remove('sel'));document.querySelector('.sub-card')?.classList.add('sel');}
     const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=f(v);};
@@ -2322,7 +2324,7 @@ function calcP(){
     let planNote='';
     if(isStandard&&b.subscription==='biweekly')planNote=`First visit ${f(sub)} · From 2nd visit ${f(Math.round(sub*.90))} (-10%)`;
     else if(isStandard&&b.subscription==='weekly')planNote=`First visit ${f(sub)} · From 2nd visit ${f(Math.round(sub*.85))} (-15%)`;
-    else if(isStandard&&b.subscription==='monthly')planNote=`First visit ${f(sub)} · From 2nd visit ${f(Math.round(sub*.95))} (-5%)`;
+    // monthly removed for standard
     const pn=document.getElementById('plan-note');if(pn)pn.textContent=planNote;
     // Deep Clean badge
     const db2=document.getElementById('deep-discount-badge');
@@ -2484,7 +2486,7 @@ function goStep(step){
 
 function buildRev(){
   const sn={standard:'Standard Clean',deep:'Deep Clean',moveinout:'Move In/Out',airbnb:'Airbnb Turnover'};
-  const subn={once:'One-Time',weekly:'Weekly (-15%)',biweekly:'Every 2 Weeks (-10%)',monthly:'Monthly (-5%)'};
+  const subn={once:'One-Time',weekly:'Weekly (-15%)',biweekly:'Every 2 Weeks (-10%)',monthly:'Monthly'};
   const date=new Date(document.getElementById('b-date').value+'T00:00');
   const ds=date.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
   const ext=b.extras.length?b.extras.map(e=>e.name).join(', '):'None';
@@ -2968,7 +2970,21 @@ async function loadWorkers(){
 }
 
 function toggleRateLabel(){const t=document.getElementById('wk-type').value;const lbl=document.getElementById('wk-rate-label');const pre=document.getElementById('wk-rate-prefix');const suf=document.getElementById('wk-rate-suffix');if(t==='w2'){lbl.textContent='Hourly Rate';pre.style.display='inline';suf.style.display='none';document.getElementById('wk-rate').value='';}else{lbl.textContent='Rate (%)';pre.style.display='none';suf.style.display='inline';document.getElementById('wk-rate').value='40';}}
-function openNewWorker(){document.getElementById('m-wk-title').textContent='Add Worker';document.getElementById('wk-id').value='';['wk-fname','wk-lname','wk-phone','wk-email'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('wk-type').value='1099';document.getElementById('wk-rate').value='40';document.getElementById('wk-trans').checked=false;document.getElementById('wk-rate-label').textContent='Rate (%)';document.getElementById('wk-rate-prefix').style.display='none';document.getElementById('wk-rate-suffix').style.display='inline';document.getElementById('wk-save').textContent='Save Worker';document.getElementById('wk-save').onclick=saveWorker;openModal('m-worker');}
+
+function fmtSSN(el){
+  let v=el.value.replace(/\D/g,'');
+  if(v.length>3&&v.length<=5) v=v.slice(0,3)+'-'+v.slice(3);
+  else if(v.length>5) v=v.slice(0,3)+'-'+v.slice(3,5)+'-'+v.slice(5,9);
+  el.value=v;
+}
+function toggleSSN(){
+  const el=document.getElementById('wk-ssn');
+  const eye=document.getElementById('wk-ssn-eye');
+  if(el.type==='password'){el.type='text';eye.textContent='🙈';}
+  else{el.type='password';eye.textContent='👁';}
+}
+
+function openNewWorker(){document.getElementById('m-wk-title').textContent='Add Worker';document.getElementById('wk-id').value='';['wk-fname','wk-lname','wk-phone','wk-email','wk-address','wk-ssn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('wk-type').value='1099';document.getElementById('wk-rate').value='40';document.getElementById('wk-trans').checked=false;document.getElementById('wk-rate-label').textContent='Rate (%)';document.getElementById('wk-rate-prefix').style.display='none';document.getElementById('wk-rate-suffix').style.display='inline';document.getElementById('wk-save').textContent='Save Worker';document.getElementById('wk-save').onclick=saveWorker;openModal('m-worker');}
 
 function editWk(id,fn,ln,ph,em,type,rate,trans){
   document.getElementById('m-wk-title').textContent='Edit Worker';document.getElementById('wk-id').value=id;
@@ -2980,13 +2996,13 @@ function editWk(id,fn,ln,ph,em,type,rate,trans){
 }
 
 async function saveWorker(){
-  const d={first_name:document.getElementById('wk-fname').value,last_name:document.getElementById('wk-lname').value,phone:document.getElementById('wk-phone').value,email:document.getElementById('wk-email').value,worker_type:document.getElementById('wk-type').value,rate_percent:parseFloat(document.getElementById('wk-rate').value)||40,has_transportation:document.getElementById('wk-trans').checked,status:'active'};
+  const d={first_name:document.getElementById('wk-fname').value,last_name:document.getElementById('wk-lname').value,phone:document.getElementById('wk-phone').value,email:document.getElementById('wk-email').value,address:document.getElementById('wk-address').value,ssn:document.getElementById('wk-ssn').value,worker_type:document.getElementById('wk-type').value,rate_percent:parseFloat(document.getElementById('wk-rate').value)||40,has_transportation:document.getElementById('wk-trans').checked,status:'active'};
   if(!d.first_name||!d.phone){showNotif('Name and phone required','error');return;}
   try{await db('workers','POST',d);showNotif('Worker added ✓','success');closeModal('m-worker');loadWorkers();}catch(e){showNotif('Error saving worker','error');}
 }
 
 async function updWk(id){
-  const d={first_name:document.getElementById('wk-fname').value,last_name:document.getElementById('wk-lname').value,phone:document.getElementById('wk-phone').value,email:document.getElementById('wk-email').value,worker_type:document.getElementById('wk-type').value,rate_percent:parseFloat(document.getElementById('wk-rate').value)||40,has_transportation:document.getElementById('wk-trans').checked};
+  const d={first_name:document.getElementById('wk-fname').value,last_name:document.getElementById('wk-lname').value,phone:document.getElementById('wk-phone').value,email:document.getElementById('wk-email').value,address:document.getElementById('wk-address').value,ssn:document.getElementById('wk-ssn').value,worker_type:document.getElementById('wk-type').value,rate_percent:parseFloat(document.getElementById('wk-rate').value)||40,has_transportation:document.getElementById('wk-trans').checked};
   try{await db('workers','PATCH',d,'id=eq.'+id);showNotif('Worker updated ✓','success');closeModal('m-worker');loadWorkers();}catch(e){showNotif('Error updating worker','error');}
 }
 
@@ -3180,7 +3196,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <!-- PROMO -->
 <div class="promo-banner">
   <span data-key="promo-text">🎉 First-Time Offer:</span>
-  <strong data-key="promo-discount">20% OFF your first Deep Clean — limited spots this week</strong>
+  <strong data-key="promo-discount">20% OFF your first Deep Clean — new clients only</strong>
   <a href="#book" onclick="openSPA();return false;" data-key="promo-link">Claim My Discount →</a></div>
 
 <!-- NAV -->
@@ -3218,7 +3234,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       <span style="font-size:0.78rem;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:0.4rem">↩️ 24h Guarantee</span>
     </div>
     <div class="hero-stats">
-      <div><div class="stat-num">50+</div><div class="stat-label" data-key="stat-eco">Homes Cleaned</div></div>
+      <div><div class="stat-num">🌿</div><div class="stat-label" data-key="stat-eco">Plant-Based Products</div></div>
       <div><div class="stat-num">5.0★</div><div class="stat-label" data-key="stat-counties">Google Rating</div></div>
       <div><div class="stat-num">100%</div><div class="stat-label" data-key="stat-bilingual">Eco-Safe Products</div></div>
     </div>
@@ -3293,7 +3309,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       <h3 style="font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:0.25rem" data-key="s1-title">Standard Cleaning</h3>
       <p style="font-size:0.82rem;color:rgba(255,255,255,.7);margin-bottom:0.75rem" data-key="s1-desc">Routine cleaning for homes and apartments.</p>
       <div style="font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:0.4rem" data-key="s1-note2">Starting at $180</div>
-      <div style="font-size:0.72rem;color:rgba(255,255,255,.6);margin-bottom:1rem">💎 Recurring: Weekly -15% · Biweekly -10% · Monthly -5%</div>
+      <div style="font-size:0.72rem;color:rgba(255,255,255,.6);margin-bottom:1rem">💎 Recurring discount from 2nd visit: Weekly -15% · Biweekly -10%</div>
       <a href="#book" onclick="openSPA('standard');return false;" style="display:block;text-align:center;background:var(--gold);color:var(--navy);font-weight:800;font-size:0.8rem;letter-spacing:1.5px;padding:12px 20px;text-decoration:none;text-transform:uppercase;border-radius:4px;">Book Now →</a>
     </div>
 
@@ -3550,7 +3566,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 const T = {
   es: {
     "nav-servicios":"Servicios","nav-extras":"Extras","nav-plans":"Planes","nav-nosotros":"Nosotros","nav-opiniones":"Opiniones","nav-cotizar":"Reservar","nav-quote":"💬 Presupuesto gratis",
-    "promo-text":"🎉 Oferta de estreno:","promo-discount":"20% OFF en tu primera limpieza profunda (Deep Clean) — espacios limitados","promo-link":"Quiero mi descuento →",
+    "promo-text":"🎉 Oferta de estreno:","promo-discount":"20% OFF en tu primera Limpieza Profunda — solo nuevos clientes","promo-link":"Quiero mi descuento →",
     "hero-badge":"🌿 Limpieza ecológica certificada · Hoboken · Jersey City · Edgewater",
     "hero-h1":"Limpieza eco-friendly en Hoboken, Jersey City & Edgewater — <em>Familias que confían en D'Fide</em>",
     "hero-p":"Nos encargamos de todo — para que disfrutes tu fin de semana. Limpieza eco-premium para familias en Hoboken, Jersey City y Edgewater.",
@@ -3571,14 +3587,14 @@ const T = {
     "ex-closets-desc":"Limpieza interior — estantes limpios, pisos aspirados y todas las superficies limpias.",
     "ex-microwave":"Interior del Microondas",
     "ex-microwave-desc":"Limpieza profunda del microondas — paredes, plato giratorio y puerta. Elimina grasa y olores.",
-    "extras-cta":"Book Now","pkg-label":"🏡 Paquetes Premium","pkg-title":"Elige Tu Experiencia de Limpieza","pkg-sub":"Limpieza profesional y ecológica adaptada a tu hogar. Selecciona el paquete que mejor se adapte a tus necesidades.","pkg1-name":"Deep Clean Plus","pkg1-price":"💰 Desde $650","pkg1-desc":"Una limpieza profunda integral para refrescar tu hogar. Incluye 1 baño, cocina exterior, desempolvado y aspirado/trapeado.","pkg1-i1":"✔️ Limpieza profunda de toda la casa","pkg1-i2":"✔️ 1 Baño incluido","pkg1-i3":"✔️ Cocina exterior (encimeras y superficies)","pkg1-i4":"✔️ Desempolvado + eliminación de telarañas","pkg1-i5":"✔️ Lámparas y ventiladores de techo","pkg1-i6":"✔️ Aspirado y trapeado de todos los pisos","pkg-addons-label":"➕ Extras opcionales:","pkg2-name":"Premium Detail Clean","pkg2-price":"💰 $900 – $1,100","pkg2-desc":"Limpieza detallada de arriba a abajo para hasta 3 baños. Incluye electrodomésticos de cocina, zócalos y gabinetes.","pkg2-i1":"✔️ Todo lo del Deep Clean Plus","pkg2-i2":"✔️ Hasta 3 baños incluidos","pkg2-i3":"✔️ Interior de horno, refrigerador y microondas","pkg2-i4":"✔️ Zócalos (áreas principales)","pkg2-i5":"✔️ Gabinetes interiores (enfoque en cocina)","pkg-addons-label2":"➕ Extras opcionales:","pkg3-name":"Luxury Full Service 💎","pkg3-price":"💰 $1,200 – $1,500+","pkg3-desc":"Experiencia de guante blanco con todos los baños, ventanas, persianas, eliminación de pelo de mascotas y cuartos especiales incluidos.","pkg3-i1":"✔️ Todo lo del Premium Detail Clean","pkg3-i2":"✔️ Todos los baños incluidos","pkg3-i3":"✔️ Ventanas interiores + persianas","pkg3-i4":"✔️ Eliminación de pelo de mascotas","pkg3-i5":"✔️ Detallado completo (cuartos especiales)","pkg3-i6":"✔️ Desempolvado de alta precisión","pkg-addons-label3":"➕ Extras opcionales:","pkg-popular":"⭐ Más Popular","pkg-btn":"Book Now","pkg-btn2":"Book Now","pkg-btn3":"Book Now","pkg-cta":"Book Now","customize-title":"✨ Personaliza Tu Limpieza","customize-sub":"Servicios adicionales disponibles para adaptar tu limpieza a las necesidades específicas de tu hogar.","customize-note":"\"Otros servicios disponibles a solicitud para una experiencia de limpieza completamente personalizada.\"","service-discount":"🎉 Primera Limpieza Profunda — 20% OFF solo para nuevos clientes.","s1-title":"Limpieza Estándar","s1-desc":"Limpieza de mantenimiento para hogares y apartamentos.","s1-note2":"Desde $180","s1-note2":"Desde $180","s1-i1":"✔️ Limpieza general de todas las habitaciones","s1-i2":"✔️ Limpieza de baños (hasta 2 baños incluidos)","s1-i3":"✔️ Limpieza de cocina (solo superficies exteriores)","s1-i4":"✔️ Aspirado y trapeado de todos los pisos","s1-i5":"✔️ Desempolvado de superficies y muebles","s1-i6":"✔️ Gestión de residuos","s1-i7":"✨ Acabados limpios y uniformes","s1-addons":"➕ Baños adicionales · Interior de electrodomésticos · Ventanas interiores · y más","s1-ideal":"✨ Ideal para mantenimiento continuo con estándar consistente.","btn-book-s1":"Book Now","s1-desc":"🌿 Limpieza Estándar – Eco-Friendly","s1-note":"+ Baños adicionales · Interior de electrodomésticos · y más extras disponibles",
+    "extras-cta":"Book Now","pkg-label":"🏡 Paquetes Premium","pkg-title":"Elige Tu Experiencia de Limpieza","pkg-sub":"Limpieza profesional y ecológica adaptada a tu hogar. Selecciona el paquete que mejor se adapte a tus necesidades.","pkg1-name":"Deep Clean Plus","pkg1-price":"💰 Desde $650","pkg1-desc":"Una limpieza profunda integral para refrescar tu hogar. Incluye 1 baño, cocina exterior, desempolvado y aspirado/trapeado.","pkg1-i1":"✔️ Limpieza profunda de toda la casa","pkg1-i2":"✔️ 1 Baño incluido","pkg1-i3":"✔️ Cocina exterior (encimeras y superficies)","pkg1-i4":"✔️ Desempolvado + eliminación de telarañas","pkg1-i5":"✔️ Lámparas y ventiladores de techo","pkg1-i6":"✔️ Aspirado y trapeado de todos los pisos","pkg-addons-label":"➕ Extras opcionales:","pkg2-name":"Premium Detail Clean","pkg2-price":"💰 $900 – $1,100","pkg2-desc":"Limpieza detallada de arriba a abajo para hasta 3 baños. Incluye electrodomésticos de cocina, zócalos y gabinetes.","pkg2-i1":"✔️ Todo lo del Deep Clean Plus","pkg2-i2":"✔️ Hasta 3 baños incluidos","pkg2-i3":"✔️ Interior de horno, refrigerador y microondas","pkg2-i4":"✔️ Zócalos (áreas principales)","pkg2-i5":"✔️ Gabinetes interiores (enfoque en cocina)","pkg-addons-label2":"➕ Extras opcionales:","pkg3-name":"Luxury Full Service 💎","pkg3-price":"💰 $1,200 – $1,500+","pkg3-desc":"Experiencia de guante blanco con todos los baños, ventanas, persianas, eliminación de pelo de mascotas y cuartos especiales incluidos.","pkg3-i1":"✔️ Todo lo del Premium Detail Clean","pkg3-i2":"✔️ Todos los baños incluidos","pkg3-i3":"✔️ Ventanas interiores + persianas","pkg3-i4":"✔️ Eliminación de pelo de mascotas","pkg3-i5":"✔️ Detallado completo (cuartos especiales)","pkg3-i6":"✔️ Desempolvado de alta precisión","pkg-addons-label3":"➕ Extras opcionales:","pkg-popular":"⭐ Más Popular","pkg-btn":"Book Now","pkg-btn2":"Book Now","pkg-btn3":"Book Now","pkg-cta":"Book Now","customize-title":"✨ Personaliza Tu Limpieza","customize-sub":"Servicios adicionales disponibles para adaptar tu limpieza a las necesidades específicas de tu hogar.","customize-note":"\"Otros servicios disponibles a solicitud para una experiencia de limpieza completamente personalizada.\"","service-discount":"🎉 20% OFF en tu primera Limpieza Profunda — solo para nuevos clientes.","s1-title":"Limpieza Estándar","s1-desc":"Limpieza de mantenimiento para hogares y apartamentos.","s1-note2":"Desde $180","s1-note2":"Desde $180","s1-i1":"✔️ Limpieza general de todas las habitaciones","s1-i2":"✔️ Limpieza de baños (hasta 2 baños incluidos)","s1-i3":"✔️ Limpieza de cocina (solo superficies exteriores)","s1-i4":"✔️ Aspirado y trapeado de todos los pisos","s1-i5":"✔️ Desempolvado de superficies y muebles","s1-i6":"✔️ Gestión de residuos","s1-i7":"✨ Acabados limpios y uniformes","s1-addons":"➕ Baños adicionales · Interior de electrodomésticos · Ventanas interiores · y más","s1-ideal":"✨ Ideal para mantenimiento continuo con estándar consistente.","btn-book-s1":"Book Now","s1-desc":"🌿 Limpieza Estándar – Eco-Friendly","s1-note":"+ Baños adicionales · Interior de electrodomésticos · y más extras disponibles",
     "s2-title":"Limpieza Profunda","s3-title":"Mudanza / Entrega","s3-desc":"Limpieza completa para mudanzas.","s3-note2":"Desde $350","s4-title":"Airbnb / Alquiler","s4-desc":"Limpieza rápida para propiedades en alquiler.","s4-note2":"Desde $195","s2-note2":"Desde $260 · 20% OFF primera limpieza profunda","s2-i1":"✔️ Limpieza profunda de todas las habitaciones","s2-i2":"✔️ Sanitización profunda de baños (hasta 2 baños incluidos)","s2-i3":"✔️ Limpieza profunda de cocina (superficies exteriores)","s2-i4":"✔️ Desempolvado de superficies, zócalos y áreas de difícil acceso","s2-i5":"✔️ Aspirado y trapeado en toda la casa","s2-i6":"✔️ Limpieza detallada de lámparas y accesorios accesibles","s2-addons":"➕ Baños adicionales · Interior de electrodomésticos · Sótano · Ventanas interiores · y más","s2-ideal":"✨ Recomendado como primera limpieza o reinicio completo del hogar.","btn-book-s2":"Book Now","s2-desc":"🌿 Limpieza Profunda Premium","s2-note":"+ Baños adicionales · Interior de electrodomésticos · y más extras disponibles","s2-upsell":"✨ Ideal como primera limpieza — combínalo con mantenimiento semanal o quincenal para mantener tu hogar impecable.",
     "footer-services":"Servicios","footer-company":"Empresa",
     "footer-s1":"Limpieza Regular","footer-s2":"Limpieza Profunda","footer-s3":"Mudanza / Entrega","footer-s4":"Airbnb Turnover",
     "footer-extras":"Extras","footer-nosotros":"Por qué elegirnos","footer-opiniones":"Opiniones",
     "footer-contacto":"Contacto","footer-privacy":"Aviso de privacidad",
     "footer-copy":"© 2025 D’Fide Cleaning Services LLC · New Jersey",
-    "footer-terms":"Términos","footer-privacylink":"Privacidad","plan1-note":"Precio estándar","plan2-note":"Plan quincenal — ahorra 5%","plan3-note":"Plan semanal — ahorra 10%"
+    "footer-terms":"Términos","footer-privacylink":"Privacidad","plan1-note":"Precio estándar","plan2-note":"Plan quincenal — ahorra 10%","plan3-note":"Plan semanal — ahorra 15%"
   ,
     "plans-label":"💎 Planes Recurrentes",
     "plans-title":"Refinado y Sin Esfuerzo.",
@@ -3588,14 +3604,14 @@ const T = {
     "plan1-f1":"Agenda flexible sin compromiso a largo plazo",
     "plan1-f2":"Reserva cuando lo necesites, en tus términos",
     "plan1-f3":"Ideal para servicio ocasional o primera vez",
-    "plan2-name":"Plan Quincenal — 5% de Ahorro",
+    "plan2-name":"Plan Quincenal — 10% de Ahorro",
     "plan2-rate":"Diseñado para mantenimiento consistente y sin esfuerzo",
-    "plan2-f1":"5% de ahorro en cada visita",
+    "plan2-f1":"10% de ahorro desde la 2da visita",
     "plan2-f2":"Agenda reservada para un servicio impecable",
     "plan2-f3":"Disponibilidad prioritaria",
     "plan3-name":"Plan Semanal — 10% de Ahorro",
     "plan3-rate":"Lo máximo en comodidad y cuidado",
-    "plan3-f1":"10% de ahorro en cada visita",
+    "plan3-f1":"15% de ahorro desde la 2da visita",
     "plan3-f2":"Mantenimiento semanal continuo",
     "plan3-f3":"Mayor prioridad en agendamiento",
     "plans-note":"Los precios preferenciales se aplican automáticamente al seleccionar tu frecuencia en nuestro sistema de reservas.",
@@ -3671,7 +3687,7 @@ const T = {
     "cta-title":"¿Listo para un hogar más limpio y saludable?",
     "cta-sub":"Disponibilidad limitada semanal · Reserva tu limpieza hoy",
     "hiw-label":"Cómo funciona","hiw-title":"Simple. Fácil. Impecable.","hiw-sub":"De la reserva a un hogar limpio en 3 pasos","hiw-s1":"Reserva en línea","hiw-d1":"Elige tu servicio, selecciona extras, elige fecha y paga un pequeño depósito — toma menos de 3 minutos.","hiw-s2":"Nosotros limpiamos","hiw-d2":"Nuestro equipo asegurado llega a tiempo y se encarga de todo usando productos eco-certificados.","hiw-s3":"Tú descansas","hiw-d3":"Llega a un hogar impecable. ¿No estás 100% satisfecho? Regresamos en 24 horas — sin preguntas.","hiw-cta":"Reservar ahora — Desde $180",
-    "bcta-h2":"¿Listo para un hogar impecable?","bcta-p":"Únete a familias de Hudson County. 20% OFF en tu primera Deep Clean + ahorra hasta 15% con plan recurrente de Limpieza Estándar.","bcta-btn1":"Reservar — 20% Off","bcta-btn2":"💬 WhatsApp",
+    "bcta-h2":"¿Listo para un hogar impecable?","bcta-p":"Únete a familias de Hudson County. 20% OFF en tu primera Deep Clean (solo nuevos clientes) + ahorra hasta 15% desde la 2da visita con plan recurrente Estándar.","bcta-btn1":"Reservar — 20% Off","bcta-btn2":"💬 WhatsApp",
     "hero-urgency":"⏰ Espacios limitados esta semana — reserva antes de que se llenen",
     "testi-label":"Opiniones","testi-title":"Lo que dicen nuestros clientes",
     "gallery-label":"Galería","gallery-title":"Nuestro trabajo habla por sí mismo",
