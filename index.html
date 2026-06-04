@@ -1719,40 +1719,54 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
 
     <!-- STEP 1 -->
     <div class="bk-step active" id="s1">
+
+      <!-- SERVICE CARDS -->
       <div class="card">
         <h3>Select Your Service</h3>
-        <div class="svc-grid" style="grid-template-columns:1fr 1fr">
-          <div class="svc-card" onclick="selSvc('standard',this)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+          <div class="svc-card" id="svc-standard" onclick="selSvc('standard',this)">
             <div class="ic">✨</div><h3>Standard Clean</h3>
-            <ul><li>✓ All rooms · Kitchen exterior</li><li>✓ Vacuum, mop & dusting</li><li>✓ 1 bathroom included</li><li>✓ Trash removal</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">Starting from $155</div><div class="bg" style="color:var(--green)">Recurring discount from 2nd visit</div>
+            <ul><li>✓ All rooms cleaned</li><li>✓ Kitchen exterior</li><li>✓ Vacuum, mop & dusting</li><li>✓ 1 bathroom included</li><li>✓ Eco products 🌿</li></ul>
+            <div class="pt">Starting from $155</div>
+            <div class="bg" style="color:var(--green)">Recurring discount from 2nd visit</div>
           </div>
-          <div class="svc-card" onclick="selSvc('deep',this)">
+
+          <div class="svc-card" id="svc-deep" onclick="selSvc('deep',this)">
             <div class="ic">🧹</div><h3>Deep Clean</h3>
-            <ul><li>✓ Everything in Standard</li><li>✓ Baseboards & door frames</li><li>✓ Behind & under furniture</li><li>✓ Grout scrubbing · Ceiling fans</li><li>✓ 1 bathroom included</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">Starting from $220</div><div class="bg" style="color:var(--gold)">Detailed deep clean</div>
+            <ul><li>✓ Everything in Standard</li><li>✓ Baseboards & door frames</li><li>✓ Behind & under furniture</li><li>✓ Grout scrubbing</li><li>✓ 1 bathroom included</li><li>✓ Eco products 🌿</li></ul>
+            <div class="pt">Starting from $220</div>
+            <div class="bg" style="color:var(--gold)">Detailed deep clean</div>
           </div>
-          <div class="svc-card" onclick="selSvc('movein',this)">
+
+          <div class="svc-card" id="svc-movein" onclick="selSvc('movein',this)">
             <div class="ic">🏠</div><h3>Move-In Cleaning</h3>
             <ul><li>✓ Empty/new home prep</li><li>✓ 1 bathroom included</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">Starting from $180</div><div class="bg" style="color:var(--green)">Perfect for new homes</div>
+            <div class="pt">Starting from $180</div>
+            <div class="bg" style="color:var(--green)">Perfect for new homes</div>
           </div>
-          <div class="svc-card" onclick="selSvc('moveout',this)">
+
+          <div class="svc-card" id="svc-moveout" onclick="selSvc('moveout',this)">
             <div class="ic">📦</div><h3>Move-Out Cleaning</h3>
             <ul><li>✓ Deep cleaning throughout</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">Starting from $240</div><div class="bg" style="color:var(--gold)">Add appliances & cabinets as extras</div>
+            <div class="pt">Starting from $240</div>
+            <div class="bg" style="color:var(--gold)">Add appliances & cabinets as extras</div>
           </div>
-          <div class="svc-card" onclick="selSvc('airbnb',this)">
+
+          <div class="svc-card" id="svc-airbnb" onclick="selSvc('airbnb',this)" style="grid-column:1/-1">
             <div class="ic">🏠</div><h3>Airbnb Turnover</h3>
             <ul><li>✓ Full standard clean</li><li>✓ Kitchen reset</li><li>✓ Guest-ready presentation</li><li>✓ 1 bathroom included</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">Starting from $165</div><div class="bg" style="color:var(--gold)">Perfect for Hoboken & JC hosts</div>
+            <div class="pt">Starting from $165</div>
+            <div class="bg" style="color:var(--gold)">Perfect for Hoboken & JC hosts</div>
           </div>
+
         </div>
       </div>
+
+      <!-- SIZE SECTION — shown after service selected -->
       <div class="card" id="size-sec" style="display:none">
-        
-        <h3>Home Size</h3>
-        <label style="margin-bottom:8px">Bedrooms</label>
+        <h3>🛏 Home Size</h3>
+        <label style="display:block;margin-bottom:8px;color:rgba(255,255,255,.6);font-size:13px">Bedrooms</label>
         <div class="sz-row" id="bed-row">
           <button class="sz-btn sel" onclick="selBed(0,this)"><span class="n">STU</span><span class="l">DIO</span></button>
           <button class="sz-btn" onclick="selBed(1,this)"><span class="n">1</span><span class="l">BR</span></button>
@@ -1762,16 +1776,27 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
           <button class="sz-btn" onclick="selBed(5,this)"><span class="n">5</span><span class="l">BR</span></button>
           <button class="sz-btn" onclick="selBed(6,this)"><span class="n">6+</span><span class="l">BR</span></button>
         </div>
-        <label style="margin-bottom:8px">Additional Bathrooms <span style="font-size:11px;color:rgba(255,255,255,.5)">(1 included in all services)</span></label>
+
+        <label style="display:block;margin-top:16px;margin-bottom:8px;color:rgba(255,255,255,.6);font-size:13px">Bathrooms <span style="font-size:11px;color:rgba(255,255,255,.4)">(1 included)</span></label>
         <div class="sz-row" id="bath-row">
           <button class="sz-btn sel" onclick="selBath(1,this)"><span class="n">1</span><span class="l">Included</span></button>
-          <button class="sz-btn" onclick="selBath(2,this)"><span class="n">2</span><span class="l">+$65</span></button>
-          <button class="sz-btn" onclick="selBath(3,this)"><span class="n">3</span><span class="l">+$110</span></button>
-          <button class="sz-btn" onclick="selBath(4,this)"><span class="n">4</span><span class="l">+$155</span></button>
-          <button class="sz-btn" onclick="selBath(5,this)"><span class="n">5</span><span class="l">+$200</span></button>
-          <button class="sz-btn" onclick="selBath(6,this)"><span class="n">6+</span><span class="l">+$245</span></button>
+          <button class="sz-btn" onclick="selBath(2,this)"><span class="n">2</span><span class="l" id="bath-lbl-2">+$65</span></button>
+          <button class="sz-btn" onclick="selBath(3,this)"><span class="n">3</span><span class="l" id="bath-lbl-3">+$130</span></button>
+          <button class="sz-btn" onclick="selBath(4,this)"><span class="n">4</span><span class="l" id="bath-lbl-4">+$195</span></button>
+          <button class="sz-btn" onclick="selBath(5,this)"><span class="n">5</span><span class="l" id="bath-lbl-5">+$260</span></button>
+          <button class="sz-btn" onclick="selBath(6,this)"><span class="n">6+</span><span class="l" id="bath-lbl-6">+$325</span></button>
+        </div>
+
+        <!-- Live price preview -->
+        <div style="margin-top:16px;padding:12px;background:rgba(201,168,76,.1);border-radius:8px;border:1px solid rgba(201,168,76,.2)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:13px;color:rgba(255,255,255,.6)">Estimated base price</span>
+            <span style="font-size:22px;font-weight:800;color:var(--gold)" id="s1-price-preview">$0</span>
+          </div>
         </div>
       </div>
+
+      <!-- RECURRING PLAN — Standard only -->
       <div class="card" id="sub-sec" style="display:none">
         <h3>⭐ Save with a Recurring Plan <span style="font-size:11px;font-weight:400;color:rgba(255,255,255,.5)">(Standard Clean only)</span></h3>
         <div class="sub-cards">
@@ -1797,9 +1822,9 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
         </div>
         <div id="plan-note" style="font-size:11px;color:var(--gold);margin-top:8px;text-align:center;min-height:16px"></div>
       </div>
+
       <button class="btn btn-g" id="s1-next" style="display:none" onclick="goStep(2)">Continue → Add Extras</button>
     </div>
-
     <!-- STEP 2 -->
     <div class="bk-step" id="s2">
       <div class="card">
@@ -2338,22 +2363,71 @@ function splitName(val){
   document.getElementById('b-lname').value=parts.slice(1).join(' ')||parts[0]||'';
 }
 function selSvc(type,el){
-  document.querySelectorAll('.svc-card').forEach(c=>c.classList.remove('sel'));
+  // Deselect all service cards
+  ['svc-standard','svc-deep','svc-movein','svc-moveout','svc-airbnb'].forEach(function(id){
+    var card=document.getElementById(id);
+    if(card)card.classList.remove('sel');
+  });
   if(el)el.classList.add('sel');
+
+  // Set service
   b.service=type;
   b.isReturningClient=false;
-  b.winType='none';b.winPrice=0;b.winFtc='';
-  document.getElementById('size-sec').style.display='block';
-  document.getElementById('sub-sec').style.display=type==='standard'?'block':'none';
-  document.getElementById('s1-next').style.display='block';
-  if(type!=='standard'&&b.subscription!=='once'){b.subscription='once';document.querySelectorAll('.sub-card').forEach(c=>c.classList.remove('sel'));document.querySelector('.sub-card')?.classList.add('sel');}
+  b.winType='none';
+  b.winPrice=0;
+  b.winFtc='';
+
+  // Show size section
+  var sizeSec=document.getElementById('size-sec');
+  if(sizeSec)sizeSec.style.display='block';
+
+  // Show/hide recurring plan
+  var subSec=document.getElementById('sub-sec');
+  if(subSec)subSec.style.display=(type==='standard')?'block':'none';
+
+  // Show continue button
+  var nextBtn=document.getElementById('s1-next');
+  if(nextBtn)nextBtn.style.display='block';
+
+  // Reset subscription if not standard
+  if(type!=='standard'&&b.subscription!=='once'){
+    b.subscription='once';
+    document.querySelectorAll('.sub-card').forEach(function(c){c.classList.remove('sel');});
+    var first=document.querySelector('.sub-card');
+    if(first)first.classList.add('sel');
+  }
+
+  // Update bath labels for this service
+  updateBathLabels();
+
+  // Calculate price
   calcP();
-  const next=document.getElementById('sf-next');
-  if(next){next.style.display='block';next.textContent='Continue → Add Extras';next.onclick=()=>goStep(2);}
-  const back=document.getElementById('sf-back');
-  if(back)back.style.display='none';
+
+  // Update step footer
+  var sfNext=document.getElementById('sf-next');
+  if(sfNext){sfNext.style.display='block';sfNext.textContent='Continue → Add Extras';sfNext.onclick=function(){goStep(2);};}
+  var sfBack=document.getElementById('sf-back');
+  if(sfBack)sfBack.style.display='none';
+
+  // Check returning client
+  var emailEl=document.getElementById('b-email');
+  if(emailEl&&emailEl.value)checkClientStatus(emailEl.value);
 }
-function selBed(n,el){document.querySelectorAll('#bed-row .sz-btn').forEach(x=>x.classList.remove('sel'));if(el)el.classList.add('sel');b.beds=n;calcP();}
+
+function selBed(n,el){
+  document.querySelectorAll('#bed-row .sz-btn').forEach(x=>x.classList.remove('sel'));
+  if(el)el.classList.add('sel');
+  b.beds=n;
+  calcP();
+  updateBathLabels();
+}
+function updateBathLabels(){
+  const bp=BATH_PRICE[b.service]||65;
+  for(let i=2;i<=6;i++){
+    const el=document.getElementById('bath-lbl-'+i);
+    if(el)el.textContent='+$'+(bp*(i-1));
+  }
+}
 function selBath(n,el){document.querySelectorAll('#bath-row .sz-btn').forEach(x=>x.classList.remove('sel'));if(el)el.classList.add('sel');b.baths=n;calcP();}
 function selSub(type,el){document.querySelectorAll('.sub-card').forEach(c=>c.classList.remove('sel'));if(el)el.classList.add('sel');b.subscription=type;calcP();}
 function selTip(amt,el){
@@ -2382,6 +2456,9 @@ function calcP(){
     b.total=sub+b.winPrice-b.savings-b.referralDiscount;
     b.deposit=Math.ceil(b.total*.5);
     b.balance=b.total-b.deposit;
+    // Update step 1 price preview
+    const prev=document.getElementById('s1-price-preview');
+    if(prev)prev.textContent='$'+b.basePrice.toLocaleString();
     const f=n=>'$'+n.toLocaleString();
     const s=document.getElementById('sp-once');if(s)s.textContent=f(sub);
     const wk=document.getElementById('sp-weekly');if(wk)wk.textContent=f(Math.round(sub*.85));
