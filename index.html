@@ -10,6 +10,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0B1F3A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="D'Fide">
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
 <script src="https://js.stripe.com/v3/" async></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1777,21 +1784,15 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
           <button class="sz-btn" onclick="selBed(6,this)"><span class="n">6+</span><span class="l">BR</span></button>
         </div>
 
-        <label style="display:block;margin-top:16px;margin-bottom:8px;color:rgba(255,255,255,.6);font-size:13px">Bathrooms <span style="font-size:11px;color:rgba(255,255,255,.4)">(1 included)</span></label>
-        <div class="sz-row" id="bath-row">
-          <button class="sz-btn sel" onclick="selBath(1,this)"><span class="n">1</span><span class="l">Included</span></button>
-          <button class="sz-btn" onclick="selBath(2,this)"><span class="n">2</span><span class="l" id="bath-lbl-2">+$65</span></button>
-          <button class="sz-btn" onclick="selBath(3,this)"><span class="n">3</span><span class="l" id="bath-lbl-3">+$130</span></button>
-          <button class="sz-btn" onclick="selBath(4,this)"><span class="n">4</span><span class="l" id="bath-lbl-4">+$195</span></button>
-          <button class="sz-btn" onclick="selBath(5,this)"><span class="n">5</span><span class="l" id="bath-lbl-5">+$260</span></button>
-          <button class="sz-btn" onclick="selBath(6,this)"><span class="n">6+</span><span class="l" id="bath-lbl-6">+$325</span></button>
-        </div>
 
         <!-- Live price preview -->
-        <div style="margin-top:16px;padding:12px;background:rgba(201,168,76,.1);border-radius:8px;border:1px solid rgba(201,168,76,.2)">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:13px;color:rgba(255,255,255,.6)">Estimated base price</span>
-            <span style="font-size:22px;font-weight:800;color:var(--gold)" id="s1-price-preview">$0</span>
+        <div style="margin-top:12px;padding:12px;background:rgba(201,168,76,.08);border-radius:8px;border:1px solid rgba(201,168,76,.2)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <span style="font-size:13px;color:rgba(255,255,255,.5)" id="s1-service-label">Select a service</span>
+            <span style="font-size:22px;font-weight:800;color:var(--gold)" id="s1-price-preview">—</span>
+          </div>
+          <div id="s1-price-breakdown" style="font-size:11px;color:rgba(255,255,255,.4);display:none">
+            Base price for <span id="s1-size-label">Studio</span>
           </div>
         </div>
       </div>
@@ -1825,8 +1826,25 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
 
       <button class="btn btn-g" id="s1-next" style="display:none" onclick="goStep(2)">Continue → Add Extras</button>
     </div>
+
     <!-- STEP 2 -->
     <div class="bk-step" id="s2">
+      <!-- BATHROOMS -->
+      <div class="card" style="margin-bottom:12px">
+        <h3>🚿 Bathrooms <span style="font-size:12px;font-weight:400;color:rgba(255,255,255,.4)">(1 included in base price)</span></h3>
+        <div class="sz-row" id="bath-row" style="margin-bottom:8px">
+          <button class="sz-btn sel" onclick="selBath(1,this)"><span class="n">1</span><span class="l">Free</span></button>
+          <button class="sz-btn" onclick="selBath(2,this)"><span class="n">2</span><span class="l" id="bath-lbl-2">+$50</span></button>
+          <button class="sz-btn" onclick="selBath(3,this)"><span class="n">3</span><span class="l" id="bath-lbl-3">+$100</span></button>
+          <button class="sz-btn" onclick="selBath(4,this)"><span class="n">4</span><span class="l" id="bath-lbl-4">+$150</span></button>
+          <button class="sz-btn" onclick="selBath(5,this)"><span class="n">5</span><span class="l" id="bath-lbl-5">+$200</span></button>
+          <button class="sz-btn" onclick="selBath(6,this)"><span class="n">6+</span><span class="l" id="bath-lbl-6">+$250</span></button>
+        </div>
+        <div id="bath-charge-note" style="display:none;font-size:12px;color:var(--gold);padding:6px 10px;background:rgba(201,168,76,.08);border-radius:6px">
+          Extra bathrooms: <strong id="bath-charge-amt"></strong>
+        </div>
+      </div>
+
       <div class="card">
         <h3>➕ Add Extras <span style="font-size:12px;font-weight:400;color:var(--g400)">(Optional)</span></h3>
         <div style="background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:8px;padding:11px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,.85)">
@@ -2402,6 +2420,7 @@ function selSvc(type,el){
 
   // Calculate price
   calcP();
+  updateBathLabels();
 
   // Update step footer
   var sfNext=document.getElementById('sf-next');
@@ -2428,7 +2447,22 @@ function updateBathLabels(){
     if(el)el.textContent='+$'+(bp*(i-1));
   }
 }
-function selBath(n,el){document.querySelectorAll('#bath-row .sz-btn').forEach(x=>x.classList.remove('sel'));if(el)el.classList.add('sel');b.baths=n;calcP();}
+function selBath(n,el){
+  document.querySelectorAll('#bath-row .sz-btn').forEach(x=>x.classList.remove('sel'));
+  if(el)el.classList.add('sel');
+  b.baths=n;
+  calcP();
+  updateBathLabels();
+  // Show charge note
+  const bp=BATH_PRICE[b.service]||65;
+  const extra=Math.max(0,n-1);
+  const note=document.getElementById('bath-charge-note');
+  const amt=document.getElementById('bath-charge-amt');
+  if(note&&amt){
+    if(extra>0){note.style.display='block';amt.textContent='+$'+(extra*bp)+' added to total';}
+    else{note.style.display='none';}
+  }
+}
 function selSub(type,el){document.querySelectorAll('.sub-card').forEach(c=>c.classList.remove('sel'));if(el)el.classList.add('sel');b.subscription=type;calcP();}
 function selTip(amt,el){
   document.querySelectorAll('.tip-btn').forEach(x=>x.classList.remove('sel'));if(el)el.classList.add('sel');
@@ -2459,6 +2493,18 @@ function calcP(){
     // Update step 1 price preview
     const prev=document.getElementById('s1-price-preview');
     if(prev)prev.textContent='$'+b.basePrice.toLocaleString();
+    const svcLabel=document.getElementById('s1-service-label');
+    if(svcLabel&&b.service){
+      const svcNames2={standard:'Standard Clean',deep:'Deep Clean',movein:'Move-In Cleaning',moveout:'Move-Out Cleaning',airbnb:'Airbnb Turnover'};
+      svcLabel.textContent=svcNames2[b.service]||b.service;
+    }
+    const sizeLabel=document.getElementById('s1-size-label');
+    if(sizeLabel){
+      const sz=b.beds===0?'Studio':b.beds+'BR';
+      sizeLabel.textContent=sz;
+    }
+    const breakdown=document.getElementById('s1-price-breakdown');
+    if(breakdown&&b.service)breakdown.style.display='block';
     const f=n=>'$'+n.toLocaleString();
     const s=document.getElementById('sp-once');if(s)s.textContent=f(sub);
     const wk=document.getElementById('sp-weekly');if(wk)wk.textContent=f(Math.round(sub*.85));
@@ -2498,6 +2544,7 @@ function calcP(){
 }
 
 function buildExt(){
+  updateBathLabels();
   const c=document.getElementById("ext-list");if(!c)return;
   const MOVEIN_HIDDEN=[];
   const isMovein=b.service==='movein'||b.service==='moveout';
@@ -3171,6 +3218,38 @@ function nextFromWin(){
   if(b.winType==='ftc'&&!b.winFtc){showNotif('Please select glass coverage level','error');return;}
   goStep(3);
 }
+function showBathStep(){
+  document.querySelectorAll('.bk-step').forEach(s=>s.classList.remove('active'));
+  const bs=document.getElementById('step-bath');
+  if(bs)bs.classList.add('active');
+  updateBathLabels();
+  updateBathSummary();
+  // Update footer
+  const sfNext=document.getElementById('sf-next');
+  if(sfNext){sfNext.style.display='block';sfNext.textContent='Continue → Add Extras';sfNext.onclick=function(){goStep(2);};}
+  const sfBack=document.getElementById('sf-back');
+  if(sfBack){sfBack.style.display='block';sfBack.textContent='← Back';sfBack.onclick=function(){goStep(1);};}
+  // Progress
+  const pctEl=document.getElementById('step-pct');if(pctEl)pctEl.textContent='35%';
+  const barEl=document.getElementById('progress-bar');if(barEl)barEl.style.width='35%';
+  const lbl=document.getElementById('step-label');if(lbl)lbl.textContent='Bathrooms';
+  updDots();
+}
+
+function updateBathSummary(){
+  const bp=BATH_PRICE[b.service]||65;
+  const extra=Math.max(0,b.baths-1);
+  const extraPrice=extra*bp;
+  const el_base=document.getElementById('bath-base-price');
+  const el_extra=document.getElementById('bath-extra-price');
+  const el_row=document.getElementById('bath-extra-row');
+  const el_sub=document.getElementById('bath-subtotal');
+  if(el_base)el_base.textContent='$'+b.basePrice.toLocaleString();
+  if(el_extra)el_extra.textContent=extraPrice>0?'+$'+extraPrice:'$0';
+  if(el_row)el_row.style.display=extraPrice>0?'flex':'none';
+  if(el_sub)el_sub.textContent='$'+(b.basePrice+extraPrice).toLocaleString();
+}
+
 function showWinStep(){
   document.querySelectorAll('.bk-step').forEach(x=>x.classList.remove('active'));
   const ws=document.getElementById('step-win');
@@ -3916,7 +3995,7 @@ const T = {
     "stat-eco":"Homes Cleaned","stat-counties":"Google Rating","stat-bilingual":"Counties Served",
     "services-label":"What we offer","services-title":"Our cleaning services",
     "services-sub":"Tailored for modern homes, our services focus on efficiency, attention to detail, and a spotless finish, delivering a clean that's safe, sustainable, and worry-free.",
-    "coming-soon":"🚧 Coming Soon","coming-soon-sub":"This service will be available shortly. Contact us for more information.","service-discount":".","s1-title":"Standard Cleaning","s1-desc":"🌿 Standard Cleaning – Eco-Friendly","s1-note2":"💰 Starting from $155 (Studio) · $180 (1BR).","s1-i1":"✔️ General cleaning of all rooms","s1-i2":"✔️ Bathroom cleaning (additional bathrooms +$65 each)","s1-i3":"✔️ Kitchen cleaning (exterior surfaces only)","s1-i4":"✔️ Vacuuming & mopping all floors","s1-i5":"✔️ Dusting of surfaces and furniture","s1-i6":"✔️ Trash removal","s1-i7":"✨ Clean and uniform finishes","s1-addons":"➕ Additional bathrooms · Appliance interiors · Interior windows · and more","s1-ideal":"✨ Ideal for ongoing maintenance with a consistent standard.","btn-book-s1":"Book Now","s1-note2":"💰 Starting from $155 (Studio) · $180 (1BR).","s1-i1":"✔️ General cleaning of all rooms","s1-i2":"✔️ Bathroom cleaning (additional bathrooms +$65 each)","s1-i3":"✔️ Kitchen cleaning (exterior surfaces only)","s1-i4":"✔️ Vacuuming & mopping all floors","s1-i5":"✔️ Dusting of surfaces and furniture","s1-i6":"✔️ Trash removal","s1-i7":"✨ Clean and uniform finishes","s1-addons":"➕ Additional bathrooms · Appliance interiors · Interior windows · and more","s1-ideal":"✨ Ideal for ongoing maintenance with a consistent standard.","btn-book-s1":"Book Now","s1-desc":"🌿 Standard Cleaning – Eco-Friendly","s1-note":"+ Additional bathrooms · Appliance interiors · and more add-ons available",
+    "coming-soon":"🚧 Coming Soon","coming-soon-sub":"This service will be available shortly. Contact us for more information.","service-discount":".","s1-title":"Standard Cleaning","s1-desc":"🌿 Standard Cleaning – Eco-Friendly","s1-note2":"💰 Starting from $155.","s1-i1":"✔️ General cleaning of all rooms","s1-i2":"✔️ Bathroom cleaning (additional bathrooms +$65 each)","s1-i3":"✔️ Kitchen cleaning (exterior surfaces only)","s1-i4":"✔️ Vacuuming & mopping all floors","s1-i5":"✔️ Dusting of surfaces and furniture","s1-i6":"✔️ Trash removal","s1-i7":"✨ Clean and uniform finishes","s1-addons":"➕ Additional bathrooms · Appliance interiors · Interior windows · and more","s1-ideal":"✨ Ideal for ongoing maintenance with a consistent standard.","btn-book-s1":"Book Now","s1-note2":"💰 Starting from $155.","s1-i1":"✔️ General cleaning of all rooms","s1-i2":"✔️ Bathroom cleaning (additional bathrooms +$65 each)","s1-i3":"✔️ Kitchen cleaning (exterior surfaces only)","s1-i4":"✔️ Vacuuming & mopping all floors","s1-i5":"✔️ Dusting of surfaces and furniture","s1-i6":"✔️ Trash removal","s1-i7":"✨ Clean and uniform finishes","s1-addons":"➕ Additional bathrooms · Appliance interiors · Interior windows · and more","s1-ideal":"✨ Ideal for ongoing maintenance with a consistent standard.","btn-book-s1":"Book Now","s1-desc":"🌿 Standard Cleaning – Eco-Friendly","s1-note":"+ Additional bathrooms · Appliance interiors · and more add-ons available",
     "s2-title":"Deep Cleaning","s2-desc":"Detailed cleaning for a full home reset.","s3-title":"Move In / Move Out","s3-desc":"Deep cleaning for homes after moving out or before handover.","s3-note2":"Starting from $240","s4-title":"Airbnb Cleaning","s4-desc":"Fast turnover cleaning for short-term rentals.","s4-note2":"💰 Starting from $165 — add linens, amenities & more","s2-note2":"Starting from $220","s2-i1":"✔️ Deep cleaning of all rooms","s2-i2":"✔️ Bathroom deep sanitization (additional bathrooms +$65 each)","s2-i3":"✔️ Kitchen deep cleaning (exterior surfaces)","s2-i4":"✔️ Dusting of surfaces, baseboards & hard-to-reach areas","s2-i5":"✔️ Vacuuming & mopping throughout","s2-i6":"✔️ Light fixtures & reachable detailed cleaning","s2-addons":"➕ Additional bathrooms · Appliance interiors · Finished basement · Interior windows · and more","s2-ideal":"✨ Recommended as a first cleaning or complete home reset.","btn-book-s2":"Book Now","s2-note2":"Starting from $220","s2-i1":"✔️ Deep cleaning of all rooms","s2-i2":"✔️ Bathroom deep sanitization (additional bathrooms +$65 each)","s2-i3":"✔️ Kitchen deep cleaning (exterior surfaces)","s2-i4":"✔️ Dusting of surfaces, baseboards & hard-to-reach areas","s2-i5":"✔️ Vacuuming & mopping throughout","s2-i6":"✔️ Light fixtures & reachable detailed cleaning","s2-addons":"➕ Additional bathrooms · Appliance interiors · Finished basement · Interior windows · and more","s2-ideal":"✨ Recommended as a first cleaning or complete home reset.","btn-book-s2":"Book Now","s2-desc":"🌿 Premium Deep Cleaning","s2-note":"+ Additional bathrooms · Appliance interiors · and more add-ons available","s2-upsell":"✨ Perfect as a first-time clean — follow up with weekly or bi-weekly Standard Cleaning to keep your home effortlessly pristine.",
     "footer-services":"Services","footer-company":"Company",
     "footer-s1":"Regular Cleaning","footer-s2":"Deep Cleaning","footer-s3":"Move In/Out","footer-s4":"Airbnb Turnover",
@@ -4410,5 +4489,14 @@ window.openSPA = function(preselect) {
 </script>
 <div id="ext-drawer" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);align-items:flex-end;"></div>
 
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('/sw.js')
+      .then(r => console.log('SW registered'))
+      .catch(e => console.log('SW error', e));
+  });
+}
+</script>
 </body>
 </html>
