@@ -1743,13 +1743,13 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
             <div class="ic">🧹</div><h3>Deep Clean</h3>
             <ul><li>✓ Everything in Standard</li><li>✓ Baseboards & door frames</li><li>✓ Behind & under furniture</li><li>✓ Grout scrubbing</li><li>✓ 1 bathroom included</li><li>✓ Eco products 🌿</li></ul>
             <div class="pt">Starting from $220</div>
-            <div class="bg" style="color:var(--gold)">Detailed deep clean</div>
+            <div class="bg" style="color:var(--gold)">🎉 20% OFF your first Deep Clean · Recurring available</div>
           </div>
 
           <div class="svc-card" id="svc-movein" onclick="selSvc('movein',this)">
             <div class="ic">🏠</div><h3>Move-In Cleaning</h3>
             <ul><li>✓ Empty/new home prep</li><li>✓ 1 bathroom included</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">Starting from $180</div>
+            <div class="pt">Starting from $210</div>
             <div class="bg" style="color:var(--green)">Perfect for new homes</div>
           </div>
 
@@ -1869,53 +1869,88 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
     <!-- STEP WIN: WINDOWS -->
     <div class="bk-step" id="step-win">
       <div class="card">
-        <h3>🪟 Tell us about your windows</h3>
-        <p style="font-size:12px;color:var(--g400);margin-bottom:1rem">This helps us give you an accurate price</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div class="svc-card" onclick="selWin('regular',this)" id="wcard-regular" style="cursor:pointer">
-            <div class="ic">🪟</div><h3>Regular Windows</h3>
-            <div class="pt" style="font-size:13px">Included</div>
+        <h3>🪟 Windows & Glass</h3>
+        <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:1rem">Select quantities for each window type</p>
+
+        <!-- Window counter rows -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+
+          <!-- Regular Windows $15 each -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,.05);border-radius:8px;border:1px solid rgba(255,255,255,.1)">
+            <div>
+              <div style="font-weight:600;font-size:14px">🪟 Regular Windows</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.4)">Standard size · $15 each</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button onclick="adjWin('regular',-1)" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+              <span id="wcount-regular" style="font-size:18px;font-weight:800;color:var(--gold);min-width:24px;text-align:center">0</span>
+              <button onclick="adjWin('regular',1)" style="width:32px;height:32px;border-radius:50%;background:var(--gold);border:none;color:var(--navy);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button>
+            </div>
           </div>
-          <div class="svc-card" onclick="selWin('large',this)" id="wcard-large" style="cursor:pointer">
-            <div class="ic">🔲</div><h3>Large Windows</h3>
-            <div class="pt" style="font-size:13px">From $75</div>
+
+          <!-- Large Windows $30 each -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,.05);border-radius:8px;border:1px solid rgba(255,255,255,.1)">
+            <div>
+              <div style="font-weight:600;font-size:14px">🔲 Large Windows</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.4)">Door size · $30 each</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button onclick="adjWin('large',-1)" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+              <span id="wcount-large" style="font-size:18px;font-weight:800;color:var(--gold);min-width:24px;text-align:center">0</span>
+              <button onclick="adjWin('large',1)" style="width:32px;height:32px;border-radius:50%;background:var(--gold);border:none;color:var(--navy);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button>
+            </div>
           </div>
-          <div class="svc-card" onclick="selWin('ftc',this)" id="wcard-ftc" style="cursor:pointer">
-            <div class="ic">🏙️</div><h3>Floor-to-Ceiling</h3>
-            <div class="pt" style="font-size:13px">From $150</div>
+
+          <!-- Glass Walls / FTC $70 each -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,.05);border-radius:8px;border:1px solid rgba(255,255,255,.1)">
+            <div>
+              <div style="font-weight:600;font-size:14px">🏙️ Glass Walls / Floor-to-Ceiling</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.4)">Large panels · $70 each</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button onclick="adjWin('ftc',-1)" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+              <span id="wcount-ftc" style="font-size:18px;font-weight:800;color:var(--gold);min-width:24px;text-align:center">0</span>
+              <button onclick="adjWin('ftc',1)" style="width:32px;height:32px;border-radius:50%;background:var(--gold);border:none;color:var(--navy);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button>
+            </div>
           </div>
-          <div class="svc-card" onclick="selWin('regular',this)" id="wcard-notsure" style="cursor:pointer">
-            <div class="ic">❓</div><h3>Not Sure</h3>
-            <div class="pt" style="font-size:13px">We'll assess on-site</div>
+
+          <!-- Balcony Glass Railing $65 -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,.05);border-radius:8px;border:1px solid rgba(255,255,255,.1)">
+            <div>
+              <div style="font-weight:600;font-size:14px">🏗️ Balcony Glass Railing</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.4)">Both sides · $65 per balcony</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button onclick="adjWin('balcony',-1)" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+              <span id="wcount-balcony" style="font-size:18px;font-weight:800;color:var(--gold);min-width:24px;text-align:center">0</span>
+              <button onclick="adjWin('balcony',1)" style="width:32px;height:32px;border-radius:50%;background:var(--gold);border:none;color:var(--navy);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button>
+            </div>
           </div>
+
+          <!-- Corner Balcony Glass Railing $110 -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,.05);border-radius:8px;border:1px solid rgba(255,255,255,.1)">
+            <div>
+              <div style="font-weight:600;font-size:14px">🏗️ Corner Balcony Railing</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.4)">Both sides · $110 per balcony</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button onclick="adjWin('cornerbalcony',-1)" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+              <span id="wcount-cornerbalcony" style="font-size:18px;font-weight:800;color:var(--gold);min-width:24px;text-align:center">0</span>
+              <button onclick="adjWin('cornerbalcony',1)" style="width:32px;height:32px;border-radius:50%;background:var(--gold);border:none;color:var(--navy);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button>
+            </div>
+          </div>
+
         </div>
-        <!-- FTC sub-step -->
-        <div id="ftc-sub" style="display:none;margin-top:1rem">
-          <h4 style="margin-bottom:.75rem;color:rgba(255,255,255,.7)">Select glass coverage:</h4>
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <div class="svc-card" onclick="selFtc('partial',this)" style="flex-direction:row;align-items:center;gap:1rem;padding:14px;cursor:pointer">
-              <div style="flex:1"><strong>Partial Glass</strong><div style="font-size:12px;color:rgba(255,255,255,.5)">1–2 walls</div></div>
-              <div style="font-weight:800;color:var(--gold)">$150</div>
-            </div>
-            <div class="svc-card" onclick="selFtc('multiple',this)" style="flex-direction:row;align-items:center;gap:1rem;padding:14px;cursor:pointer">
-              <div style="flex:1"><strong>Multiple Glass Walls</strong><div style="font-size:12px;color:rgba(255,255,255,.5)">3–5 walls</div></div>
-              <div style="font-weight:800;color:var(--gold)">$250</div>
-            </div>
-            <div class="svc-card" onclick="selFtc('full',this)" style="flex-direction:row;align-items:center;gap:1rem;padding:14px;cursor:pointer">
-              <div style="flex:1"><strong>Full Glass Apartment</strong><div style="font-size:12px;color:rgba(255,255,255,.5)">All walls — price varies by size</div></div>
-              <div style="font-weight:800;color:var(--gold)">$350+</div>
-            </div>
+
+        <!-- Live price -->
+        <div style="margin-top:16px;padding:12px;background:rgba(201,168,76,.08);border-radius:8px;border:1px solid rgba(201,168,76,.2)">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+            <span style="font-size:13px;color:rgba(255,255,255,.5)">Windows total</span>
+            <span style="font-size:18px;font-weight:800;color:var(--gold)" id="win-total-display">$0</span>
           </div>
+          <div id="win-breakdown" style="font-size:11px;color:rgba(255,255,255,.4)"></div>
         </div>
       </div>
-      <div class="pbox">
-        <h3>Price Summary</h3>
-        <div class="pl"><span>Base Price</span><span id="sw-base">$0</span></div>
-        <div class="pl"><span>Windows</span><span id="sw-win">$0</span></div>
-        <div class="pl tot"><span>Estimated Total</span><span id="sw-tot">$0</span></div>
-      </div>
-      <button class="btn btn-o" onclick="goStep(2)" style="margin-bottom:8px">← Back</button>
-      <button class="btn btn-g" onclick="nextFromWin()">Continue → Add a Tip</button>
     </div>
 
     <!-- STEP 3 -->
@@ -2016,7 +2051,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
 
     <!-- STICKY MOBILE CTA -->
 <div id="sticky-cta" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:500;padding:12px 16px;background:linear-gradient(to top,rgba(11,31,58,1) 60%,rgba(11,31,58,0));pointer-events:none">
-  <button onclick="openSPA();return false;" style="pointer-events:all;width:100%;background:var(--gold);color:var(--navy);border:none;border-radius:var(--r-sm);padding:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 20px rgba(201,168,76,.4)">📅 Book Now — Starting from $180</button>
+  <button onclick="openSPA();return false;" style="pointer-events:all;width:100%;background:var(--gold);color:var(--navy);border:none;border-radius:var(--r-sm);padding:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 20px rgba(201,168,76,.4)">📅 Book Now — Starting from $210</button>
 </div>
 
 <!-- SUCCESS -->
@@ -2190,14 +2225,14 @@ const PIN='282026';
 let PRICES={
   standard:{0:155,1:185,2:220,3:260,4:300,5:345,6:390},
   deep:{0:220,1:260,2:305,3:360,4:420,5:480,6:545},
-  movein:{0:180,1:215,2:260,3:310,4:365,5:420,6:475},
+  movein:{0:210,1:245,2:290,3:340,4:395,5:450,6:505},
   moveout:{0:240,1:290,2:360,3:430,4:520,5:610,6:700},
   airbnb:{0:165,1:195,2:235,3:275,4:320,5:365,6:410}
 };
 // Extra bathroom price by service
 const BATH_PRICE={standard:50,deep:75,movein:65,moveout:85,airbnb:60};
 // Window prices
-const WIN_PRICE={regular:0,large:{small:75,medium:100,large:125},ftc:{partial:150,multiple:250,full:350}};
+const WIN_PRICE={regular:15,large:30,ftc:70,balcony:65,cornerbalcony:110};
 let BATH_X={1:0,2:65,3:130,4:195,5:260,6:325}; // 1 bath included, each extra = $65
 
 async function loadPricingFromDB() {
@@ -2279,7 +2314,7 @@ const CHECKLIST={
 };
 
 // STATE
-let b={service:null,beds:1,baths:1,extras:[],subscription:'once',tip:10,basePrice:0,extrasPrice:0,total:0,deposit:0,balance:0,savings:0,referralCode:'',referralDiscount:0,deepDiscount:false,isReturningClient:false,winType:'none',winSize:'',winFtc:'',winPrice:0};
+let b={service:null,beds:1,baths:1,extras:[],subscription:'once',tip:10,basePrice:0,extrasPrice:0,total:0,deposit:0,balance:0,savings:0,referralCode:'',referralDiscount:0,deepDiscount:false,isNewClient:false,isReturningClient:false,winCounts:{regular:0,large:0,ftc:0,balcony:0,cornerbalcony:0},winPrice:0};
 let adminOK=false;
 let stripe,stripeEl,stripeCard;
 
@@ -2346,6 +2381,7 @@ async function checkClientStatus(email){
     // Find client by email
     const clients=await db('clients','GET',null,`email=eq.${encodeURIComponent(email)}&limit=1`);
     const isNewClient=(!clients||clients.length===0);
+    b.isNewClient=isNewClient;
     
     
     if(!isNewClient){
@@ -2401,7 +2437,7 @@ function selSvc(type,el){
 
   // Show/hide recurring plan
   var subSec=document.getElementById('sub-sec');
-  if(subSec)subSec.style.display=(type==='standard')?'block':'none';
+  if(subSec)subSec.style.display=(type==='standard'||type==='deep'||type==='movein'||type==='moveout')?'block':'none';
 
   // Show continue button
   var nextBtn=document.getElementById('s1-next');
@@ -2477,15 +2513,16 @@ function calcP(){
     const bathExtraPrice=(BATH_PRICE[b.service]||65)*Math.max(0,b.baths-1);
     b.basePrice=base+bathExtraPrice;
     b.extrasPrice=b.extras.reduce((s,e)=>s+e.price,0);
-    // Window price
-    let winP=0;
-    if(b.winType==='large'){const sz=b.beds<=1?'small':b.beds<=3?'medium':'large';winP=WIN_PRICE.large[sz];}
-    else if(b.winType==='ftc'){winP=WIN_PRICE.ftc[b.winFtc]||(b.winFtc==='full'?350+b.beds*50:0);if(b.winFtc==='full')winP=350+(b.beds*50);}
-    b.winPrice=winP;
+    // Window price — per unit counter system
+    const wc=b.winCounts||{regular:0,large:0,ftc:0,balcony:0,cornerbalcony:0};
+    b.winPrice=(wc.regular*WIN_PRICE.regular)+(wc.large*WIN_PRICE.large)+(wc.ftc*WIN_PRICE.ftc)+(wc.balcony*WIN_PRICE.balcony)+(wc.cornerbalcony*WIN_PRICE.cornerbalcony);
     const sub=b.basePrice+b.extrasPrice;
     // Recurring discount only applies if returning client (has completed bookings)
+    // Deep Clean 20% OFF for new clients only
+    const deepDisc=(b.service==='deep'&&b.isNewClient)?Math.round(sub*.20):0;
+    // Recurring discount from 2nd visit
     const subDisc=b.isReturningClient?Math.round(sub*SUB_D[b.subscription]):0;
-    b.savings=subDisc;
+    b.savings=subDisc+deepDisc;
     b.referralDiscount=b.referralCode?20:0;
     b.total=sub+b.winPrice-b.savings-b.referralDiscount;
     b.deposit=Math.ceil(b.total*.5);
@@ -2514,7 +2551,8 @@ function calcP(){
     const isStandard=b.service==='standard';
     const isMovein=b.service==='movein';
     const isMoveout=b.service==='moveout';
-    const showSub=isStandard||isMovein||isMoveout;['sub-weekly','sub-biweekly'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=showSub?'flex':'none';});const moEl=document.getElementById('sub-monthly');if(moEl)moEl.style.display='none';;
+    const isDeep=b.service==='deep';
+const showSub=isStandard||isDeep||isMovein||isMoveout;['sub-weekly','sub-biweekly'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=showSub?'flex':'none';});const moEl=document.getElementById('sub-monthly');if(moEl)moEl.style.display='none';;
     const note=document.getElementById('sub-sec-note');if(note)note.style.display=!isStandard&&b.service?'block':'none';
     if(!isStandard&&b.subscription!=='once'){b.subscription='once';document.querySelectorAll('.sub-card').forEach(c=>c.classList.remove('sel'));document.querySelector('.sub-card')?.classList.add('sel');}
     const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=f(v);};
@@ -2525,12 +2563,17 @@ function calcP(){
     const tr=document.getElementById('pt-row');if(tr)tr.style.display=b.tip>0?'flex':'none';
     // Plan summary note for standard recurring
     let planNote='';
-    if(isStandard&&b.subscription==='biweekly'){
+    const showRecurring=isStandard||isDeep||isMovein||isMoveout;
+    if(showRecurring&&b.subscription==='biweekly'){
       if(b.isReturningClient) planNote=`🎉 Recurring client — ${f(Math.round(sub*.90))} per visit (-10%)`;
       else planNote=`This visit: ${f(sub)} · From 2nd visit: ${f(Math.round(sub*.90))} (-10%)`;
-    } else if(isStandard&&b.subscription==='weekly'){
+    } else if(showRecurring&&b.subscription==='weekly'){
       if(b.isReturningClient) planNote=`🎉 Recurring client — ${f(Math.round(sub*.85))} per visit (-15%)`;
       else planNote=`This visit: ${f(sub)} · From 2nd visit: ${f(Math.round(sub*.85))} (-15%)`;
+    }
+    // Deep 20% OFF note
+    if(b.service==='deep'&&b.isNewClient){
+      planNote=(planNote?planNote+' · ':'')+'🎉 20% OFF first Deep Clean applied';
     }
     // monthly removed for standard
     const pn=document.getElementById('plan-note');if(pn)pn.textContent=planNote;
@@ -3193,29 +3236,87 @@ async function loadWorkers(){
 
 function toggleRateLabel(){const t=document.getElementById('wk-type').value;const lbl=document.getElementById('wk-rate-label');const pre=document.getElementById('wk-rate-prefix');const suf=document.getElementById('wk-rate-suffix');if(t==='w2'){lbl.textContent='Hourly Rate';pre.style.display='inline';suf.style.display='none';document.getElementById('wk-rate').value='';}else{lbl.textContent='Rate (%)';pre.style.display='none';suf.style.display='inline';document.getElementById('wk-rate').value='40';}}
 
-function selWin(type, el){
-  document.querySelectorAll('[id^="wcard-"]').forEach(x=>x.classList.remove('sel'));
-  if(el) el.classList.add('sel');
-  b.winType=type;
-  b.winFtc='';
-  const ftcSub=document.getElementById('ftc-sub');
-  if(ftcSub)ftcSub.style.display=type==='ftc'?'block':'none';
+function adjWin(type, delta){
+  if(!b.winCounts) b.winCounts={regular:0,large:0,ftc:0,balcony:0,cornerbalcony:0};
+  b.winCounts[type]=Math.max(0,(b.winCounts[type]||0)+delta);
+  const el=document.getElementById('wcount-'+type);
+  if(el)el.textContent=b.winCounts[type];
   calcP();
-  // Update summary in win step
-  const swb=document.getElementById('sw-base');if(swb)swb.textContent='$'+b.basePrice.toLocaleString();
-  const sww=document.getElementById('sw-win');if(sww)sww.textContent=b.winPrice>0?'+$'+b.winPrice:'Included';
-  const swt=document.getElementById('sw-tot');if(swt)swt.textContent='$'+(b.total||b.basePrice).toLocaleString();
+  updateWinDisplay();
 }
-function selFtc(type, el){
-  document.querySelectorAll('#ftc-sub .svc-card').forEach(x=>x.classList.remove('sel'));
-  if(el) el.classList.add('sel');
-  b.winFtc=type;
-  calcP();
-  const sww=document.getElementById('sw-win');if(sww)sww.textContent=b.winPrice>0?'+$'+b.winPrice:'Included';
-  const swt=document.getElementById('sw-tot');if(swt)swt.textContent='$'+(b.total||b.basePrice).toLocaleString();
+function updateWinDisplay(){
+  if(!b.winCounts) return;
+  const total=b.winPrice;
+  const disp=document.getElementById('win-total-display');
+  if(disp)disp.textContent=total>0?'+$'+total:'$0';
+  const bd=document.getElementById('win-breakdown');
+  if(bd){
+    const lines=[];
+    if(b.winCounts.regular>0)lines.push(b.winCounts.regular+' regular × $15 = $'+(b.winCounts.regular*15));
+    if(b.winCounts.large>0)lines.push(b.winCounts.large+' large × $30 = $'+(b.winCounts.large*30));
+    if(b.winCounts.ftc>0)lines.push(b.winCounts.ftc+' glass wall × $70 = $'+(b.winCounts.ftc*70));
+    if(b.winCounts.balcony>0)lines.push(b.winCounts.balcony+' balcony × $65 = $'+(b.winCounts.balcony*65));
+    if(b.winCounts.cornerbalcony>0)lines.push(b.winCounts.cornerbalcony+' corner balcony × $110 = $'+(b.winCounts.cornerbalcony*110));
+    bd.innerHTML=lines.join('<br>');
+  }
+}
+
+function applyBookingLang(lang){
+  const bk={
+    en:{
+      'bk-step1-title':'Select Your Service',
+      'bk-size-title':'🛏 Home Size',
+      'bk-beds-label':'Bedrooms',
+      'bk-bath-title':'🚿 Bathrooms',
+      'bk-bath-note':'(1 included in base price)',
+      'bk-extras-title':'➕ Add Extras',
+      'bk-win-title':'🪟 Windows & Glass',
+      'bk-win-note':'Select quantities for each window type',
+      'bk-tip-title':'💰 Add a Tip',
+      'bk-schedule-title':'📅 Schedule Your Cleaning',
+      'bk-review-title':'✅ Review & Pay',
+      'bk-continue-extras':'Continue → Add Extras',
+      'bk-continue-win':'Continue → Windows',
+      'bk-continue-tip':'Continue → Add a Tip',
+      'bk-continue-schedule':'Continue → Schedule',
+      'bk-confirm-pay':'✓ Confirm & Pay Deposit',
+    },
+    es:{
+      'bk-step1-title':'Selecciona Tu Servicio',
+      'bk-size-title':'🛏 Tamaño del Hogar',
+      'bk-beds-label':'Habitaciones',
+      'bk-bath-title':'🚿 Baños',
+      'bk-bath-note':'(1 incluido en el precio base)',
+      'bk-extras-title':'➕ Agregar Extras',
+      'bk-win-title':'🪟 Ventanas y Vidrios',
+      'bk-win-note':'Selecciona las cantidades por tipo',
+      'bk-tip-title':'💰 Propina para tu limpiador',
+      'bk-schedule-title':'📅 Programa tu limpieza',
+      'bk-review-title':'✅ Revisar y Pagar',
+      'bk-continue-extras':'Continuar → Extras',
+      'bk-continue-win':'Continuar → Ventanas',
+      'bk-continue-tip':'Continuar → Propina',
+      'bk-continue-schedule':'Continuar → Programar',
+      'bk-confirm-pay':'✓ Confirmar y Pagar Depósito',
+    }
+  };
+  const t=bk[lang]||bk['en'];
+  Object.keys(t).forEach(function(key){
+    const el=document.getElementById(key);
+    if(el)el.textContent=t[key];
+  });
+  // Update service card labels
+  const svcT={
+    en:{standard:'Standard Clean',deep:'Deep Clean',movein:'Move-In Cleaning',moveout:'Move-Out Cleaning',airbnb:'Airbnb Turnover'},
+    es:{standard:'Limpieza Estándar',deep:'Limpieza Profunda',movein:'Limpieza de Entrada',moveout:'Limpieza de Salida',airbnb:'Airbnb Turnover'}
+  };
+  const st=svcT[lang]||svcT['en'];
+  Object.keys(st).forEach(function(svc){
+    const el=document.getElementById('svc-label-'+svc);
+    if(el)el.textContent=st[svc];
+  });
 }
 function nextFromWin(){
-  if(b.winType==='ftc'&&!b.winFtc){showNotif('Please select glass coverage level','error');return;}
   goStep(3);
 }
 function showBathStep(){
@@ -3990,7 +4091,7 @@ const T = {
     "hero-badge":"🌿 Certified eco-friendly cleaning · Hoboken · Jersey City · Edgewater",
     "hero-h1":"Hoboken, Jersey City & Edgewater's Eco-Friendly House Cleaning — <em>Trusted by Local Families</em>",
     "hero-p":"We handle everything — so you spend your weekend doing what you love. Premium eco-friendly cleaning trusted by families across Hoboken, Jersey City & Edgewater NJ.",
-    "hiw-label":"How It Works","hiw-title":"Simple. Easy. Spotless.","hiw-sub":"From booking to a clean home in 3 steps","hiw-s1":"Book Online","hiw-d1":"Choose your service, select add-ons, pick a date and pay a small deposit — takes less than 3 minutes.","hiw-s2":"We Clean","hiw-d2":"Our insured, background-checked team arrives on time and handles everything using eco-certified products.","hiw-s3":"You Relax","hiw-d3":"Come home to a spotless space. Not 100% happy? We return within 24 hours to make it right — no questions asked.","hiw-cta":"Book Now — Starting from $180",
+    "hiw-label":"How It Works","hiw-title":"Simple. Easy. Spotless.","hiw-sub":"From booking to a clean home in 3 steps","hiw-s1":"Book Online","hiw-d1":"Choose your service, select add-ons, pick a date and pay a small deposit — takes less than 3 minutes.","hiw-s2":"We Clean","hiw-d2":"Our insured, background-checked team arrives on time and handles everything using eco-certified products.","hiw-s3":"You Relax","hiw-d3":"Come home to a spotless space. Not 100% happy? We return within 24 hours to make it right — no questions asked.","hiw-cta":"Book Now — Starting from $210",
     "hero-btn1":"Book Now","hero-btn2":"💬 Get a Free Quote","hero-urgency":"⏰ Limited spots available this week — book before they fill up","bcta-h2":"Ready for a spotless home?","bcta-p":"Join families across Hoboken, Jersey City & Edgewater. Professional eco-safe cleaning you can trust. Save up to 15% with a recurring plan.","bcta-btn1":"Book Now","bcta-btn2":"💬 WhatsApp Us",
     "stat-eco":"Homes Cleaned","stat-counties":"Google Rating","stat-bilingual":"Counties Served",
     "services-label":"What we offer","services-title":"Our cleaning services",
@@ -4148,6 +4249,7 @@ function setLang(lang) {
 
   document.documentElement.lang = lang;
   try { localStorage.setItem('dfide-lang', lang); } catch(e) {}
+  applyBookingLang(lang);
 }
 
 
