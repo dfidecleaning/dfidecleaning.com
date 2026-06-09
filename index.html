@@ -1734,35 +1734,40 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
 
           <div class="svc-card" id="svc-standard" onclick="selSvc('standard',this)">
             <div class="ic">✨</div><h3>Standard Clean</h3>
-            <ul><li>✓ All rooms cleaned</li><li>✓ Kitchen exterior</li><li>✓ Vacuum, mop & dusting</li><li>✓ 1 bathroom included</li><li>✓ Eco products 🌿</li></ul>
+            <p style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px">Everyday maintenance to keep your home fresh.</p>
+            <ul><li>✓ Vacuuming & mopping all floors</li><li>✓ Dusting surfaces & furniture</li><li>✓ Kitchen exterior & microwave inside</li><li>✓ 1 bathroom deep sanitized</li><li>✓ Trash removal & liner replacement</li><li>✓ Eco products 🌿</li></ul>
             <div class="pt">Starting from $155</div>
             <div class="bg" style="color:var(--green)">Recurring discount from 2nd visit</div>
           </div>
 
           <div class="svc-card" id="svc-deep" onclick="selSvc('deep',this)">
             <div class="ic">🧹</div><h3>Deep Clean</h3>
-            <ul><li>✓ Everything in Standard</li><li>✓ Baseboards & door frames</li><li>✓ Behind & under furniture</li><li>✓ Grout scrubbing</li><li>✓ 1 bathroom included</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">Starting from $220</div>
+            <p style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px">For homes that need extra detail and dust removal.</p>
+            <ul><li>✓ Everything in Standard Clean, plus:</li><li>✓ Baseboards & door frames hand-wiped</li><li>✓ Dusting high areas (ceiling fans & vents)</li><li>✓ Behind & under light furniture</li><li>✓ Detailed grout scrubbing in shower</li><li>✓ Eco products 🌿</li></ul>
+            <div class="pt">Starting from $230</div>
             <div class="bg" style="color:var(--gold)">🎉 20% OFF your first Deep Clean · Recurring available</div>
           </div>
 
           <div class="svc-card" id="svc-movein" onclick="selSvc('movein',this)">
             <div class="ic">🏠</div><h3>Move-In Cleaning</h3>
-            <ul><li>✓ Empty/new home prep</li><li>✓ 1 bathroom included</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">Starting from $235</div>
-            <div class="bg" style="color:var(--green)">Perfect for new homes</div>
+            <p style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px">Perfect prep to make your new home completely safe to unpack.</p>
+            <ul><li>✓ Everything in Deep Clean, plus:</li><li>✓ Deep vacuuming of empty room corners</li><li>✓ Inside of all empty bedroom closets</li><li>✓ Full clinical sanitization of the property</li><li style="color:rgba(255,255,255,.35);font-size:11px">➕ Appliances & cabinets available as extras</li></ul>
+            <div class="pt">Starting from $255</div>
+            <div class="bg" style="color:var(--green)">Move-ready standard</div>
           </div>
 
           <div class="svc-card" id="svc-moveout" onclick="selSvc('moveout',this)">
             <div class="ic">📦</div><h3>Move-Out Cleaning</h3>
-            <ul><li>✓ Deep cleaning throughout</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">Starting from $250</div>
-            <div class="bg" style="color:var(--gold)">Add appliances & cabinets as extras</div>
+            <p style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px">Designed to help you get your security deposit back.</p>
+            <ul><li>✓ Everything in Move-In Cleaning, plus:</li><li>✓ Wiping light scuffs & fingerprints off walls</li><li>✓ Detailed cleaning of sliding door tracks</li><li style="color:rgba(255,255,255,.35);font-size:11px">➕ Appliances & cabinets available as extras</li></ul>
+            <div class="pt">Starting from $295</div>
+            <div class="bg" style="color:var(--gold)">Landlord inspection ready</div>
           </div>
 
           <div class="svc-card" id="svc-airbnb" onclick="selSvc('airbnb',this)" style="grid-column:1/-1">
             <div class="ic">🏠</div><h3>Airbnb Turnover</h3>
-            <ul><li>✓ Full standard clean</li><li>✓ Kitchen reset</li><li>✓ Guest-ready presentation</li><li>✓ 1 bathroom included</li><li>✓ Eco products 🌿</li></ul>
+            <p style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px">Fast, reliable turnover for short-term rentals.</p>
+            <ul><li>✓ Complete standard cleaning of all rooms</li><li>✓ Kitchen reset: loading the dishwasher</li><li>✓ Hotel staging: crisp bed making & towel styling</li><li>✓ Quick damage inspection for the host</li><li>✓ Fast response for Hoboken & JC hosts</li><li>✓ Eco products 🌿</li></ul>
             <div class="pt">Starting from $165</div>
             <div class="bg" style="color:var(--gold)">Perfect for Hoboken & JC hosts</div>
           </div>
@@ -2038,12 +2043,40 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
       <div class="card">
         <h3>🔒 Secure Payment</h3>
         <p style="font-size:13px;color:var(--g600);margin-bottom:12px">Your 50% deposit secures your booking. Balance due on service day.</p>
+
+        <!-- Apple Pay / Google Pay -->
+        <div id="payment-request-btn" style="display:none;margin-bottom:12px"></div>
+        <div id="prb-divider" style="display:none;text-align:center;font-size:11px;color:rgba(255,255,255,.3);margin-bottom:12px;position:relative">
+          <span style="background:#0B1F3A;padding:0 10px;position:relative;z-index:1">or pay with card</span>
+          <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.1)"></div>
+        </div>
+
+        <!-- Card input -->
         <div id="stripe-el" style="background:rgba(255,255,255,.06);border:1.5px solid var(--g200);border-radius:8px;padding:14px;min-height:46px"></div>
         <div id="stripe-err" style="color:var(--red);font-size:12px;margin-top:6px"></div>
-        <div style="background:var(--amber-l);border-radius:6px;padding:10px;margin-top:10px;font-size:12px;color:var(--amber)">
-          🔒 Your card will be saved securely to charge the remaining balance on the day of service.
+
+        <!-- Trust badges -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px;text-align:center">
+          <div style="padding:8px;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid rgba(255,255,255,.08)">
+            <div style="font-size:16px">🔒</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px">256-bit SSL</div>
+          </div>
+          <div style="padding:8px;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid rgba(255,255,255,.08)">
+            <div style="font-size:16px">🌿</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px">100% Guarantee</div>
+          </div>
+          <div style="padding:8px;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid rgba(255,255,255,.08)">
+            <div style="font-size:16px">💳</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px">No hidden fees</div>
+          </div>
         </div>
-        <div style="font-size:11px;color:var(--g400);margin-top:8px">Secured by Stripe · All major cards accepted</div>
+
+        <!-- Micro-copy -->
+        <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,.35);text-align:center;line-height:1.6">
+          🌿 Not satisfied? We re-clean for free.<br>
+          💳 Balance only charged after cleaning is complete.<br>
+          No cancellation fee if cancelled 24h before service.
+        </div>
       </div>
       <button class="btn btn-o" onclick="goStep(4)" style="display:none">← Back</button>
       <button class="btn btn-g" id="pay-btn-inline" onclick="submitBooking()" style="display:none">✓ Confirm & Pay Deposit</button>
@@ -2062,6 +2095,20 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
         <p style="color:var(--g600);font-size:14px">Thank you! Confirmation sent to your email.</p>
         <div class="bref"><strong id="ok-ref">DFD-0000</strong>Your booking reference number</div>
         <div id="ok-pay"></div>
+
+        <!-- Add to Calendar -->
+        <div id="cal-btns" style="display:none;margin-top:16px">
+          <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:8px">Add to your calendar:</p>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <a id="cal-google" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,.08);border-radius:6px;border:1px solid rgba(255,255,255,.15);color:#fff;text-decoration:none;font-size:12px;font-weight:600">
+              📅 Google Calendar
+            </a>
+            <a id="cal-apple" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,.08);border-radius:6px;border:1px solid rgba(255,255,255,.15);color:#fff;text-decoration:none;font-size:12px;font-weight:600">
+              🍎 Apple Calendar
+            </a>
+          </div>
+        </div>
+
         <p style="font-size:12px;color:var(--g400);margin-top:12px">Questions? Call or text (551) 403-8397</p>
         <br>
         <button class="btn btn-g" onclick="resetBooking()" style="max-width:240px;margin:0 auto">Book Another Service</button>
@@ -2224,13 +2271,13 @@ const PIN='282026';
 // Dynamic prices - loaded from Supabase
 let PRICES={
   standard:{0:155,1:185,2:220,3:260,4:300,5:345,6:390},
-  deep:{0:220,1:260,2:305,3:360,4:420,5:480,6:545},
-  movein:{0:210,1:245,2:290,3:340,4:395,5:450,6:505},
-  moveout:{0:240,1:290,2:360,3:430,4:520,5:610,6:700},
+  deep:{0:230,1:270,2:320,3:375,4:440,5:500,6:570},
+  movein:{0:255,1:290,2:340,3:395,4:455,5:515,6:580},
+  moveout:{0:295,1:340,2:410,3:485,4:575,5:665,6:755},
   airbnb:{0:165,1:195,2:235,3:275,4:320,5:365,6:410}
 };
 // Extra bathroom price by service
-const BATH_PRICE={standard:50,deep:75,movein:65,moveout:85,airbnb:60};
+const BATH_PRICE={standard:65,deep:85,movein:75,moveout:85,airbnb:65};
 // Window prices
 const WIN_PRICE={regular:15,large:30,ftc:70,balcony:65,cornerbalcony:110};
 let BATH_X={1:0,2:65,3:130,4:195,5:260,6:325}; // 1 bath included, each extra = $65
@@ -2683,6 +2730,12 @@ function updateStepFooter(step){
     next.style.display='block';
     next.textContent=l.next;
     if(step===5){
+      // Update Apple Pay amount to current deposit
+      try{
+        if(window._prInstance){
+          window._prInstance.update({total:{label:"D'Fide Cleaning Deposit",amount:Math.round(b.deposit*100)}});
+        }
+      }catch(e){}
       next.onclick=submitBooking;
       next.id='pay-btn';
     } else if(step===1){
@@ -2789,6 +2842,34 @@ function initStripe(retries=10){
   try{
     stripe=Stripe(STRIPE_PK);
     stripeEl=stripe.elements();
+
+    // Init Apple Pay / Google Pay
+    try{
+      const pr=stripe.paymentRequest({
+        country:'US',currency:'usd',
+        total:{label:"D'Fide Cleaning Deposit",amount:Math.max(100,Math.round((b.deposit||100)*100))},
+        requestPayerName:true,requestPayerEmail:true
+      });
+      window._prInstance=pr;
+      pr.canMakePayment().then(function(result){
+        if(result){
+          const prBtn=stripeEl.create('paymentRequestButton',{paymentRequest:pr,style:{paymentRequestButton:{type:'default',theme:'light',height:'44px'}}});
+          const prDiv=document.getElementById('payment-request-btn');
+          const prDivider=document.getElementById('prb-divider');
+          if(prDiv){prBtn.mount('#payment-request-btn');prDiv.style.display='block';if(prDivider)prDivider.style.display='block';}
+          pr.on('paymentmethod',async function(ev){
+            try{
+              const res=await fetch('https://zihlgzcrbxcecyfvsoue.supabase.co/functions/v1/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppaMxnzcmJ4Y2VjeWZ2c291ZSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzE4MDQ3MjAwLCJleHAiOjIwMzM2MjMyMDB9.placeholder'},body:JSON.stringify({amount:Math.round((b.deposit||100)*100),currency:'usd'})});
+              const {clientSecret}=await res.json();
+              const {error}=await stripe.confirmCardPayment(clientSecret,{payment_method:ev.paymentMethod.id},{handleActions:false});
+              if(error){ev.complete('fail');showNotif('Payment failed: '+error.message,'error');}
+              else{ev.complete('success');showNotif('Payment successful!','success');}
+            }catch(e){ev.complete('fail');}
+          });
+        }
+      });
+    }catch(e){console.warn('Payment Request API not available');}
+
     stripeCard=stripeEl.create('card',{style:{base:{fontSize:'15px',fontFamily:'"DM Sans",sans-serif',color:'#ffffff','::placeholder':{color:'rgba(255,255,255,0.4)'}},invalid:{color:'#ff6b6b'}}});
     stripeCard.mount('#stripe-el');
     stripeCard.on('change',e=>{const el=document.getElementById('stripe-err');if(el)el.textContent=e.error?e.error.message:'';});
@@ -2798,6 +2879,17 @@ function initStripe(retries=10){
 // SUBMIT
 async function submitBooking(){
   const btn=document.getElementById('pay-btn');
+
+  // Validate card is filled before proceeding
+  if(!stripeCard){
+    showNotif('Please enter your card details to continue.','error');
+    return;
+  }
+  const cardEl=document.getElementById('stripe-el');
+  if(cardEl&&cardEl.querySelector('input')&&!cardEl.querySelector('input').value&&!cardEl.classList.contains('StripeElement--complete')){
+    // Card element exists but may not be complete — let Stripe handle validation
+  }
+
   btn.textContent='Processing...';btn.disabled=true;
   const cd={
     first_name:document.getElementById('b-fname').value.trim(),
@@ -2834,9 +2926,16 @@ async function submitBooking(){
         if(pr.ok){
           const {clientSecret}=await pr.json();
           const confirmResult = await stripe.confirmCardPayment(clientSecret,{payment_method:{card:stripeCard,billing_details:{name:`${cd.first_name} ${cd.last_name}`,email:cd.email}}});
-          if(confirmResult.error){document.getElementById('stripe-err').textContent=confirmResult.error.message;btn.textContent='✓ Confirm & Pay Deposit';btn.disabled=false;return;}
+          if(confirmResult.error){
+            // Payment failed — delete the booking and show error
+            try{await db('bookings','DELETE',null,'id=eq.'+bid);}catch(e){}
+            document.getElementById('stripe-err').textContent=confirmResult.error.message;
+            btn.textContent='✓ Confirm & Pay Deposit';
+            btn.disabled=false;
+            showNotif('Payment failed: '+confirmResult.error.message,'error');
+            return;
+          }
           payOK=true;
-          // Save payment method for future balance charge
           const pmId = confirmResult.paymentIntent?.payment_method;
           await db('bookings','PATCH',{
             status:'confirmed',
@@ -2844,8 +2943,28 @@ async function submitBooking(){
             deposit_paid_at:new Date().toISOString(),
             stripe_payment_method: pmId||null
           },'id=eq.'+bid);
+        } else {
+          // Payment intent creation failed — delete booking
+          try{await db('bookings','DELETE',null,'id=eq.'+bid);}catch(e){}
+          btn.textContent='✓ Confirm & Pay Deposit';
+          btn.disabled=false;
+          showNotif('Payment processing error. Please try again.','error');
+          return;
         }
-      }catch(pe){console.warn('Payment:',pe);}
+      }catch(pe){
+        // Network error — delete booking
+        try{await db('bookings','DELETE',null,'id=eq.'+bid);}catch(e){}
+        btn.textContent='✓ Confirm & Pay Deposit';
+        btn.disabled=false;
+        showNotif('Payment error. Please check your connection and try again.','error');
+        return;
+      }
+    } else {
+      // Stripe not loaded — block
+      btn.textContent='✓ Confirm & Pay Deposit';
+      btn.disabled=false;
+      showNotif('Payment system not loaded. Please refresh and try again.','error');
+      return;
     }
 
     try{await sendEmail(cd.email,'confirmation',{name:cd.first_name,bookingNum:bnum,service:b.service,date:document.getElementById('b-date').value,total:b.total,deposit:b.deposit});}catch(e){}
@@ -2869,6 +2988,16 @@ async function submitBooking(){
     document.querySelectorAll('.bk-step').forEach(s=>s.classList.remove('active'));
     document.getElementById('s-ok').classList.add('active');
     document.getElementById('ok-ref').textContent=bnum||'DFD-'+Date.now();
+    // Generate calendar links
+    generateCalendarLinks({
+      service:b.service,
+      bookingNum:bnum||'DFD-'+Date.now(),
+      date:document.getElementById('b-date').value,
+      time:document.getElementById('b-time').value,
+      address:document.getElementById('b-addr').value,
+      city:document.getElementById('b-city').value,
+      total:b.total
+    });
 
     const pi=document.getElementById('ok-pay');
     if(pi&&!payOK){pi.innerHTML=`<div style="background:var(--amber-l);border-radius:var(--r-sm);padding:14px;margin:14px 0;border-left:4px solid var(--amber)"><div style="font-weight:600;font-size:14px;color:var(--amber);margin-bottom:6px">💳 Deposit Due: $${b.deposit}</div><div style="font-size:13px;color:var(--navy);margin-bottom:8px">Pay your deposit to confirm:</div><div style="display:grid;gap:6px"><div style="background:#fff;border-radius:6px;padding:10px;font-size:13px">💚 Zelle — (551) 403-8397</div><div style="background:#fff;border-radius:6px;padding:10px;font-size:13px">💙 Venmo — @DFideCleaning</div></div><div style="font-size:11px;color:var(--g600);margin-top:8px">Include: <strong>${bnum}</strong></div></div>`;}
@@ -3316,6 +3445,41 @@ function applyBookingLang(lang){
     if(el)el.textContent=st[svc];
   });
 }
+
+function generateCalendarLinks(bookingData){
+  try{
+    const svcNames2={standard:'Standard Clean',deep:'Deep Clean',movein:'Move-In Cleaning',moveout:'Move-Out Cleaning',airbnb:'Airbnb Turnover'};
+    const title=encodeURIComponent("D'Fide Cleaning — "+(svcNames2[bookingData.service]||bookingData.service));
+    const desc=encodeURIComponent("Booking #"+bookingData.bookingNum+"\nAddress: "+bookingData.address+"\nTotal: $"+bookingData.total+"\nQuestions: (551) 403-8397");
+    const loc=encodeURIComponent(bookingData.address+', '+bookingData.city+', NJ');
+
+    // Parse date+time
+    const dt=new Date(bookingData.date+'T'+bookingData.time+':00');
+    const dtEnd=new Date(dt.getTime()+3*60*60*1000); // 3hr duration
+    const fmt=d=>d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+
+    // Google Calendar link
+    const googleUrl='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+title+'&dates='+fmt(dt)+'/'+fmt(dtEnd)+'&details='+desc+'&location='+loc;
+
+    // Apple/ICS download
+    const ics=['BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT',
+      'DTSTART:'+fmt(dt),'DTEND:'+fmt(dtEnd),
+      'SUMMARY:'+decodeURIComponent(title),
+      'DESCRIPTION:'+decodeURIComponent(desc),
+      'LOCATION:'+decodeURIComponent(loc),
+      'END:VEVENT','END:VCALENDAR'].join('\n');
+    const icsBlob=new Blob([ics],{type:'text/calendar'});
+    const icsUrl=URL.createObjectURL(icsBlob);
+
+    // Set links
+    const gBtn=document.getElementById('cal-google');
+    const aBtn=document.getElementById('cal-apple');
+    const calDiv=document.getElementById('cal-btns');
+    if(gBtn)gBtn.href=googleUrl;
+    if(aBtn){aBtn.href=icsUrl;aBtn.download='dfide-cleaning.ics';}
+    if(calDiv)calDiv.style.display='block';
+  }catch(e){console.warn('Calendar links error:',e);}
+}
 function nextFromWin(){
   goStep(3);
 }
@@ -3475,17 +3639,38 @@ async function loadPrices(){
     html2 += `</tbody></table></div></div>
       
       <div class="card" style="margin-bottom:16px">
-        <h3>🚿 Bathroom Surcharges</h3>
-        <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px">Extra charge added for 3+ bathrooms</p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">`;
+        <h3>🚿 Bathroom Pricing (per extra bathroom)</h3>
+        <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px">1 bathroom always included. Extra bathrooms charged per service.</p>
+        <div style="overflow-x:auto"><table>
+          <thead><tr><th>Service</th><th>Price per extra bathroom</th></tr></thead>
+          <tbody>
+            <tr><td>Standard Clean</td><td><input type="number" value="${BATH_PRICE.standard}" style="width:80px;padding:4px 6px;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;text-align:center" onchange="updateBathPrice('standard',this.value)"></td></tr>
+            <tr><td>Deep Clean</td><td><input type="number" value="${BATH_PRICE.deep}" style="width:80px;padding:4px 6px;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;text-align:center" onchange="updateBathPrice('deep',this.value)"></td></tr>
+            <tr><td>Move-In Cleaning</td><td><input type="number" value="${BATH_PRICE.movein}" style="width:80px;padding:4px 6px;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;text-align:center" onchange="updateBathPrice('movein',this.value)"></td></tr>
+            <tr><td>Move-Out Cleaning</td><td><input type="number" value="${BATH_PRICE.moveout}" style="width:80px;padding:4px 6px;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;text-align:center" onchange="updateBathPrice('moveout',this.value)"></td></tr>
+            <tr><td>Airbnb Cleaning</td><td><input type="number" value="${BATH_PRICE.airbnb}" style="width:80px;padding:4px 6px;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;text-align:center" onchange="updateBathPrice('airbnb',this.value)"></td></tr>
+          </tbody>
+        </table></div>
+      </div>`;
     
-    bathSurcharges?.forEach(b => {
-      html2 += `<div style="text-align:center"><div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:4px">${b.bathrooms} BA</div><input type="number" value="${b.surcharge}" style="width:70px;padding:6px;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;text-align:center" onchange="updateBathSurcharge('${b.id}',this.value)"></div>`;
-    });
-    
-    html2 += `</div></div>
+    html2 += `
       
-      <div class="card">
+      <div class="card" style="margin-bottom:16px">
+        <h3>🪟 Window & Glass Prices</h3>
+        <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px">Per unit pricing for windows and glass surfaces.</p>
+        <div style="overflow-x:auto"><table>
+          <thead><tr><th>Type</th><th>Price per unit</th></tr></thead>
+          <tbody>
+            <tr><td>Regular Windows</td><td><input type="number" value="${WIN_PRICE.regular}" style="width:80px;padding:4px 6px;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;text-align:center" onchange="updateWinPrice('regular',this.value)"></td></tr>
+            <tr><td>Large Windows</td><td><input type="number" value="${WIN_PRICE.large}" style="width:80px;padding:4px 6px;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;text-align:center" onchange="updateWinPrice('large',this.value)"></td></tr>
+            <tr><td>Glass Walls / Floor-to-Ceiling</td><td><input type="number" value="${WIN_PRICE.ftc}" style="width:80px;padding:4px 6px;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;text-align:center" onchange="updateWinPrice('ftc',this.value)"></td></tr>
+            <tr><td>Balcony Glass Railing</td><td><input type="number" value="${WIN_PRICE.balcony}" style="width:80px;padding:4px 6px;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;text-align:center" onchange="updateWinPrice('balcony',this.value)"></td></tr>
+            <tr><td>Corner Balcony Railing</td><td><input type="number" value="${WIN_PRICE.cornerbalcony}" style="width:80px;padding:4px 6px;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#fff;text-align:center" onchange="updateWinPrice('cornerbalcony',this.value)"></td></tr>
+          </tbody>
+        </table></div>
+      </div>`;
+
+      html2 += `<div class="card">
         <h3>➕ Extras & Add-On Prices</h3>
         <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px">Edit prices and toggle active/inactive</p>`;
     
@@ -3527,9 +3712,34 @@ async function updateBathSurcharge(id,surcharge){
   showNotif('Surcharge updated ✓','success');
 }
 
+async function updateBathPrice(svc,price){
+  const p=parseFloat(price);
+  if(!p||p<0)return;
+  BATH_PRICE[svc]=p;
+  // Save to Supabase bath_price_by_service table if exists, else just update local
+  try{
+    await db('bath_prices','PATCH',{price:p},'service_type=eq.'+svc);
+  }catch(e){
+    try{
+      await db('bath_prices','POST',{service_type:svc,price:p});
+    }catch(e2){
+      // Table may not exist — prices updated in memory only
+    }
+  }
+  showNotif('Bathroom price updated ✓','success');
+  updateBathLabels();
+}
+
 async function updateExtraPrice(id,price){
   await db('extra_prices','PATCH',{price:parseFloat(price),updated_at:new Date().toISOString()},'id=eq.'+id);
   showNotif('Extra price updated ✓','success');
+}
+
+function updateWinPrice(type,price){
+  const p=parseFloat(price);
+  if(!p||p<0)return;
+  WIN_PRICE[type]=p;
+  showNotif('Window price updated ✓','success');
 }
 
 async function toggleExtra2(id,currentActive){
@@ -3711,27 +3921,38 @@ document.addEventListener('DOMContentLoaded',()=>{
       <div style="font-size:1.5rem;margin-bottom:0.5rem">🧹</div>
       <h3 style="font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:0.25rem" data-key="s2-title">Deep Cleaning</h3>
       <p style="font-size:0.82rem;color:rgba(255,255,255,.6);margin-bottom:0.75rem" data-key="s2-desc">Detailed cleaning for a full home reset.</p>
-      <div style="font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:0.4rem" data-key="s2-note2">Starting from $220</div>
-      <div style="font-size:0.72rem;margin-bottom:1rem"><span style="background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:3px;font-size:0.68rem;font-weight:800">✨ Most Popular</span></div>
+      <div style="font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:0.4rem" data-key="s2-note2">Starting from $230</div>
+      <div style="font-size:0.72rem;margin-bottom:1rem"><span style="background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:3px;font-size:0.68rem;font-weight:800">🎉 20% OFF first clean</span></div>
       <a href="#book" onclick="openSPA('deep');return false;" style="display:block;text-align:center;background:var(--gold);color:var(--navy);font-weight:800;font-size:0.8rem;letter-spacing:1.5px;padding:12px 20px;text-decoration:none;text-transform:uppercase;border-radius:4px;">Book Now →</a>
     </div>
 
-    <!-- MOVE IN/OUT -->
+    <!-- MOVE IN -->
+    <div style="background:rgba(255,255,255,.05);border-radius:12px;padding:1.5rem;border:1px solid rgba(201,168,76,.3);">
+      <div style="font-size:1.5rem;margin-bottom:0.5rem">🏠</div>
+      <h3 style="font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:0.25rem">Move-In Cleaning</h3>
+      <p style="font-size:0.82rem;color:rgba(255,255,255,.7);margin-bottom:0.75rem">Deep cleaning for empty home before you move in.</p>
+      <div style="font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:1rem">Starting from $255</div>
+      <a href="#book" onclick="openSPA('movein');return false;" style="display:block;text-align:center;background:var(--gold);color:var(--navy);font-weight:800;font-size:0.8rem;letter-spacing:1.5px;padding:12px 20px;text-decoration:none;text-transform:uppercase;border-radius:4px;">Book Now →</a>
+    </div>
+
+    <!-- MOVE OUT -->
     <div style="background:rgba(255,255,255,.05);border-radius:12px;padding:1.5rem;border:1px solid rgba(201,168,76,.3);">
       <div style="font-size:1.5rem;margin-bottom:0.5rem">📦</div>
       <h3 style="font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:0.25rem" data-key="s3-title">Move-Out Cleaning</h3>
       <p style="font-size:0.82rem;color:rgba(255,255,255,.7);margin-bottom:0.75rem" data-key="s3-desc">Deep cleaning for homes after moving out or before handover.</p>
-      <div style="font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:1rem" data-key="s3-note2">Starting from $250</div>
+      <div style="font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:1rem" data-key="s3-note2">Starting from $295</div>
       <a href="#book" onclick="openSPA('moveout');return false;" style="display:block;text-align:center;background:var(--gold);color:var(--navy);font-weight:800;font-size:0.8rem;letter-spacing:1.5px;padding:12px 20px;text-decoration:none;text-transform:uppercase;border-radius:4px;">Book Now →</a>
     </div>
 
-    <!-- AIRBNB -->
-    <div style="background:rgba(255,255,255,.05);border-radius:12px;padding:1.5rem;border:1px solid rgba(201,168,76,.3);">
-      <div style="font-size:1.5rem;margin-bottom:0.5rem">🏠</div>
-      <h3 style="font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:0.25rem" data-key="s4-title">Airbnb Cleaning</h3>
-      <p style="font-size:0.82rem;color:rgba(255,255,255,.7);margin-bottom:0.75rem" data-key="s4-desc">Fast turnover cleaning for short-term rentals.</p>
-      <div style="font-size:1rem;font-weight:800;color:var(--gold);margin-bottom:1rem" data-key="s4-note2">Starting from $165</div>
-      <a href="#book" onclick="openSPA('airbnb');return false;" style="display:block;text-align:center;background:var(--gold);color:var(--navy);font-weight:800;font-size:0.8rem;letter-spacing:1.5px;padding:12px 20px;text-decoration:none;text-transform:uppercase;border-radius:4px;">Book Now →</a>
+    <!-- AIRBNB — full width -->
+    <div style="background:rgba(255,255,255,.05);border-radius:12px;padding:1.5rem;border:1px solid rgba(201,168,76,.3);grid-column:1/-1;display:grid;grid-template-columns:1fr auto;align-items:center;gap:1rem;">
+      <div>
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">🏠</div>
+        <h3 style="font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:0.25rem" data-key="s4-title">Airbnb Cleaning</h3>
+        <p style="font-size:0.82rem;color:rgba(255,255,255,.7);margin-bottom:0.5rem" data-key="s4-desc">Fast turnover cleaning for short-term rentals.</p>
+        <div style="font-size:1rem;font-weight:800;color:var(--gold)" data-key="s4-note2">Starting from $165</div>
+      </div>
+      <a href="#book" onclick="openSPA('airbnb');return false;" style="display:block;text-align:center;background:var(--gold);color:var(--navy);font-weight:800;font-size:0.8rem;letter-spacing:1.5px;padding:12px 24px;text-decoration:none;text-transform:uppercase;border-radius:4px;white-space:nowrap;">Book Now →</a>
     </div>
 
   </div>
@@ -3976,7 +4197,7 @@ const T = {
     "ex-microwave":"Interior del Microondas",
     "ex-microwave-desc":"Limpieza profunda del microondas — paredes, plato giratorio y puerta. Elimina grasa y olores.",
     "extras-cta":"Book Now","pkg-label":"🏡 Paquetes Premium","pkg-title":"Elige Tu Experiencia de Limpieza","pkg-sub":"Limpieza profesional y ecológica adaptada a tu hogar. Selecciona el paquete que mejor se adapte a tus necesidades.","pkg1-name":"Deep Clean Plus","pkg1-price":"💰 Desde $650","pkg1-desc":"Una limpieza profunda integral para refrescar tu hogar. Incluye 1 baño, cocina exterior, desempolvado y aspirado/trapeado.","pkg1-i1":"✔️ Limpieza profunda de toda la casa","pkg1-i2":"✔️ 1 Baño incluido","pkg1-i3":"✔️ Cocina exterior (encimeras y superficies)","pkg1-i4":"✔️ Desempolvado + eliminación de telarañas","pkg1-i5":"✔️ Lámparas y ventiladores de techo","pkg1-i6":"✔️ Aspirado y trapeado de todos los pisos","pkg-addons-label":"➕ Extras opcionales:","pkg2-name":"Premium Detail Clean","pkg2-price":"💰 $900 – $1,100","pkg2-desc":"Limpieza detallada de arriba a abajo para hasta 3 baños. Incluye electrodomésticos de cocina, zócalos y gabinetes.","pkg2-i1":"✔️ Todo lo del Deep Clean Plus","pkg2-i2":"✔️ Hasta 3 baños incluidos","pkg2-i3":"✔️ Interior de horno, refrigerador y microondas","pkg2-i4":"✔️ Zócalos (áreas principales)","pkg2-i5":"✔️ Gabinetes interiores (enfoque en cocina)","pkg-addons-label2":"➕ Extras opcionales:","pkg3-name":"Luxury Full Service 💎","pkg3-price":"💰 $1,200 – $1,500+","pkg3-desc":"Experiencia de guante blanco con todos los baños, ventanas, persianas, eliminación de pelo de mascotas y cuartos especiales incluidos.","pkg3-i1":"✔️ Todo lo del Premium Detail Clean","pkg3-i2":"✔️ Todos los baños incluidos","pkg3-i3":"✔️ Ventanas interiores + persianas","pkg3-i4":"✔️ Eliminación de pelo de mascotas","pkg3-i5":"✔️ Detallado completo (cuartos especiales)","pkg3-i6":"✔️ Desempolvado de alta precisión","pkg-addons-label3":"➕ Extras opcionales:","pkg-popular":"⭐ Más Popular","pkg-btn":"Book Now","pkg-btn2":"Book Now","pkg-btn3":"Book Now","pkg-cta":"Book Now","customize-title":"✨ Personaliza Tu Limpieza","customize-sub":"Servicios adicionales disponibles para adaptar tu limpieza a las necesidades específicas de tu hogar.","customize-note":"\"Otros servicios disponibles a solicitud para una experiencia de limpieza completamente personalizada.\"","s1-title":"Limpieza Estándar","s1-desc":"Limpieza de mantenimiento para hogares y apartamentos.","s1-note2":"Desde $155","s1-note2":"Desde $155","s1-i1":"✔️ Limpieza general de todas las habitaciones","s1-i2":"✔️ Limpieza de baños (baños adicionales +$65 c/u)","s1-i3":"✔️ Limpieza de cocina (solo superficies exteriores)","s1-i4":"✔️ Aspirado y trapeado de todos los pisos","s1-i5":"✔️ Desempolvado de superficies y muebles","s1-i6":"✔️ Gestión de residuos","s1-i7":"✨ Acabados limpios y uniformes","s1-addons":"➕ Baños adicionales · Interior de electrodomésticos · Ventanas interiores · y más","s1-ideal":"✨ Ideal para mantenimiento continuo con estándar consistente.","btn-book-s1":"Book Now","s1-desc":"🌿 Limpieza Estándar – Eco-Friendly","s1-note":"+ Baños adicionales · Interior de electrodomésticos · y más extras disponibles",
-    "s2-title":"Limpieza Profunda","s3-title":"Mudanza / Entrega","s3-desc":"Limpieza profunda para hogares después de mudarse o antes de la entrega.","s3-note2":"Desde $240","s4-title":"Airbnb / Alquiler","s4-desc":"Limpieza rápida para propiedades en alquiler.","s4-note2":"Desde $165","s2-note2":"Desde $220","s2-i1":"✔️ Limpieza profunda de todas las habitaciones","s2-i2":"✔️ Sanitización profunda de baños (baños adicionales +$65 c/u)","s2-i3":"✔️ Limpieza profunda de cocina (superficies exteriores)","s2-i4":"✔️ Desempolvado de superficies, zócalos y áreas de difícil acceso","s2-i5":"✔️ Aspirado y trapeado en toda la casa","s2-i6":"✔️ Limpieza detallada de lámparas y accesorios accesibles","s2-addons":"➕ Baños adicionales · Interior de electrodomésticos · Sótano · Ventanas interiores · y más","s2-ideal":"✨ Recomendado como primera limpieza o reinicio completo del hogar.","btn-book-s2":"Book Now","s2-desc":"🌿 Limpieza Profunda Premium","s2-note":"+ Baños adicionales · Interior de electrodomésticos · y más extras disponibles","s2-upsell":"✨ Ideal como primera limpieza — combínalo con mantenimiento semanal o quincenal para mantener tu hogar impecable.",
+    "s2-title":"Limpieza Profunda","s3-title":"Mudanza / Entrega","s3-desc":"Limpieza profunda para hogares después de mudarse o antes de la entrega.","s3-note2":"Desde $295","s4-title":"Airbnb / Alquiler","s4-desc":"Limpieza rápida para propiedades en alquiler.","s4-note2":"Desde $165","s2-note2":"Desde $230","s2-i1":"✔️ Limpieza profunda de todas las habitaciones","s2-i2":"✔️ Sanitización profunda de baños (baños adicionales +$65 c/u)","s2-i3":"✔️ Limpieza profunda de cocina (superficies exteriores)","s2-i4":"✔️ Desempolvado de superficies, zócalos y áreas de difícil acceso","s2-i5":"✔️ Aspirado y trapeado en toda la casa","s2-i6":"✔️ Limpieza detallada de lámparas y accesorios accesibles","s2-addons":"➕ Baños adicionales · Interior de electrodomésticos · Sótano · Ventanas interiores · y más","s2-ideal":"✨ Recomendado como primera limpieza o reinicio completo del hogar.","btn-book-s2":"Book Now","s2-desc":"🌿 Limpieza Profunda Premium","s2-note":"+ Baños adicionales · Interior de electrodomésticos · y más extras disponibles","s2-upsell":"✨ Ideal como primera limpieza — combínalo con mantenimiento semanal o quincenal para mantener tu hogar impecable.",
     "footer-services":"Servicios","footer-company":"Empresa",
     "footer-s1":"Limpieza Regular","footer-s2":"Limpieza Profunda","footer-s3":"Mudanza / Entrega","footer-s4":"Airbnb Turnover",
     "footer-extras":"Extras","footer-nosotros":"Por qué elegirnos","footer-opiniones":"Opiniones",
@@ -4097,7 +4318,7 @@ const T = {
     "services-label":"What we offer","services-title":"Our cleaning services",
     "services-sub":"Tailored for modern homes, our services focus on efficiency, attention to detail, and a spotless finish, delivering a clean that's safe, sustainable, and worry-free.",
     "coming-soon":"🚧 Coming Soon","coming-soon-sub":"This service will be available shortly. Contact us for more information.","service-discount":".","s1-title":"Standard Cleaning","s1-desc":"🌿 Standard Cleaning – Eco-Friendly","s1-note2":"💰 Starting from $155.","s1-i1":"✔️ General cleaning of all rooms","s1-i2":"✔️ Bathroom cleaning (additional bathrooms +$65 each)","s1-i3":"✔️ Kitchen cleaning (exterior surfaces only)","s1-i4":"✔️ Vacuuming & mopping all floors","s1-i5":"✔️ Dusting of surfaces and furniture","s1-i6":"✔️ Trash removal","s1-i7":"✨ Clean and uniform finishes","s1-addons":"➕ Additional bathrooms · Appliance interiors · Interior windows · and more","s1-ideal":"✨ Ideal for ongoing maintenance with a consistent standard.","btn-book-s1":"Book Now","s1-note2":"💰 Starting from $155.","s1-i1":"✔️ General cleaning of all rooms","s1-i2":"✔️ Bathroom cleaning (additional bathrooms +$65 each)","s1-i3":"✔️ Kitchen cleaning (exterior surfaces only)","s1-i4":"✔️ Vacuuming & mopping all floors","s1-i5":"✔️ Dusting of surfaces and furniture","s1-i6":"✔️ Trash removal","s1-i7":"✨ Clean and uniform finishes","s1-addons":"➕ Additional bathrooms · Appliance interiors · Interior windows · and more","s1-ideal":"✨ Ideal for ongoing maintenance with a consistent standard.","btn-book-s1":"Book Now","s1-desc":"🌿 Standard Cleaning – Eco-Friendly","s1-note":"+ Additional bathrooms · Appliance interiors · and more add-ons available",
-    "s2-title":"Deep Cleaning","s2-desc":"Detailed cleaning for a full home reset.","s3-title":"Move In / Move Out","s3-desc":"Deep cleaning for homes after moving out or before handover.","s3-note2":"Starting from $250","s4-title":"Airbnb Cleaning","s4-desc":"Fast turnover cleaning for short-term rentals.","s4-note2":"💰 Starting from $165 — add linens, amenities & more","s2-note2":"Starting from $220","s2-i1":"✔️ Deep cleaning of all rooms","s2-i2":"✔️ Bathroom deep sanitization (additional bathrooms +$65 each)","s2-i3":"✔️ Kitchen deep cleaning (exterior surfaces)","s2-i4":"✔️ Dusting of surfaces, baseboards & hard-to-reach areas","s2-i5":"✔️ Vacuuming & mopping throughout","s2-i6":"✔️ Light fixtures & reachable detailed cleaning","s2-addons":"➕ Additional bathrooms · Appliance interiors · Finished basement · Interior windows · and more","s2-ideal":"✨ Recommended as a first cleaning or complete home reset.","btn-book-s2":"Book Now","s2-note2":"Starting from $220","s2-i1":"✔️ Deep cleaning of all rooms","s2-i2":"✔️ Bathroom deep sanitization (additional bathrooms +$65 each)","s2-i3":"✔️ Kitchen deep cleaning (exterior surfaces)","s2-i4":"✔️ Dusting of surfaces, baseboards & hard-to-reach areas","s2-i5":"✔️ Vacuuming & mopping throughout","s2-i6":"✔️ Light fixtures & reachable detailed cleaning","s2-addons":"➕ Additional bathrooms · Appliance interiors · Finished basement · Interior windows · and more","s2-ideal":"✨ Recommended as a first cleaning or complete home reset.","btn-book-s2":"Book Now","s2-desc":"🌿 Premium Deep Cleaning","s2-note":"+ Additional bathrooms · Appliance interiors · and more add-ons available","s2-upsell":"✨ Perfect as a first-time clean — follow up with weekly or bi-weekly Standard Cleaning to keep your home effortlessly pristine.",
+    "s2-title":"Deep Cleaning","s2-desc":"Detailed cleaning for a full home reset.","s3-title":"Move In / Move Out","s3-desc":"Deep cleaning for homes after moving out or before handover.","s3-note2":"Starting from $295","s4-title":"Airbnb Cleaning","s4-desc":"Fast turnover cleaning for short-term rentals.","s4-note2":"💰 Starting from $165 — add linens, amenities & more","s2-note2":"Starting from $230","s2-i1":"✔️ Deep cleaning of all rooms","s2-i2":"✔️ Bathroom deep sanitization (additional bathrooms +$65 each)","s2-i3":"✔️ Kitchen deep cleaning (exterior surfaces)","s2-i4":"✔️ Dusting of surfaces, baseboards & hard-to-reach areas","s2-i5":"✔️ Vacuuming & mopping throughout","s2-i6":"✔️ Light fixtures & reachable detailed cleaning","s2-addons":"➕ Additional bathrooms · Appliance interiors · Finished basement · Interior windows · and more","s2-ideal":"✨ Recommended as a first cleaning or complete home reset.","btn-book-s2":"Book Now","s2-note2":"Starting from $230","s2-i1":"✔️ Deep cleaning of all rooms","s2-i2":"✔️ Bathroom deep sanitization (additional bathrooms +$65 each)","s2-i3":"✔️ Kitchen deep cleaning (exterior surfaces)","s2-i4":"✔️ Dusting of surfaces, baseboards & hard-to-reach areas","s2-i5":"✔️ Vacuuming & mopping throughout","s2-i6":"✔️ Light fixtures & reachable detailed cleaning","s2-addons":"➕ Additional bathrooms · Appliance interiors · Finished basement · Interior windows · and more","s2-ideal":"✨ Recommended as a first cleaning or complete home reset.","btn-book-s2":"Book Now","s2-desc":"🌿 Premium Deep Cleaning","s2-note":"+ Additional bathrooms · Appliance interiors · and more add-ons available","s2-upsell":"✨ Perfect as a first-time clean — follow up with weekly or bi-weekly Standard Cleaning to keep your home effortlessly pristine.",
     "footer-services":"Services","footer-company":"Company",
     "footer-s1":"Regular Cleaning","footer-s2":"Deep Cleaning","footer-s3":"Move In/Out","footer-s4":"Airbnb Turnover",
     "footer-desc":"Premium eco-friendly cleaning for homes in Jersey City, Hoboken & Edgewater. Trusted by Hudson County families for spotless results.",
