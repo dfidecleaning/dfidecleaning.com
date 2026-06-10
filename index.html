@@ -2730,7 +2730,7 @@ function updateStepFooter(step){
           const res=await fetch(`${SB_URL}/functions/v1/createpaymentintent`,{
             method:'POST',
             headers:{'Content-Type':'application/json','Authorization':`Bearer ${SB_KEY}`},
-            body:JSON.stringify({amount:b.deposit||50,payment_methods:['card','apple_pay','google_pay']})
+            body:JSON.stringify({amount:Math.max(1,b.deposit||50)})
           });
           const {clientSecret}=await res.json();
           if(!clientSecret)throw new Error('No clientSecret');
@@ -3514,8 +3514,8 @@ function showBathStep(){
   const pctEl=document.getElementById('step-pct');if(pctEl)pctEl.textContent='35%';
   const barEl=document.getElementById('progress-bar');if(barEl)barEl.style.width='35%';
   const lbl=document.getElementById('step-label');if(lbl)lbl.textContent='Bathrooms';
-  updDots();
 }
+
 
 function updateBathSummary(){
   const bp=BATH_PRICE[b.service]||65;
@@ -3547,8 +3547,8 @@ function showWinStep(){
   const swb=document.getElementById('sw-base');if(swb)swb.textContent='$'+b.basePrice.toLocaleString();
   const sww=document.getElementById('sw-win');if(sww)sww.textContent=b.winPrice>0?'+$'+b.winPrice:'Included';
   const swt=document.getElementById('sw-tot');if(swt)swt.textContent='$'+(b.total||b.basePrice).toLocaleString();
-  updDots();
 }
+
 
 function fmtSSN(el){
   let v=el.value.replace(/\D/g,'');
