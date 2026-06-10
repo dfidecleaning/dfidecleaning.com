@@ -2044,9 +2044,16 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
         <h3>🔒 Secure Payment</h3>
         <p style="font-size:13px;color:var(--g600);margin-bottom:12px">Your 50% deposit secures your booking. Balance due on service day.</p>
 
-        <!-- Payment Element (includes Apple Pay, Google Pay, card) -->
-
-        <div id="payment-element" style="min-height:50px"></div>
+        <!-- Apple Pay / Google Pay button -->
+        <div id="prb-container" style="display:none;margin-bottom:12px">
+          <div id="payment-request-button"></div>
+          <div style="text-align:center;font-size:11px;color:rgba(255,255,255,.3);margin:10px 0;position:relative">
+            <span style="background:#0B1F3A;padding:0 10px;position:relative;z-index:1">or pay with card</span>
+            <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.1)"></div>
+          </div>
+        </div>
+        <!-- Card input -->
+        <div id="stripe-el" style="background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:14px;min-height:46px"></div>
         <div id="stripe-err" style="color:var(--red);font-size:12px;margin-top:6px"></div>
 
         <!-- Trust badges -->
@@ -2724,48 +2731,42 @@ function updateStepFooter(step){
     next.style.display='block';
     next.textContent=l.next;
     if(step===5){
-      setTimeout(async function(){
+      setTimeout(function(){
         try{
-          if(!stripe)return;
-          const res=await fetch(`${SB_URL}/functions/v1/createpaymentintent`,{
-            method:'POST',
-            headers:{'Content-Type':'application/json','Authorization':`Bearer ${SB_KEY}`},
-            body:JSON.stringify({amount:Math.max(1,b.deposit||50)})
+          if(!stripe||!window._stripeElems)return;
+          const pr=stripe.paymentRequest({
+            country:'US',currency:'usd',
+            total:{label:"D'Fide Cleaning Deposit",amount:Math.max(50,Math.round((b.deposit||50)*100))},
+            requestPayerName:true,requestPayerEmail:true,requestPayerPhone:true
           });
-          const {clientSecret}=await res.json();
-          if(!clientSecret)throw new Error('No clientSecret');
-          window._clientSecret=clientSecret;
-          const appearance={theme:'night',variables:{colorPrimary:'#C9A84C',colorBackground:'#0d2240',colorText:'#ffffff',colorDanger:'#ff6b6b',fontFamily:'"DM Sans",sans-serif',borderRadius:'8px'}};
-          const els=stripe.elements({clientSecret,appearance});
-          window._stripeElements=els;
-          const pe=els.create('payment',{
-            layout:'tabs',
-            paymentMethodOrder:['apple_pay','google_pay','card'],
-            defaultValues:{
-              billingDetails:{
-                name:document.getElementById('b-fullname')?.value||'',
-                email:document.getElementById('b-email')?.value||'',
-                phone:document.getElementById('b-phone')?.value||''
+          window._pr=pr;
+          pr.canMakePayment().then(function(result){
+            if(result){
+              const prbEl=window._stripeElems.create('paymentRequestButton',{
+                paymentRequest:pr,
+                style:{paymentRequestButton:{type:'default',theme:'dark',height:'48px'}}
+              });
+              const prbDiv=document.getElementById('payment-request-button');
+              if(prbDiv){
+                prbEl.mount('#payment-request-button');
+                document.getElementById('prb-container').style.display='block';
               }
-            },
-            fields:{billingDetails:{name:'never',email:'never',phone:'never',address:'never'}}
+              pr.on('paymentmethod',async function(ev){
+                try{
+                  const r=await fetch(`${SB_URL}/functions/v1/createpaymentintent`,{
+                    method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${SB_KEY}`},
+                    body:JSON.stringify({amount:b.deposit||50})
+                  });
+                  const {clientSecret}=await r.json();
+                  const {error:cErr}=await stripe.confirmCardPayment(clientSecret,{payment_method:ev.paymentMethod.id},{handleActions:false});
+                  if(cErr){ev.complete('fail');showNotif('Payment failed','error');}
+                  else{ev.complete('success');window._prPayOK=true;window._prPmId=ev.paymentMethod.id;}
+                }catch(e){ev.complete('fail');}
+              });
+            }
           });
-          window._paymentElement=pe;
-          pe.mount('#payment-element');
-          pe.on('change',e=>{const err=document.getElementById('stripe-err');if(err)err.textContent=e.error?e.error.message:'';});
-        }catch(e){
-          console.warn('Payment Element failed:',e);
-          // Fallback to card
-          try{
-            const el2=stripe.elements();
-            const card2=el2.create('card',{style:{base:{fontSize:'15px',fontFamily:'"DM Sans",sans-serif',color:'#fff','::placeholder':{color:'rgba(255,255,255,.4)'}},invalid:{color:'#ff6b6b'}}});
-            card2.mount('#payment-element');
-            card2.on('change',ev=>{const err=document.getElementById('stripe-err');if(err)err.textContent=ev.error?ev.error.message:'';});
-            window._fallbackCard=card2;
-            window._fallbackElements=stripe.elements();
-          }catch(e2){console.warn('Card fallback failed:',e2);}
-        }
-      },300);
+        }catch(e){console.warn('PRB error:',e);}
+      },400);
       next.onclick=submitBooking;
       next.id='pay-btn';
     } else if(step===1){
@@ -2871,7 +2872,11 @@ function initStripe(retries=10){
   }
   try{
     stripe=Stripe(STRIPE_PK);
-    console.log('Stripe ready — Payment Element mounts on Step 5');
+    const stripeElems=stripe.elements();
+    stripeCard=stripeElems.create('card',{style:{base:{fontSize:'15px',fontFamily:'"DM Sans",sans-serif',color:'#ffffff','::placeholder':{color:'rgba(255,255,255,0.4)'}},invalid:{color:'#ff6b6b'}}});
+    stripeCard.mount('#stripe-el');
+    stripeCard.on('change',e=>{const el=document.getElementById('stripe-err');if(el)el.textContent=e.error?e.error.message:'';});
+    window._stripeElems=stripeElems;
   }catch(e){console.warn('Stripe:',e);}
 }
 
