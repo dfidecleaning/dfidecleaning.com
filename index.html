@@ -2355,7 +2355,7 @@ const CHECKLIST={
 };
 
 // STATE
-let b={service:null,beds:1,baths:1,extras:[],subscription:'once',tip:10,basePrice:0,extrasPrice:0,total:0,deposit:0,balance:0,savings:0,referralCode:'',referralDiscount:0,deepDiscount:false,isNewClient:false,isReturningClient:false,winCounts:{regular:0,large:0,ftc:0,balcony:0,cornerbalcony:0},winPrice:0};
+let b={service:null,beds:0,baths:1,extras:[],subscription:'once',tip:10,basePrice:0,extrasPrice:0,total:0,deposit:0,balance:0,savings:0,referralCode:'',referralDiscount:0,deepDiscount:false,isNewClient:false,isReturningClient:false,winCounts:{regular:0,large:0,ftc:0,balcony:0,cornerbalcony:0},winPrice:0};
 let adminOK=false;
 let stripe,stripeEl,stripeCard;
 
@@ -2724,40 +2724,46 @@ function updateStepFooter(step){
     next.style.display='block';
     next.textContent=l.next;
     if(step===5){
-      // Mount Payment Element with actual deposit amount
       setTimeout(async function(){
         try{
           if(!stripe)return;
-          const amt=Math.max(50,Math.round(b.deposit*100));
-          // Create Payment Intent first to get clientSecret
-          const pr=await fetch(`${SB_URL}/functions/v1/send-payment-link`,{
+          const res=await fetch(`${SB_URL}/functions/v1/createpaymentintent`,{
             method:'POST',
             headers:{'Content-Type':'application/json','Authorization':`Bearer ${SB_KEY}`},
-            body:JSON.stringify({amount:b.deposit,bookingNum:'PREVIEW',service:b.service,clientName:'Preview',clientEmail:'preview@dfide.com'})
+            body:JSON.stringify({amount:b.deposit||50,payment_methods:['card','apple_pay','google_pay']})
           });
-          if(!pr.ok)throw new Error('PI failed');
-          const {clientSecret}=await pr.json();
+          const {clientSecret}=await res.json();
+          if(!clientSecret)throw new Error('No clientSecret');
           window._clientSecret=clientSecret;
-          // Create Elements with Payment Element
-          const appearance={theme:'night',variables:{colorPrimary:'#C9A84C',colorBackground:'#0B1F3A',colorText:'#ffffff',colorDanger:'#ff6b6b',fontFamily:'"DM Sans",sans-serif',borderRadius:'8px'}};
-          window._stripeElements=stripe.elements({clientSecret,appearance});
-          window._paymentElement=window._stripeElements.create('payment',{layout:'tabs'});
-          const peDiv=document.getElementById('payment-element');
-          if(peDiv){window._paymentElement.mount('#payment-element');}
-          window._paymentElement.on('change',function(e){
-            const err=document.getElementById('stripe-err');
-            if(err)err.textContent=e.error?e.error.message:'';
+          const appearance={theme:'night',variables:{colorPrimary:'#C9A84C',colorBackground:'#0d2240',colorText:'#ffffff',colorDanger:'#ff6b6b',fontFamily:'"DM Sans",sans-serif',borderRadius:'8px'}};
+          const els=stripe.elements({clientSecret,appearance});
+          window._stripeElements=els;
+          const pe=els.create('payment',{
+            layout:'tabs',
+            paymentMethodOrder:['apple_pay','google_pay','card'],
+            defaultValues:{
+              billingDetails:{
+                name:document.getElementById('b-fullname')?.value||'',
+                email:document.getElementById('b-email')?.value||'',
+                phone:document.getElementById('b-phone')?.value||''
+              }
+            },
+            fields:{billingDetails:{name:'never',email:'never',phone:'never',address:'never'}}
           });
+          window._paymentElement=pe;
+          pe.mount('#payment-element');
+          pe.on('change',e=>{const err=document.getElementById('stripe-err');if(err)err.textContent=e.error?e.error.message:'';});
         }catch(e){
-          console.warn('Payment Element init:',e);
-          // Fallback to card element
-          if(!stripeCard&&stripe){
-            const el=stripe.elements();
-            stripeCard=el.create('card',{style:{base:{fontSize:'15px',fontFamily:'"DM Sans",sans-serif',color:'#ffffff','::placeholder':{color:'rgba(255,255,255,0.4)'}},invalid:{color:'#ff6b6b'}}});
-            const peDiv=document.getElementById('payment-element');
-            if(peDiv)stripeCard.mount('#payment-element');
-            stripeCard.on('change',function(ev){const err=document.getElementById('stripe-err');if(err)err.textContent=ev.error?ev.error.message:'';});
-          }
+          console.warn('Payment Element failed:',e);
+          // Fallback to card
+          try{
+            const el2=stripe.elements();
+            const card2=el2.create('card',{style:{base:{fontSize:'15px',fontFamily:'"DM Sans",sans-serif',color:'#fff','::placeholder':{color:'rgba(255,255,255,.4)'}},invalid:{color:'#ff6b6b'}}});
+            card2.mount('#payment-element');
+            card2.on('change',ev=>{const err=document.getElementById('stripe-err');if(err)err.textContent=ev.error?ev.error.message:'';});
+            window._fallbackCard=card2;
+            window._fallbackElements=stripe.elements();
+          }catch(e2){console.warn('Card fallback failed:',e2);}
         }
       },300);
       next.onclick=submitBooking;
@@ -2843,7 +2849,7 @@ function buildRev(){
 }
 
 function resetBooking(){
-  b={service:null,beds:1,baths:1,extras:[],subscription:'biweekly',tip:10,basePrice:0,extrasPrice:0,total:0,deposit:0,balance:0,savings:0,referralCode:'',referralDiscount:0};
+  b={service:null,beds:0,baths:1,extras:[],subscription:'once',tip:10,basePrice:0,extrasPrice:0,total:0,deposit:0,balance:0,savings:0,referralCode:'',referralDiscount:0};
   document.querySelectorAll('.svc-card').forEach(c=>c.classList.remove('sel'));
   document.getElementById('size-sec').style.display='none';
   document.getElementById('sub-sec').style.display='none';
@@ -2865,10 +2871,7 @@ function initStripe(retries=10){
   }
   try{
     stripe=Stripe(STRIPE_PK);
-    // Payment Element handles Apple Pay, Google Pay, Link and card automatically
-    window._stripeElements=null;
-    window._paymentElement=null;
-    console.log('Stripe initialized — Payment Element will mount on Step 5');
+    console.log('Stripe ready — Payment Element mounts on Step 5');
   }catch(e){console.warn('Stripe:',e);}
 }
 
@@ -2917,35 +2920,30 @@ async function submitBooking(){
 
     let payOK=false;
     try{
-      let confirmResult;
-      if(window._stripeElements&&window._clientSecret){
-        // Use Payment Element (Apple Pay, Google Pay, card)
-        confirmResult=await stripe.confirmPayment({
-          elements:window._stripeElements,
-          confirmParams:{
-            payment_method_data:{billing_details:{name:`${cd.first_name} ${cd.last_name}`,email:cd.email}}
-          },
-          redirect:'if_required'
-        });
-      } else if(stripeCard){
-        // Fallback: card element
-        const pr2=await fetch(`${SB_URL}/functions/v1/send-payment-link`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${SB_KEY}`},body:JSON.stringify({amount:b.deposit,bookingNum:bnum,service:b.service,clientName:`${cd.first_name} ${cd.last_name}`,clientEmail:cd.email})});
-        if(!pr2.ok)throw new Error('Payment intent failed');
-        const {clientSecret:cs2}=await pr2.json();
-        confirmResult=await stripe.confirmCardPayment(cs2,{payment_method:{card:stripeCard,billing_details:{name:`${cd.first_name} ${cd.last_name}`,email:cd.email}}});
-      } else {
+      if(!stripe||!window._stripeElements){
         throw new Error('Payment system not ready. Please refresh and try again.');
       }
-
-      if(confirmResult.error){
+      const result=await stripe.confirmPayment({
+        elements:window._stripeElements,
+        confirmParams:{
+          payment_method_data:{billing_details:{
+            name:`${cd.first_name} ${cd.last_name}`,
+            email:cd.email,
+            phone:cd.phone||undefined,
+            address:{country:'US'}
+          }}
+        },
+        redirect:'if_required'
+      });
+      if(result.error){
         try{await db('bookings','DELETE',null,'id=eq.'+bid);}catch(e){}
-        document.getElementById('stripe-err').textContent=confirmResult.error.message;
+        document.getElementById('stripe-err').textContent=result.error.message;
         btn.textContent='✓ Confirm & Pay Deposit';btn.disabled=false;
-        showNotif('Payment failed: '+confirmResult.error.message,'error');
+        showNotif('Payment failed: '+result.error.message,'error');
         return;
       }
       payOK=true;
-      const pmId=confirmResult.paymentIntent?.payment_method;
+      const pmId=result.paymentIntent?.payment_method;
       await db('bookings','PATCH',{status:'confirmed',deposit_paid:true,deposit_paid_at:new Date().toISOString(),stripe_payment_method:pmId||null},'id=eq.'+bid);
     }catch(pe){
       try{await db('bookings','DELETE',null,'id=eq.'+bid);}catch(e){}
