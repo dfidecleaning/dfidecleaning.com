@@ -1768,7 +1768,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.04)
             <div class="ic">🏠</div><h3>Airbnb Turnover</h3>
             <p style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px">Fast, reliable turnover for short-term rentals.</p>
             <ul><li>✓ Complete standard cleaning of all rooms</li><li>✓ Kitchen reset: loading the dishwasher</li><li>✓ Hotel staging: crisp bed making & towel styling</li><li>✓ Quick damage inspection for the host</li><li>✓ Fast response for Hoboken & JC hosts</li><li>✓ Eco products 🌿</li></ul>
-            <div class="pt">Starting from $165</div>
+            <div class="pt">Starting from $195</div>
             <div class="bg" style="color:var(--gold)">Perfect for Hoboken & JC hosts</div>
           </div>
 
@@ -2275,7 +2275,7 @@ let PRICES={
   deep:{0:230,1:270,2:320,3:375,4:440,5:500,6:570},
   movein:{0:255,1:290,2:340,3:395,4:455,5:515,6:580},
   moveout:{0:295,1:340,2:410,3:485,4:575,5:665,6:755},
-  airbnb:{0:165,1:195,2:235,3:275,4:320,5:365,6:410}
+  airbnb:{0:195,1:229,2:265,3:305,4:349,5:389,6:429}
 };
 // Extra bathroom price by service
 const BATH_PRICE={standard:65,deep:85,movein:75,moveout:85,airbnb:65};
@@ -2321,31 +2321,31 @@ const SUB_D={once:0,weekly:.15,biweekly:.10,monthly:.05};
 
 const EXTRAS=[
   {id:'kitchen',icon:'🧼',name:'Kitchen & Appliances',desc:'Deep cleaning inside appliances and cabinets',items:[
-    {name:'Oven Interior',price:70,desc:'Racks, walls, door glass — eco-safe'},
+    {name:'Oven Interior',price:65,desc:'Racks, walls, door glass — eco-safe'},
     {name:'Fridge Interior',price:75,desc:'Shelves, drawers, walls — eco-safe'},
-    {name:'Interior Cabinets',price:90,desc:'Kitchen or bathroom cabinets'},
-    {name:'Inside Dishwasher',price:50,desc:'Removes buildup, residue and odors'},
-    {name:'Inside Washer & Dryer',price:55,desc:'Both appliances full interior cleaning'},
+    {name:'Interior Cabinets',price:75,desc:'Kitchen or bathroom cabinets'},
+    {name:'Inside Dishwasher',price:45,desc:'Removes buildup, residue and odors'},
+    {name:'Inside Washer & Dryer',price:65,desc:'Both appliances full interior cleaning'},
   ]},
   {id:'cleaning',icon:'🧹',name:'Cleaning Add-ons',desc:'Extra cleaning services',items:[
     {name:'Trash Removal',price:30,desc:'All bins emptied and bags replaced'},
-    {name:'Pet Hair Removal (per room)',price:80,desc:'Carpets, floors, furniture'},
+    {name:'Pet Hair Removal (per room)',price:70,desc:'Carpets, floors, furniture'},
     {name:'Laundry & Folding (per load)',price:65,desc:'Wash, dry, fold — eco detergent'},
-    {name:'Same-Day Rush',price:125,desc:'Urgent same-day cleaning service'},
+    {name:'Same-Day Rush',price:65,desc:'Urgent same-day cleaning service'},
     {name:'Dish Washing',price:45,desc:'Hand wash and dry all dishes in sink'},
-    {name:'Linen Change',price:60,desc:'All beds — client provides linens'},
-    {name:'Heavy Cleaning',price:270,desc:'Intensive for very dirty/neglected areas'},
-    {name:'Heavy Tidy-Up / Organization',price:110,desc:'Items sorted, surfaces cleared & reset'},
+    {name:'Linen Change',price:40,desc:'All beds — client provides linens'},
+    {name:'Heavy Cleaning',price:195,desc:'Intensive for very dirty/neglected areas'},
+    {name:'Heavy Tidy-Up / Organization',price:85,desc:'Items sorted, surfaces cleared & reset'},
   ]},
   {id:'property',icon:'🏠',name:'Property Add-ons',desc:'Surfaces, spaces and outdoor areas',items:[
-    {name:'Blinds / Shades (per room)',price:50,desc:'Dusting and detailed cleaning'},
-    {name:'Light Fixture',price:50,desc:'Removes dust and residue'},
-    {name:'Ceiling Fan',price:50,desc:'Full blade and housing cleaning'},
-    {name:'Deep Stair Cleaning',price:90,desc:'Treads, risers, railings'},
-    {name:'Wall / Baseboard Spot Cleaning',price:100,desc:'Marks, scuffs, dirt from walls & baseboards'},
+    {name:'Blinds / Shades (per room)',price:45,desc:'Dusting and detailed cleaning'},
+    {name:'Light Fixture',price:45,desc:'Removes dust and residue'},
+    {name:'Ceiling Fan',price:45,desc:'Full blade and housing cleaning'},
+    {name:'Deep Stair Cleaning',price:75,desc:'Treads, risers, railings'},
+    {name:'Wall / Baseboard Spot Cleaning',price:85,desc:'Marks, scuffs, dirt from walls & baseboards'},
     {name:'Balcony / Patio',price:65,desc:'Sweep, wipe surfaces and furniture'},
-    {name:'Home Office',price:85,desc:'Desk, shelves, electronics dusting'},
-    {name:'Home Gym',price:120,desc:'Equipment, floors, mirrors'},
+    {name:'Home Office',price:75,desc:'Desk, shelves, electronics dusting'},
+    {name:'Home Gym',price:95,desc:'Equipment, floors, mirrors'},
     {name:'Finished Basement Small',price:160,desc:'Floors, surfaces, baseboards, stairs'},
     {name:'Finished Basement Medium',price:210,desc:'Multiple areas, floors, stairs'},
     {name:'Finished Basement Large',price:330,desc:'Full large basement cleaning'},
@@ -3971,7 +3971,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         <div style="font-size:1.5rem;margin-bottom:0.5rem">🏠</div>
         <h3 style="font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:0.25rem" data-key="s4-title">Airbnb Cleaning</h3>
         <p style="font-size:0.82rem;color:rgba(255,255,255,.7);margin-bottom:0.5rem" data-key="s4-desc">Fast turnover cleaning for short-term rentals.</p>
-        <div style="font-size:1rem;font-weight:800;color:var(--gold)" data-key="s4-note2">Starting from $165</div>
+        <div style="font-size:1rem;font-weight:800;color:var(--gold)" data-key="s4-note2">Starting from $195</div>
       </div>
       <a href="#book" onclick="openSPA('airbnb');return false;" style="display:block;text-align:center;background:var(--gold);color:var(--navy);font-weight:800;font-size:0.8rem;letter-spacing:1.5px;padding:12px 24px;text-decoration:none;text-transform:uppercase;border-radius:4px;white-space:nowrap;">Book Now →</a>
     </div>
@@ -4218,7 +4218,7 @@ const T = {
     "ex-microwave":"Interior del Microondas",
     "ex-microwave-desc":"Limpieza profunda del microondas — paredes, plato giratorio y puerta. Elimina grasa y olores.",
     "extras-cta":"Book Now","pkg-label":"🏡 Paquetes Premium","pkg-title":"Elige Tu Experiencia de Limpieza","pkg-sub":"Limpieza profesional y ecológica adaptada a tu hogar. Selecciona el paquete que mejor se adapte a tus necesidades.","pkg1-name":"Deep Clean Plus","pkg1-price":"💰 Desde $650","pkg1-desc":"Una limpieza profunda integral para refrescar tu hogar. Incluye 1 baño, cocina exterior, desempolvado y aspirado/trapeado.","pkg1-i1":"✔️ Limpieza profunda de toda la casa","pkg1-i2":"✔️ 1 Baño incluido","pkg1-i3":"✔️ Cocina exterior (encimeras y superficies)","pkg1-i4":"✔️ Desempolvado + eliminación de telarañas","pkg1-i5":"✔️ Lámparas y ventiladores de techo","pkg1-i6":"✔️ Aspirado y trapeado de todos los pisos","pkg-addons-label":"➕ Extras opcionales:","pkg2-name":"Premium Detail Clean","pkg2-price":"💰 $900 – $1,100","pkg2-desc":"Limpieza detallada de arriba a abajo para hasta 3 baños. Incluye electrodomésticos de cocina, zócalos y gabinetes.","pkg2-i1":"✔️ Todo lo del Deep Clean Plus","pkg2-i2":"✔️ Hasta 3 baños incluidos","pkg2-i3":"✔️ Interior de horno, refrigerador y microondas","pkg2-i4":"✔️ Zócalos (áreas principales)","pkg2-i5":"✔️ Gabinetes interiores (enfoque en cocina)","pkg-addons-label2":"➕ Extras opcionales:","pkg3-name":"Luxury Full Service 💎","pkg3-price":"💰 $1,200 – $1,500+","pkg3-desc":"Experiencia de guante blanco con todos los baños, ventanas, persianas, eliminación de pelo de mascotas y cuartos especiales incluidos.","pkg3-i1":"✔️ Todo lo del Premium Detail Clean","pkg3-i2":"✔️ Todos los baños incluidos","pkg3-i3":"✔️ Ventanas interiores + persianas","pkg3-i4":"✔️ Eliminación de pelo de mascotas","pkg3-i5":"✔️ Detallado completo (cuartos especiales)","pkg3-i6":"✔️ Desempolvado de alta precisión","pkg-addons-label3":"➕ Extras opcionales:","pkg-popular":"⭐ Más Popular","pkg-btn":"Book Now","pkg-btn2":"Book Now","pkg-btn3":"Book Now","pkg-cta":"Book Now","customize-title":"✨ Personaliza Tu Limpieza","customize-sub":"Servicios adicionales disponibles para adaptar tu limpieza a las necesidades específicas de tu hogar.","customize-note":"\"Otros servicios disponibles a solicitud para una experiencia de limpieza completamente personalizada.\"","s1-title":"Limpieza Estándar","s1-desc":"Limpieza de mantenimiento para hogares y apartamentos.","s1-note2":"Desde $155","s1-note2":"Desde $155","s1-i1":"✔️ Limpieza general de todas las habitaciones","s1-i2":"✔️ Limpieza de baños (baños adicionales +$65 c/u)","s1-i3":"✔️ Limpieza de cocina (solo superficies exteriores)","s1-i4":"✔️ Aspirado y trapeado de todos los pisos","s1-i5":"✔️ Desempolvado de superficies y muebles","s1-i6":"✔️ Gestión de residuos","s1-i7":"✨ Acabados limpios y uniformes","s1-addons":"➕ Baños adicionales · Interior de electrodomésticos · Ventanas interiores · y más","s1-ideal":"✨ Ideal para mantenimiento continuo con estándar consistente.","btn-book-s1":"Book Now","s1-desc":"🌿 Limpieza Estándar – Eco-Friendly","s1-note":"+ Baños adicionales · Interior de electrodomésticos · y más extras disponibles",
-    "s2-title":"Limpieza Profunda","s3-title":"Mudanza / Entrega","s3-desc":"Limpieza profunda para hogares después de mudarse o antes de la entrega.","s3-note2":"Desde $295","s4-title":"Airbnb / Alquiler","s4-desc":"Limpieza rápida para propiedades en alquiler.","s4-note2":"Desde $165","s2-note2":"Desde $230","s2-i1":"✔️ Limpieza profunda de todas las habitaciones","s2-i2":"✔️ Sanitización profunda de baños (baños adicionales +$65 c/u)","s2-i3":"✔️ Limpieza profunda de cocina (superficies exteriores)","s2-i4":"✔️ Desempolvado de superficies, zócalos y áreas de difícil acceso","s2-i5":"✔️ Aspirado y trapeado en toda la casa","s2-i6":"✔️ Limpieza detallada de lámparas y accesorios accesibles","s2-addons":"➕ Baños adicionales · Interior de electrodomésticos · Sótano · Ventanas interiores · y más","s2-ideal":"✨ Recomendado como primera limpieza o reinicio completo del hogar.","btn-book-s2":"Book Now","s2-desc":"🌿 Limpieza Profunda Premium","s2-note":"+ Baños adicionales · Interior de electrodomésticos · y más extras disponibles","s2-upsell":"✨ Ideal como primera limpieza — combínalo con mantenimiento semanal o quincenal para mantener tu hogar impecable.",
+    "s2-title":"Limpieza Profunda","s3-title":"Mudanza / Entrega","s3-desc":"Limpieza profunda para hogares después de mudarse o antes de la entrega.","s3-note2":"Desde $295","s4-title":"Airbnb / Alquiler","s4-desc":"Limpieza rápida para propiedades en alquiler.","s4-note2":"Desde $195","s2-note2":"Desde $230","s2-i1":"✔️ Limpieza profunda de todas las habitaciones","s2-i2":"✔️ Sanitización profunda de baños (baños adicionales +$65 c/u)","s2-i3":"✔️ Limpieza profunda de cocina (superficies exteriores)","s2-i4":"✔️ Desempolvado de superficies, zócalos y áreas de difícil acceso","s2-i5":"✔️ Aspirado y trapeado en toda la casa","s2-i6":"✔️ Limpieza detallada de lámparas y accesorios accesibles","s2-addons":"➕ Baños adicionales · Interior de electrodomésticos · Sótano · Ventanas interiores · y más","s2-ideal":"✨ Recomendado como primera limpieza o reinicio completo del hogar.","btn-book-s2":"Book Now","s2-desc":"🌿 Limpieza Profunda Premium","s2-note":"+ Baños adicionales · Interior de electrodomésticos · y más extras disponibles","s2-upsell":"✨ Ideal como primera limpieza — combínalo con mantenimiento semanal o quincenal para mantener tu hogar impecable.",
     "footer-services":"Servicios","footer-company":"Empresa",
     "footer-s1":"Limpieza Regular","footer-s2":"Limpieza Profunda","footer-s3":"Mudanza / Entrega","footer-s4":"Airbnb Turnover",
     "footer-extras":"Extras","footer-nosotros":"Por qué elegirnos","footer-opiniones":"Opiniones",
@@ -4339,7 +4339,7 @@ const T = {
     "services-label":"What we offer","services-title":"Our cleaning services",
     "services-sub":"Tailored for modern homes, our services focus on efficiency, attention to detail, and a spotless finish, delivering a clean that's safe, sustainable, and worry-free.",
     "coming-soon":"🚧 Coming Soon","coming-soon-sub":"This service will be available shortly. Contact us for more information.","service-discount":".","s1-title":"Standard Cleaning","s1-desc":"🌿 Standard Cleaning – Eco-Friendly","s1-note2":"💰 Starting from $155.","s1-i1":"✔️ General cleaning of all rooms","s1-i2":"✔️ Bathroom cleaning (additional bathrooms +$65 each)","s1-i3":"✔️ Kitchen cleaning (exterior surfaces only)","s1-i4":"✔️ Vacuuming & mopping all floors","s1-i5":"✔️ Dusting of surfaces and furniture","s1-i6":"✔️ Trash removal","s1-i7":"✨ Clean and uniform finishes","s1-addons":"➕ Additional bathrooms · Appliance interiors · Interior windows · and more","s1-ideal":"✨ Ideal for ongoing maintenance with a consistent standard.","btn-book-s1":"Book Now","s1-note2":"💰 Starting from $155.","s1-i1":"✔️ General cleaning of all rooms","s1-i2":"✔️ Bathroom cleaning (additional bathrooms +$65 each)","s1-i3":"✔️ Kitchen cleaning (exterior surfaces only)","s1-i4":"✔️ Vacuuming & mopping all floors","s1-i5":"✔️ Dusting of surfaces and furniture","s1-i6":"✔️ Trash removal","s1-i7":"✨ Clean and uniform finishes","s1-addons":"➕ Additional bathrooms · Appliance interiors · Interior windows · and more","s1-ideal":"✨ Ideal for ongoing maintenance with a consistent standard.","btn-book-s1":"Book Now","s1-desc":"🌿 Standard Cleaning – Eco-Friendly","s1-note":"+ Additional bathrooms · Appliance interiors · and more add-ons available",
-    "s2-title":"Deep Cleaning","s2-desc":"Detailed cleaning for a full home reset.","s3-title":"Move In / Move Out","s3-desc":"Deep cleaning for homes after moving out or before handover.","s3-note2":"Starting from $295","s4-title":"Airbnb Cleaning","s4-desc":"Fast turnover cleaning for short-term rentals.","s4-note2":"💰 Starting from $165 — add linens, amenities & more","s2-note2":"Starting from $230","s2-i1":"✔️ Deep cleaning of all rooms","s2-i2":"✔️ Bathroom deep sanitization (additional bathrooms +$65 each)","s2-i3":"✔️ Kitchen deep cleaning (exterior surfaces)","s2-i4":"✔️ Dusting of surfaces, baseboards & hard-to-reach areas","s2-i5":"✔️ Vacuuming & mopping throughout","s2-i6":"✔️ Light fixtures & reachable detailed cleaning","s2-addons":"➕ Additional bathrooms · Appliance interiors · Finished basement · Interior windows · and more","s2-ideal":"✨ Recommended as a first cleaning or complete home reset.","btn-book-s2":"Book Now","s2-note2":"Starting from $230","s2-i1":"✔️ Deep cleaning of all rooms","s2-i2":"✔️ Bathroom deep sanitization (additional bathrooms +$65 each)","s2-i3":"✔️ Kitchen deep cleaning (exterior surfaces)","s2-i4":"✔️ Dusting of surfaces, baseboards & hard-to-reach areas","s2-i5":"✔️ Vacuuming & mopping throughout","s2-i6":"✔️ Light fixtures & reachable detailed cleaning","s2-addons":"➕ Additional bathrooms · Appliance interiors · Finished basement · Interior windows · and more","s2-ideal":"✨ Recommended as a first cleaning or complete home reset.","btn-book-s2":"Book Now","s2-desc":"🌿 Premium Deep Cleaning","s2-note":"+ Additional bathrooms · Appliance interiors · and more add-ons available","s2-upsell":"✨ Perfect as a first-time clean — follow up with weekly or bi-weekly Standard Cleaning to keep your home effortlessly pristine.",
+    "s2-title":"Deep Cleaning","s2-desc":"Detailed cleaning for a full home reset.","s3-title":"Move In / Move Out","s3-desc":"Deep cleaning for homes after moving out or before handover.","s3-note2":"Starting from $295","s4-title":"Airbnb Cleaning","s4-desc":"Fast turnover cleaning for short-term rentals.","s4-note2":"💰 Starting from $195 — add linens, amenities & more","s2-note2":"Starting from $230","s2-i1":"✔️ Deep cleaning of all rooms","s2-i2":"✔️ Bathroom deep sanitization (additional bathrooms +$65 each)","s2-i3":"✔️ Kitchen deep cleaning (exterior surfaces)","s2-i4":"✔️ Dusting of surfaces, baseboards & hard-to-reach areas","s2-i5":"✔️ Vacuuming & mopping throughout","s2-i6":"✔️ Light fixtures & reachable detailed cleaning","s2-addons":"➕ Additional bathrooms · Appliance interiors · Finished basement · Interior windows · and more","s2-ideal":"✨ Recommended as a first cleaning or complete home reset.","btn-book-s2":"Book Now","s2-note2":"Starting from $230","s2-i1":"✔️ Deep cleaning of all rooms","s2-i2":"✔️ Bathroom deep sanitization (additional bathrooms +$65 each)","s2-i3":"✔️ Kitchen deep cleaning (exterior surfaces)","s2-i4":"✔️ Dusting of surfaces, baseboards & hard-to-reach areas","s2-i5":"✔️ Vacuuming & mopping throughout","s2-i6":"✔️ Light fixtures & reachable detailed cleaning","s2-addons":"➕ Additional bathrooms · Appliance interiors · Finished basement · Interior windows · and more","s2-ideal":"✨ Recommended as a first cleaning or complete home reset.","btn-book-s2":"Book Now","s2-desc":"🌿 Premium Deep Cleaning","s2-note":"+ Additional bathrooms · Appliance interiors · and more add-ons available","s2-upsell":"✨ Perfect as a first-time clean — follow up with weekly or bi-weekly Standard Cleaning to keep your home effortlessly pristine.",
     "footer-services":"Services","footer-company":"Company",
     "footer-s1":"Regular Cleaning","footer-s2":"Deep Cleaning","footer-s3":"Move In/Out","footer-s4":"Airbnb Turnover",
     "footer-desc":"Premium eco-friendly cleaning for homes in Jersey City, Hoboken & Edgewater. Trusted by Hudson County families for spotless results.",

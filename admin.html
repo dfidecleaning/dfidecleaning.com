@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D'Fide Admin</title>
+  <link rel="manifest" href="/admin-manifest.json">
+  <meta name="theme-color" content="#0B1F3A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="D'Fide Admin">
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#0B1F3A;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;font-family:sans-serif}
+    .logo{color:#C9A84C;font-size:28px;font-weight:800;margin-bottom:8px}
+    .sub{color:rgba(255,255,255,.4);font-size:13px;margin-bottom:32px}
+    .spinner{width:32px;height:32px;border:3px solid rgba(201,168,76,.2);border-top:3px solid #C9A84C;border-radius:50%;animation:spin 0.8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <div class="logo">D'Fide Admin</div>
+  <div class="sub">Management Portal</div>
+  <div class="spinner"></div>
+  <script>
+    // Redirect to main site with admin flag
+    window.location.replace('/?openadmin=1');
+  </script>
+</body>
+</html>
